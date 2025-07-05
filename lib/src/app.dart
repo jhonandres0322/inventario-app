@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/app_routes.dart';
+import 'package:inventario_app/src/core/app_themes.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -10,6 +11,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: AppRoutes().routes,
       initialRoute: AppRoutes.home,
+      theme: AppThemes().light,
     );
   }
 }

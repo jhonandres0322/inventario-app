@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/screens/add_producto_inventario_screen.dart';
 import 'package:inventario_app/src/screens/inventario_screen.dart';
 
 class AppRoutes {
@@ -7,9 +6,6 @@ class AppRoutes {
   static const String addPrendaInventario = '/add-prenda-inventario';
 
   Map<String, WidgetBuilder> get routes {
-    return {
-      home: (context) => InventarioScreen(),
-      addPrendaInventario: (context) => AddProductoInventarioScreen()
-    };
+    return {home: (context) => InventarioScreen()};
   }
 }

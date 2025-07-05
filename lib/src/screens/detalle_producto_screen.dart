@@ -12,10 +12,7 @@ class DetalleProductoScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(producto.nombre),
-        backgroundColor: Colors.blue,
-      ),
+      appBar: AppBar(title: Text(producto.nombre)),
       body: Column(
         children: [
           // Carrusel con PageView

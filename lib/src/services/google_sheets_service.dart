@@ -6,12 +6,12 @@ import 'package:inventario_app/src/models/producto_model.dart';
 
 class GoogleSheetsService {
   static final _sheetId = dotenv.env['SHEET_ID'] ?? '';
-  static final _range = 'ROPA!A:H';
+  static final _rangeProductos = 'ROPA!A:H';
   static final _apiKey = dotenv.env['API_KEY'] ?? '';
 
   static Future<List<Producto>> fetchProductos() async {
     final url =
-        'https://sheets.googleapis.com/v4/spreadsheets/$_sheetId/values/$_range?key=$_apiKey';
+        'https://sheets.googleapis.com/v4/spreadsheets/$_sheetId/values/$_rangeProductos?key=$_apiKey';
 
     final response = await http.get(Uri.parse(url));
 
