@@ -5,7 +5,7 @@ class AppThemes {
     return ThemeData(
       appBarTheme: AppBarTheme(
         centerTitle: true,
-        color: Colors.deepPurple,
+        color: Colors.indigo,
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,

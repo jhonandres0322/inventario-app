@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/app_routes.dart';
+import 'package:inventario_app/src/widgets/item_page_button_widget.dart'
+    show ItemPageButton;
 
 class InitialScreen extends StatelessWidget {
   const InitialScreen({super.key});
@@ -13,14 +15,14 @@ class InitialScreen extends StatelessWidget {
           children: [
             Text(
               'Bienvenido a MAD Store',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
             ),
-            _ButtonRedirectPageWidget(
+            ItemPageButton(
               text: 'Administrador',
               icon: Icons.warehouse,
               routeTo: AppRoutes.admin,
             ),
-            _ButtonRedirectPageWidget(
+            ItemPageButton(
               text: 'Inventario',
               icon: Icons.inventory,
               routeTo: AppRoutes.inventoryList,
@@ -28,41 +30,6 @@ class InitialScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ButtonRedirectPageWidget extends StatelessWidget {
-  const _ButtonRedirectPageWidget({
-    required this.text,
-    required this.icon,
-    required this.routeTo,
-  });
-
-  final String text;
-  final IconData icon;
-  final String routeTo;
-
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, routeTo);
-          },
-          icon: Icon(icon, size: size.height * 0.1),
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: size.height * 0.03,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
     );
   }
 }
