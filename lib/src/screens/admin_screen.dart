@@ -14,7 +14,7 @@ class AdminScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ItemPageButton(
-              text: 'Cargar Productos',
+              text: 'Cargar Producto',
               icon: Icons.add,
               routeTo: AppRoutes.loadProducts,
             ),
