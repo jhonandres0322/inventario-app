@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/providers/inventario_provider.dart';
+import 'package:inventario_app/src/screens/scanner_barcode_screen.dart';
 import 'package:inventario_app/src/widgets/tile_producto_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,15 @@ class InventarioScreen extends StatelessWidget {
         actions: [Icon(Icons.shopping_bag)],
       ),
       body: ListProductsWidget(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ScannerBarcodeScreen()),
+          );
+        },
+        child: Icon(Icons.camera_alt_outlined),
+      ),
     );
   }
 }
