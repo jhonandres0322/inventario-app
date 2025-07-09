@@ -27,6 +27,9 @@ class AppThemes {
         ),
       ),
       useMaterial3: true,
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(iconColor: WidgetStateProperty.all(Colors.indigo)),
+      ),
     );
   }
 }
