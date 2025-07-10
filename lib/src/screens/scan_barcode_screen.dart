@@ -1,30 +1,25 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/providers/load_product_provider.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:provider/provider.dart';
 
 class ScanBarcodeScreen extends StatelessWidget {
   const ScanBarcodeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    Barcode? barcode;
     return Scaffold(
-      appBar: AppBar(title: Text('Escanear Código de Barras')),
+      appBar: AppBar(title: const Text('Escaneo de Código de Barras')),
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          MobileScanner(controller: MobileScannerController()),
-          Center(
-            child: Container(
-              width: size.width * 0.9,
-              height: size.height * 0.25,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 2),
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.transparent,
-              ),
-            ),
+          MobileScanner(
+            onDetect: (BarcodeCapture capture) {
+              final barcode = capture.barcodes.firstOrNull;
+              if (barcode != null) {
+                context.read<LoadProductProvider>().setBarcode(barcode);
+              }
+            },
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -35,34 +30,42 @@ class ScanBarcodeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Expanded(child: Center(child: _barcodePreview(barcode))),
+                  Expanded(
+                    child: Center(
+                      child: Consumer<LoadProductProvider>(
+                        builder: (_, provider, __) {
+                          final value = provider.barcode?.displayValue;
+                          return Text(
+                            value ?? 'Código',
+                            overflow: TextOverflow.fade,
+                            style: const TextStyle(color: Colors.white),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          log('Capturando código de barras');
-        },
-        child: Icon(Icons.barcode_reader),
-      ),
-    );
-  }
+      floatingActionButton: Consumer<LoadProductProvider>(
+        builder: (_, provider, __) {
+          final value = provider.barcode?.displayValue;
 
-  Widget _barcodePreview(Barcode? value) {
-    if (value == null) {
-      return const Text(
-        'Escanea el código',
-        overflow: TextOverflow.fade,
-        style: TextStyle(color: Colors.white),
-      );
-    }
-    return Text(
-      value.displayValue ?? 'Valor no mostrado!',
-      overflow: TextOverflow.fade,
-      style: const TextStyle(color: Colors.white),
+          return FloatingActionButton.extended(
+            onPressed: value != null
+                ? () {
+                    Navigator.pop(context, value);
+                  }
+                : null,
+            label: const Text('Capturar'),
+            icon: const Icon(Icons.check),
+            backgroundColor: value != null ? Colors.deepPurple : Colors.grey,
+          );
+        },
+      ),
     );
   }
 }

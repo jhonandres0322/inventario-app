@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/app_routes.dart';
 import 'package:inventario_app/src/core/app_sizes_clothes.dart';
+import 'package:inventario_app/src/providers/load_product_provider.dart';
 import 'package:inventario_app/src/widgets/text_form_field_widget.dart';
+import 'package:provider/provider.dart';
 
 class LoadProductsScreen extends StatelessWidget {
   const LoadProductsScreen({super.key});
@@ -9,6 +11,8 @@ class LoadProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final LoadProductProvider loadProductProvider =
+        Provider.of<LoadProductProvider>(context);
     return Scaffold(
       appBar: AppBar(title: Text('Cargar Producto')),
       body: SingleChildScrollView(
@@ -65,10 +69,12 @@ class LoadProductsScreen extends StatelessWidget {
                       validator: null,
                       onSaved: (value) => '',
                       readOnly: true,
+                      value: loadProductProvider.valueBarcode,
                     ),
                   ),
                   IconButton(
                     onPressed: () {
+                      loadProductProvider.clearBarcode();
                       Navigator.pushNamed(context, AppRoutes.scanBarcodeScreen);
                     },
                     icon: Icon(Icons.barcode_reader, size: size.height * 0.06),
