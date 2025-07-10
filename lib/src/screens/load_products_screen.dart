@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/core/app_routes.dart';
 import 'package:inventario_app/src/core/app_sizes_clothes.dart';
 import 'package:inventario_app/src/widgets/text_form_field_widget.dart';
 
@@ -67,8 +68,10 @@ class LoadProductsScreen extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.camera_alt, size: size.height * 0.06),
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.scanBarcodeScreen);
+                    },
+                    icon: Icon(Icons.barcode_reader, size: size.height * 0.06),
                   ),
                 ],
               ),
