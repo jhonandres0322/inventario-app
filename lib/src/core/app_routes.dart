@@ -5,6 +5,7 @@ import 'package:inventario_app/src/screens/customers_screen.dart';
 import 'package:inventario_app/src/screens/initial_screen.dart';
 import 'package:inventario_app/src/screens/inventory_list_screen.dart';
 import 'package:inventario_app/src/screens/load_products_screen.dart';
+import 'package:inventario_app/src/screens/scan_barcode_screen.dart';
 
 class AppRoutes {
   static const String initial = '/initial';
@@ -13,6 +14,7 @@ class AppRoutes {
   static const String loadProducts = '/load-products';
   static const String addSale = '/add-sale';
   static const String customers = '/customers';
+  static const String scanBarcodeScreen = '/scan-barcode';
 
   Map<String, WidgetBuilder> get routes {
     return {
@@ -22,6 +24,7 @@ class AppRoutes {
       loadProducts: (context) => LoadProductsScreen(),
       addSale: (context) => AddSaleScreen(),
       customers: (context) => CustomersScreen(),
+      scanBarcodeScreen: (context) => ScanBarcodeScreen(),
     };
   }
 }

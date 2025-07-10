@@ -27,6 +27,8 @@ class TextFormFieldWidget extends StatelessWidget {
       validator: validator,
       onSaved: onSaved,
       cursorColor: Colors.indigo,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      enabled: !readOnly,
     );
   }
 }

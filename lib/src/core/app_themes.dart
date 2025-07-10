@@ -66,6 +66,10 @@ class AppThemes {
           ),
         ),
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+      ),
     );
   }
 }
