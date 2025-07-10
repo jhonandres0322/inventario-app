@@ -9,6 +9,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.readOnly = false,
     required this.validator,
     required this.onSaved,
+    this.value,
   });
 
   final TextInputType keyboardType;
@@ -17,6 +18,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final bool readOnly;
   final FormFieldValidator<String?>? validator;
   final FormFieldSetter onSaved;
+  final String? value;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class TextFormFieldWidget extends StatelessWidget {
       cursorColor: Colors.indigo,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       enabled: !readOnly,
+      controller: TextEditingController(text: value),
     );
   }
 }
