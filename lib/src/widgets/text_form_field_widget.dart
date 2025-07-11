@@ -31,7 +31,7 @@ class TextFormFieldWidget extends StatelessWidget {
       cursorColor: Colors.indigo,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       enabled: !readOnly,
-      controller: TextEditingController(text: value),
+      initialValue: value,
     );
   }
 }
