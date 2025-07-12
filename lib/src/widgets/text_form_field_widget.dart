@@ -8,7 +8,7 @@ class TextFormFieldWidget extends StatelessWidget {
     required this.labelText,
     this.readOnly = false,
     required this.validator,
-    required this.onSaved,
+    required this.onChanged,
     this.value,
     this.controller,
   });
@@ -18,7 +18,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final String labelText;
   final bool readOnly;
   final FormFieldValidator<String?>? validator;
-  final FormFieldSetter onSaved;
+  final ValueChanged<String>? onChanged;
   final String? value;
   final TextEditingController? controller;
 
@@ -30,10 +30,10 @@ class TextFormFieldWidget extends StatelessWidget {
       decoration: InputDecoration(hintText: hintText, labelText: labelText),
       readOnly: readOnly,
       validator: validator,
-      onSaved: onSaved,
       cursorColor: Colors.indigo,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       enabled: !readOnly,
+      onChanged: onChanged,
       initialValue: controller == null ? value : null,
     );
   }

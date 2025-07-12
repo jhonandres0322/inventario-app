@@ -12,6 +12,7 @@ class LoadProductProvider with ChangeNotifier {
   String? _quantity;
   String? _sizeSelected;
   String? _typeClothes = 'camisas';
+  final TextEditingController barcodeController = TextEditingController();
 
   Barcode? get barcode => _barcode;
   String? get nameReferenceProduct => _nameReferenceProduct;
@@ -23,6 +24,7 @@ class LoadProductProvider with ChangeNotifier {
 
   void setBarcode(Barcode barcode) {
     _barcode = barcode;
+    barcodeController.text = barcode.displayValue ?? '';
     notifyListeners();
   }
 
@@ -57,7 +59,7 @@ class LoadProductProvider with ChangeNotifier {
         : AppSizesClothes().sizesNumber;
   }
 
-  String? validateNameReferenceForm(String? value) {
+  String? validateReferenceForm(String? value) {
     if (value!.isEmpty) return 'La referencia es obligatoria';
     if (value.length < 3) return 'Valor invalido';
 
@@ -66,7 +68,6 @@ class LoadProductProvider with ChangeNotifier {
 
   String? validateNumberForm(String? value) {
     if (value!.isEmpty) return 'El precio es obligatorio';
-    if (value.length < 3) return 'Valor invalido';
     if (int.parse(value) <= 0) return 'El precio debe ser mayor a 0';
 
     return null;
@@ -83,11 +84,13 @@ class LoadProductProvider with ChangeNotifier {
   }
 
   bool disabledButtonSaveForm() {
-    return !((_nameReferenceProduct?.isNotEmpty ?? false) &&
-        (_priceProduct?.isNotEmpty ?? false) &&
-        (_sizeSelected?.isNotEmpty ?? false) &&
-        (_barcode?.displayValue?.isNotEmpty ?? false) &&
-        (_quantity?.isNotEmpty ?? false));
+    final value =
+        !((_nameReferenceProduct?.isNotEmpty ?? false) &&
+            (_priceProduct?.isNotEmpty ?? false) &&
+            (_sizeSelected?.isNotEmpty ?? false) &&
+            (_barcode?.displayValue?.isNotEmpty ?? false) &&
+            (_quantity?.isNotEmpty ?? false));
+    return value;
   }
 
   void onSubmitForm() {

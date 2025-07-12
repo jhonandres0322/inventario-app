@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/app_routes.dart';
 import 'package:inventario_app/src/providers/load_product_provider.dart';
@@ -12,10 +10,8 @@ class LoadProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final LoadProductProvider loadProductProvider =
-        Provider.of<LoadProductProvider>(context);
-    final TextEditingController barcodeController = TextEditingController(
-      text: loadProductProvider.barcode?.displayValue ?? '',
+    final LoadProductProvider provider = Provider.of<LoadProductProvider>(
+      context,
     );
     return Scaffold(
       appBar: AppBar(title: Text('Cargar Producto')),
@@ -27,27 +23,24 @@ class LoadProductsScreen extends StatelessWidget {
             right: size.width * 0.04,
           ),
           child: Form(
-            key: loadProductProvider.formKey,
+            key: provider.formKey,
             child: Column(
               children: [
                 TextFormFieldWidget(
                   keyboardType: TextInputType.text,
                   hintText: 'Ingrese el nombre o la referencia del producto ',
                   labelText: 'Nombre o Referencia',
-                  validator: (value) =>
-                      loadProductProvider.validateNameReferenceForm(value),
-                  onSaved: (value) =>
-                      loadProductProvider.setNameReferenceProduct(value),
+                  validator: (value) => provider.validateReferenceForm(value),
+                  onChanged: (value) => provider.setNameReferenceProduct(value),
+                  value: provider.nameReferenceProduct,
                 ),
                 SizedBox(height: size.height * 0.03),
                 TextFormFieldWidget(
                   keyboardType: TextInputType.number,
                   hintText: 'Ingrese precio de compra en Kliker',
                   labelText: 'Precio de Compra',
-                  validator: (value) =>
-                      loadProductProvider.validateNumberForm(value),
-                  onSaved: (value) =>
-                      loadProductProvider.setPriceProduct(value),
+                  validator: (value) => provider.validateNumberForm(value),
+                  onChanged: (value) => provider.setPriceProduct(value),
                 ),
                 SizedBox(height: size.height * 0.03),
                 Row(
@@ -58,17 +51,18 @@ class LoadProductsScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: size.height * 0.03),
-                DropdownMenu<String>(
-                  width: size.width * 0.9,
-                  hintText: 'Escoja la talla',
-                  label: Text('Talla'),
-                  onSelected: (value) =>
-                      loadProductProvider.setSizeSelected(value),
-                  initialSelection: loadProductProvider.sizeSelected,
-                  dropdownMenuEntries: loadProductProvider.getSizes().map((
-                    size,
-                  ) {
-                    return DropdownMenuEntry(value: size, label: size);
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(
+                    labelText: 'Talla',
+                    hintText: 'Escoja la talla',
+                  ),
+                  value: provider.sizeSelected,
+                  onChanged: provider.setSizeSelected,
+                  items: provider.getSizes().map((size) {
+                    return DropdownMenuItem<String>(
+                      value: size,
+                      child: Text(size),
+                    );
                   }).toList(),
                 ),
                 SizedBox(height: size.height * 0.03),
@@ -80,15 +74,15 @@ class LoadProductsScreen extends StatelessWidget {
                         hintText: '',
                         labelText: 'Código de Barras',
                         validator: (value) =>
-                            loadProductProvider.validateNumberForm(value),
-                        onSaved: (value) {},
+                            provider.validateNumberForm(value),
+                        onChanged: (value) {},
                         readOnly: true,
-                        controller: barcodeController,
+                        controller: provider.barcodeController,
                       ),
                     ),
                     IconButton(
                       onPressed: () {
-                        loadProductProvider.clearBarcode();
+                        provider.clearBarcode();
                         Navigator.pushNamed(
                           context,
                           AppRoutes.scanBarcodeScreen,
@@ -105,17 +99,18 @@ class LoadProductsScreen extends StatelessWidget {
                 TextFormFieldWidget(
                   hintText: 'Ingrese la cantidad en el inventario',
                   labelText: 'Cantidad',
-                  validator: (value) =>
-                      loadProductProvider.validateNumberForm(value),
+                  validator: (value) => provider.validateNumberForm(value),
                   keyboardType: TextInputType.number,
-                  onSaved: (value) => loadProductProvider.setQuantity(value),
+                  onChanged: (value) => provider.setQuantity(value),
                 ),
                 SizedBox(height: size.height * 0.03),
                 SizedBox(
                   width: size.width * 0.9,
                   child: ElevatedButton(
-                    onPressed: !loadProductProvider.disabledButtonSaveForm()
-                        ? () {}
+                    onPressed: !provider.disabledButtonSaveForm()
+                        ? () {
+                            provider.onSubmitForm();
+                          }
                         : null,
                     child: Text('Guardar'),
                   ),
@@ -136,14 +131,15 @@ class _ButtonCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LoadProductProvider loadProductProvider =
-        Provider.of<LoadProductProvider>(context);
+    final LoadProductProvider provider = Provider.of<LoadProductProvider>(
+      context,
+    );
 
-    final bool isActive = loadProductProvider.typeClothes == category;
+    final bool isActive = provider.typeClothes == category;
     return ElevatedButton(
       onPressed: () {
-        loadProductProvider.setTypeClothes(category);
-        loadProductProvider.clearSizeSelected();
+        provider.setTypeClothes(category);
+        provider.clearSizeSelected();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: isActive ? Colors.indigo : Colors.grey[300],
