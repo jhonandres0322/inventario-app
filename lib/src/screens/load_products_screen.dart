@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/app_routes.dart';
 import 'package:inventario_app/src/providers/load_product_provider.dart';
@@ -12,6 +14,9 @@ class LoadProductsScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final LoadProductProvider loadProductProvider =
         Provider.of<LoadProductProvider>(context);
+    final TextEditingController barcodeController = TextEditingController(
+      text: loadProductProvider.barcode?.displayValue ?? '',
+    );
     return Scaffold(
       appBar: AppBar(title: Text('Cargar Producto')),
       body: SingleChildScrollView(
@@ -78,7 +83,7 @@ class LoadProductsScreen extends StatelessWidget {
                             loadProductProvider.validateNumberForm(value),
                         onSaved: (value) {},
                         readOnly: true,
-                        value: loadProductProvider.valueBarcode,
+                        controller: barcodeController,
                       ),
                     ),
                     IconButton(

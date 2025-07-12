@@ -10,6 +10,7 @@ class TextFormFieldWidget extends StatelessWidget {
     required this.validator,
     required this.onSaved,
     this.value,
+    this.controller,
   });
 
   final TextInputType keyboardType;
@@ -19,10 +20,12 @@ class TextFormFieldWidget extends StatelessWidget {
   final FormFieldValidator<String?>? validator;
   final FormFieldSetter onSaved;
   final String? value;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(hintText: hintText, labelText: labelText),
       readOnly: readOnly,
@@ -31,7 +34,7 @@ class TextFormFieldWidget extends StatelessWidget {
       cursorColor: Colors.indigo,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       enabled: !readOnly,
-      initialValue: value,
+      initialValue: controller == null ? value : null,
     );
   }
 }

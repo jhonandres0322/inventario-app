@@ -14,7 +14,6 @@ class LoadProductProvider with ChangeNotifier {
   String? _typeClothes = 'camisas';
 
   Barcode? get barcode => _barcode;
-  String? get valueBarcode => _barcode?.displayValue;
   String? get nameReferenceProduct => _nameReferenceProduct;
   String? get priceProduct => _priceProduct;
   String? get quantity => _quantity;
@@ -99,7 +98,7 @@ class LoadProductProvider with ChangeNotifier {
       log('===== Referencia $_nameReferenceProduct');
       log('===== Precio $_priceProduct');
       log('===== Talla $_sizeSelected');
-      log('===== Codigo de Barras $valueBarcode');
+      log('===== Codigo de Barras ${_barcode?.displayValue}');
       log('===== Cantidad $_quantity');
     }
   }
