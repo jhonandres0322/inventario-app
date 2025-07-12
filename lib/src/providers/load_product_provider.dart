@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/core/app_sizes_clothes.dart';
+import 'package:inventario_app/src/core/domain/app_sizes_clothes.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class LoadProductProvider with ChangeNotifier {
@@ -11,6 +11,7 @@ class LoadProductProvider with ChangeNotifier {
   String? _priceProduct;
   String? _quantity;
   String? _sizeSelected;
+  String? _brand;
   String? _typeClothes = 'camisas';
   final TextEditingController barcodeController = TextEditingController();
 
@@ -19,6 +20,7 @@ class LoadProductProvider with ChangeNotifier {
   String? get priceProduct => _priceProduct;
   String? get quantity => _quantity;
   String? get sizeSelected => _sizeSelected;
+  String? get brand => _brand;
   String? get typeClothes => _typeClothes;
   GlobalKey<FormState> get formKey => _formKey;
 
@@ -45,6 +47,11 @@ class LoadProductProvider with ChangeNotifier {
 
   void setSizeSelected(String? value) {
     _sizeSelected = value;
+    notifyListeners();
+  }
+
+  void setBrand(String? value) {
+    _brand = value;
     notifyListeners();
   }
 
@@ -88,9 +95,19 @@ class LoadProductProvider with ChangeNotifier {
         !((_nameReferenceProduct?.isNotEmpty ?? false) &&
             (_priceProduct?.isNotEmpty ?? false) &&
             (_sizeSelected?.isNotEmpty ?? false) &&
+            (_brand?.isNotEmpty ?? false) &&
             (_barcode?.displayValue?.isNotEmpty ?? false) &&
             (_quantity?.isNotEmpty ?? false));
     return value;
+  }
+
+  void clearAll() {
+    _barcode = null;
+    _nameReferenceProduct = null;
+    _priceProduct = null;
+    _quantity = null;
+    _sizeSelected = null;
+    _brand = null;
   }
 
   void onSubmitForm() {
@@ -101,6 +118,7 @@ class LoadProductProvider with ChangeNotifier {
       log('===== Referencia $_nameReferenceProduct');
       log('===== Precio $_priceProduct');
       log('===== Talla $_sizeSelected');
+      log('===== Marca $_brand');
       log('===== Codigo de Barras ${_barcode?.displayValue}');
       log('===== Cantidad $_quantity');
     }

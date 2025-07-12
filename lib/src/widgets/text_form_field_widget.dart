@@ -35,6 +35,7 @@ class TextFormFieldWidget extends StatelessWidget {
       enabled: !readOnly,
       onChanged: onChanged,
       initialValue: controller == null ? value : null,
+      textCapitalization: TextCapitalization.words,
     );
   }
 }
