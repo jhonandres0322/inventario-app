@@ -2,10 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/domain/app_sizes_clothes.dart';
+import 'package:inventario_app/src/models/producto_model.dart';
+import 'package:inventario_app/src/services/products_service.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class LoadProductProvider with ChangeNotifier {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ProductsService _productsService = ProductsService();
   Barcode? _barcode;
   String? _nameReferenceProduct;
   String? _priceProduct;
@@ -110,7 +113,7 @@ class LoadProductProvider with ChangeNotifier {
     _brand = null;
   }
 
-  void onSubmitForm() {
+  void onSubmitForm() async {
     final form = _formKey.currentState!;
     if (form.validate()) {
       form.save();
@@ -121,6 +124,16 @@ class LoadProductProvider with ChangeNotifier {
       log('===== Marca $_brand');
       log('===== Codigo de Barras ${_barcode?.displayValue}');
       log('===== Cantidad $_quantity');
+      final product = Product.fromMap({
+        "nombre": _nameReferenceProduct,
+        "precio_compra": _priceProduct,
+        "talla": _sizeSelected,
+        "marca": _brand,
+        "codigo_kliker": _barcode?.displayValue,
+        "cantidad": _quantity,
+      });
+
+      await _productsService.saveProduct(product);
     }
   }
 }

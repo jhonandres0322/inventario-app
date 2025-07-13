@@ -1,36 +1,87 @@
-class Producto {
+import 'dart:convert';
+
+Product productFromMap(String str) => Product.fromMap(json.decode(str));
+
+String productToMap(Product data) => json.encode(data.toMap());
+
+class Product {
   final String id;
   final String nombre;
+  final String precioCompra;
   final String talla;
   final String marca;
-  final int precio;
-  final int cantidad;
-  final String foto1;
-  final String foto2;
+  String comision;
+  String costoReal;
+  final String codigoKliker;
+  final String cantidad;
+  String foto1;
+  String foto2;
+  final DateTime? fechaCreacion;
 
-  Producto({
-    required this.id,
+  Product({
+    this.id = '',
     required this.nombre,
+    required this.precioCompra,
     required this.talla,
     required this.marca,
-    required this.precio,
+    this.comision = "0",
+    this.costoReal = "0",
+    required this.codigoKliker,
     required this.cantidad,
-    required this.foto1,
-    required this.foto2,
+    this.foto1 = "",
+    this.foto2 = "",
+    this.fechaCreacion,
   });
 
-  factory Producto.fromList(List<dynamic> values) {
-    final List<String> stringValues = values.map((e) => e.toString()).toList();
+  factory Product.fromMap(Map<String, dynamic> json) => Product(
+    id: json["id"] ?? '',
+    nombre: json["nombre"],
+    precioCompra: json["precio_compra"],
+    talla: json["talla"],
+    marca: json["marca"],
+    comision: json["comision"] ?? '0',
+    costoReal: json["costo_real"] ?? '0',
+    codigoKliker: json["codigo_kliker"],
+    cantidad: json["cantidad"],
+    foto1: json["foto1"] ?? '',
+    foto2: json["foto2"] ?? '',
+    fechaCreacion: json["fecha_creacion"] != null
+        ? DateTime.parse(json["fecha_creacion"])
+        : null,
+  );
 
-    return Producto(
-      id: stringValues[0],
-      nombre: stringValues[1],
-      talla: stringValues[2],
-      marca: stringValues[3],
-      precio: int.tryParse(stringValues[4]) ?? 0,
-      cantidad: int.tryParse(stringValues[5]) ?? 0,
-      foto1: stringValues[6],
-      foto2: stringValues[7],
-    );
+  Map<String, dynamic> toMap() => {
+    "id": id,
+    "nombre": nombre,
+    "precio_compra": precioCompra,
+    "talla": talla,
+    "marca": marca,
+    "comision": comision,
+    "costo_real": costoReal,
+    "codigo_kliker": codigoKliker,
+    "cantidad": cantidad,
+    "foto1": foto1,
+    "foto2": foto2,
+    "fecha_creacion": fechaCreacion?.toIso8601String(),
+  };
+
+  void calcularComision() {
+    final double priceDouble = double.parse(precioCompra);
+    final double comissionDouble = priceDouble * 0.25;
+    setComision(comissionDouble.toString());
+  }
+
+  void calcularCostoReal() {
+    final double priceDouble = double.parse(precioCompra);
+    final double realCostDouble = priceDouble - double.parse(comision);
+    setCostoReal(realCostDouble.toString());
+  }
+
+  void setComision(String value) {
+    comision = value;
+  }
+
+  void setCostoReal(String value) {
+    costoReal = value;
   }
 }
