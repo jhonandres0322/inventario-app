@@ -43,27 +43,35 @@ class Product {
     costoReal: json["costo_real"] ?? '0',
     codigoKliker: json["codigo_kliker"],
     cantidad: json["cantidad"],
-    foto1: json["foto1"] ?? '',
-    foto2: json["foto2"] ?? '',
+    foto1: json["foto_1"] ?? '',
+    foto2: json["foto_2"] ?? '',
     fechaCreacion: json["fecha_creacion"] != null
         ? DateTime.parse(json["fecha_creacion"])
         : null,
   );
 
-  Map<String, dynamic> toMap() => {
-    "id": id,
-    "nombre": nombre,
-    "precio_compra": precioCompra,
-    "talla": talla,
-    "marca": marca,
-    "comision": comision,
-    "costo_real": costoReal,
-    "codigo_kliker": codigoKliker,
-    "cantidad": cantidad,
-    "foto1": foto1,
-    "foto2": foto2,
-    "fecha_creacion": fechaCreacion?.toIso8601String(),
-  };
+  Map<String, dynamic> toMap() {
+    final map = {
+      "nombre": nombre,
+      "precio_compra": precioCompra,
+      "talla": talla,
+      "marca": marca,
+      "comision": comision,
+      "costo_real": costoReal,
+      "codigo_kliker": codigoKliker,
+      "cantidad": cantidad,
+      "foto_1": foto1,
+      "foto_2": foto2,
+    };
+    if (id.isNotEmpty) {
+      map["id"] = id;
+    }
+
+    if (fechaCreacion != null) {
+      map["fecha_creacion"] = fechaCreacion!.toIso8601String();
+    }
+    return map;
+  }
 
   void calcularComision() {
     final double priceDouble = double.parse(precioCompra);

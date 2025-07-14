@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/domain/app_sizes_clothes.dart';
 import 'package:inventario_app/src/models/producto_model.dart';
@@ -16,6 +14,7 @@ class LoadProductProvider with ChangeNotifier {
   String? _sizeSelected;
   String? _brand;
   String? _typeClothes = 'camisas';
+  bool? _isLoading = false;
   final TextEditingController barcodeController = TextEditingController();
 
   Barcode? get barcode => _barcode;
@@ -25,6 +24,7 @@ class LoadProductProvider with ChangeNotifier {
   String? get sizeSelected => _sizeSelected;
   String? get brand => _brand;
   String? get typeClothes => _typeClothes;
+  bool? get isLoading => _isLoading;
   GlobalKey<FormState> get formKey => _formKey;
 
   void setBarcode(Barcode barcode) {
@@ -63,6 +63,11 @@ class LoadProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   List<String> getSizes() {
     return typeClothes == 'camisas'
         ? AppSizesClothes().sizesText
@@ -78,8 +83,6 @@ class LoadProductProvider with ChangeNotifier {
 
   String? validateNumberForm(String? value) {
     if (value!.isEmpty) return 'El precio es obligatorio';
-    if (int.parse(value) <= 0) return 'El precio debe ser mayor a 0';
-
     return null;
   }
 
@@ -111,19 +114,15 @@ class LoadProductProvider with ChangeNotifier {
     _quantity = null;
     _sizeSelected = null;
     _brand = null;
+    barcodeController.clear();
+    notifyListeners();
   }
 
-  void onSubmitForm() async {
+  Future<bool> onSubmitForm() async {
     final form = _formKey.currentState!;
     if (form.validate()) {
       form.save();
-      log('===== Información guardada correctamente');
-      log('===== Referencia $_nameReferenceProduct');
-      log('===== Precio $_priceProduct');
-      log('===== Talla $_sizeSelected');
-      log('===== Marca $_brand');
-      log('===== Codigo de Barras ${_barcode?.displayValue}');
-      log('===== Cantidad $_quantity');
+      setLoading(true);
       final product = Product.fromMap({
         "nombre": _nameReferenceProduct,
         "precio_compra": _priceProduct,
@@ -132,8 +131,10 @@ class LoadProductProvider with ChangeNotifier {
         "codigo_kliker": _barcode?.displayValue,
         "cantidad": _quantity,
       });
-
-      await _productsService.saveProduct(product);
+      final isSuccess = await _productsService.saveProduct(product);
+      setLoading(false);
+      return isSuccess;
     }
+    return false;
   }
 }

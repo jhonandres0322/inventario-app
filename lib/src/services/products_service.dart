@@ -1,12 +1,13 @@
 import 'dart:developer';
 
 import 'package:inventario_app/src/core/infrastructure/app_kliiker.dart';
+import 'package:inventario_app/src/core/infrastructure/app_supabase.dart';
 import 'package:inventario_app/src/models/producto_model.dart';
 
 class ProductsService {
   final AppKliiker _appKliiker = AppKliiker();
 
-  Future<void> saveProduct(Product product) async {
+  Future<bool> saveProduct(Product product) async {
     List<String> imagenes = await _appKliiker.getImagesFromWebsite(
       product.codigoKliker,
     );
@@ -16,6 +17,11 @@ class ProductsService {
     product.calcularComision();
     product.calcularCostoReal();
 
-    log('producto --> ${product.toMap()}');
+    final isResponseNotEmpty = await AppSupabase().insert(
+      'productos',
+      product.toMap(),
+    );
+
+    return isResponseNotEmpty;
   }
 }
