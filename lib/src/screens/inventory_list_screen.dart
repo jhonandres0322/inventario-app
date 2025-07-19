@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/providers/inventario_provider.dart';
-import 'package:inventario_app/src/widgets/tile_producto_widget.dart';
+import 'package:inventario_app/src/widgets/list_products_widget.dart';
 import 'package:provider/provider.dart';
 
 class InventarioScreen extends StatelessWidget {
@@ -8,13 +8,35 @@ class InventarioScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inventario MAD Store'),
         bottom: SearchProductsWidget(),
-        actions: [Icon(Icons.shopping_bag)],
+        title: Text('Inventario MAD Store'),
+        toolbarHeight: size.height * 0.08,
+        automaticallyImplyLeading: false,
       ),
-      body: ListProductsWidget(),
+      body: Builder(
+        builder: (context) {
+          return SizedBox.expand(child: _ListProducts());
+        },
+      ),
+    );
+  }
+}
+
+class _ListProducts extends StatelessWidget {
+  const _ListProducts();
+
+  @override
+  Widget build(BuildContext context) {
+    final InventarioProvider provider = Provider.of<InventarioProvider>(
+      context,
+    );
+    return ListProductsWidget(
+      onNextPage: () => provider.loadProductsNews(),
+      products: provider.products,
+      provider: provider,
     );
   }
 }
@@ -50,47 +72,6 @@ class SearchProductsWidget extends StatelessWidget
           ),
         ),
       ),
-    );
-  }
-}
-
-class ListProductsWidget extends StatelessWidget {
-  const ListProductsWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final provider = Provider.of<InventarioProvider>(context, listen: false);
-    return FutureBuilder(
-      future: provider.loadProductos(),
-      builder: (context, snapshot) {
-        final providerWatch = Provider.of<InventarioProvider>(context);
-
-        if (snapshot.connectionState == ConnectionState.waiting &&
-            providerWatch.productos.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (providerWatch.error != null) {
-          return Center(child: Text('Error: ${providerWatch.error}'));
-        }
-
-        final productos = providerWatch.productosFiltrados;
-
-        if (productos.isEmpty) {
-          return const Center(child: Text('No se encontraron productos.'));
-        }
-
-        return RefreshIndicator(
-          onRefresh: () => providerWatch.loadProductos(),
-          child: ListView.builder(
-            itemCount: productos.length,
-            itemBuilder: (context, index) {
-              final producto = productos[index];
-              return TileProductoWidget(producto: producto);
-            },
-          ),
-        );
-      },
     );
   }
 }

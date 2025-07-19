@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/domain/app_sizes_clothes.dart';
-import 'package:inventario_app/src/models/producto_model.dart';
+import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/services/products_service.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -123,7 +123,7 @@ class LoadProductProvider with ChangeNotifier {
     if (form.validate()) {
       form.save();
       setLoading(true);
-      final product = Product.fromMap({
+      final product = ProductModel.fromMap({
         "nombre": _nameReferenceProduct,
         "precio_compra": _priceProduct,
         "talla": _sizeSelected,
