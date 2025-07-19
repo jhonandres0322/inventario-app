@@ -70,6 +70,10 @@ class AppThemes {
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
+      cardTheme: CardThemeData(
+        elevation: 6,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
     );
   }
 }
