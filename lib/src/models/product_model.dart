@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-Product productFromMap(String str) => Product.fromMap(json.decode(str));
+ProductModel productFromMap(String str) =>
+    ProductModel.fromMap(json.decode(str));
 
-String productToMap(Product data) => json.encode(data.toMap());
+String productToMap(ProductModel data) => json.encode(data.toMap());
 
-class Product {
+class ProductModel {
   final String id;
   final String nombre;
   final String precioCompra;
@@ -18,7 +19,7 @@ class Product {
   String foto2;
   final DateTime? fechaCreacion;
 
-  Product({
+  ProductModel({
     this.id = '',
     required this.nombre,
     required this.precioCompra,
@@ -33,7 +34,7 @@ class Product {
     this.fechaCreacion,
   });
 
-  factory Product.fromMap(Map<String, dynamic> json) => Product(
+  factory ProductModel.fromMap(Map<String, dynamic> json) => ProductModel(
     id: json["id"] ?? '',
     nombre: json["nombre"],
     precioCompra: json["precio_compra"],
@@ -73,23 +74,15 @@ class Product {
     return map;
   }
 
-  void calcularComision() {
+  void calculateCommision() {
     final double priceDouble = double.parse(precioCompra);
     final double comissionDouble = priceDouble * 0.25;
-    setComision(comissionDouble.toString());
+    comision = comissionDouble.toString();
   }
 
-  void calcularCostoReal() {
+  void calculateRealCost() {
     final double priceDouble = double.parse(precioCompra);
     final double realCostDouble = priceDouble - double.parse(comision);
-    setCostoReal(realCostDouble.toString());
-  }
-
-  void setComision(String value) {
-    comision = value;
-  }
-
-  void setCostoReal(String value) {
-    costoReal = value;
+    costoReal = realCostDouble.toString();
   }
 }
