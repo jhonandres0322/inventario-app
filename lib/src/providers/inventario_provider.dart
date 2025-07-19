@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:async';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/providers/list_product_provider.dart';
 import 'package:inventario_app/src/services/products_service.dart';
@@ -11,6 +12,7 @@ class InventarioProvider extends ListProductProvider {
   String _search = '';
   final String _orderProperty = 'nombre';
   final ProductsService _productsService = ProductsService();
+  Timer? _debounce;
 
   InventarioProvider() {
     log('[InventarioProvider.init] - Inicializando provider');
@@ -31,26 +33,13 @@ class InventarioProvider extends ListProductProvider {
     _isLoading = value;
   }
 
-  void loadProductos() async {
-    if (isLoading) true;
-    final int from = _currentPage * _limit;
-    final int to = from + _limit + 1;
-    ParamsModelUtil params = ParamsModelUtil(
-      from: from,
-      to: to,
-      orderProperty: _orderProperty,
-      isOrderAscending: true,
-    );
-
-    final response = await _productsService.getProducts(params);
-    products = [...products, ...response];
-    isLoading = false;
-    notifyListeners();
-  }
-
-  void loadProductsNews() async {
+  Future<void> _loadProducts({required bool reset}) async {
     if (isLoading) return;
-    if (isRefresh) {
+
+    isLoading = true;
+    notifyListeners();
+
+    if (reset) {
       currentPage = 0;
       products = [];
       isRefresh = false;
@@ -58,10 +47,10 @@ class InventarioProvider extends ListProductProvider {
       currentPage++;
     }
 
-    isLoading = true;
     final int from = _currentPage * _limit;
     final int to = from + _limit + 1;
-    ParamsModelUtil params = ParamsModelUtil(
+
+    final params = ParamsModelUtil(
       from: from,
       to: to,
       orderProperty: _orderProperty,
@@ -69,13 +58,23 @@ class InventarioProvider extends ListProductProvider {
     );
 
     final response = await _productsService.getProducts(params);
-    // final response = [];
-    if (response.isEmpty) {
+
+    if (response.isEmpty && !reset) {
       _currentPage--;
+    } else {
+      products = [...products, ...response];
     }
-    products = [...products, ...response];
+
     isLoading = false;
     notifyListeners();
+  }
+
+  void loadProductos() {
+    _loadProducts(reset: true);
+  }
+
+  void loadProductsNews() {
+    _loadProducts(reset: isRefresh);
   }
 
   @override
@@ -91,7 +90,11 @@ class InventarioProvider extends ListProductProvider {
   }
 
   void actualizarBusqueda(String valor) {
-    _search = valor;
-    notifyListeners();
+    _debounce?.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      _search = valor;
+      notifyListeners();
+    });
   }
 }

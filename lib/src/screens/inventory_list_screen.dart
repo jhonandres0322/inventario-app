@@ -35,7 +35,7 @@ class _ListProducts extends StatelessWidget {
     );
     return ListProductsWidget(
       onNextPage: () => provider.loadProductsNews(),
-      products: provider.products,
+      products: provider.productosFiltrados,
       provider: provider,
     );
   }
