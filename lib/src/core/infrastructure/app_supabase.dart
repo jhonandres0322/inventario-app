@@ -39,4 +39,8 @@ class AppSupabase {
         .map((item) => fromMap(item as Map<String, dynamic>))
         .toList();
   }
+
+  Future<void> deleteOne(String tableName, String idToDelete) async {
+    await client.from(tableName).delete().eq('id', idToDelete);
+  }
 }

@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:inventario_app/src/models/product_model.dart';
+import 'package:inventario_app/src/providers/detail_product_provider.dart';
+import 'package:provider/provider.dart';
 
 class DetalleProductoScreen extends StatelessWidget {
   const DetalleProductoScreen({super.key, required this.producto});
@@ -14,9 +18,37 @@ class DetalleProductoScreen extends StatelessWidget {
       if (producto.foto2.isNotEmpty) producto.foto2,
     ];
     final size = MediaQuery.of(context).size;
-
+    final DetailProductProvider provider = Provider.of<DetailProductProvider>(
+      context,
+    );
     return Scaffold(
-      appBar: AppBar(title: Text(producto.nombre)),
+      appBar: AppBar(
+        title: Tooltip(
+          message: producto.nombre,
+          child: Text(producto.nombre, overflow: TextOverflow.ellipsis),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              log('Para editar');
+            },
+            icon: Icon(Icons.edit, color: Colors.white),
+            highlightColor: Colors.white,
+          ),
+          IconButton(
+            onPressed: () {
+              showConfirmForDelete(
+                context: context,
+                onConfirm: () => provider.deleteProduct(producto),
+                onDoneRedirect: () => Navigator.pop(context),
+              );
+            },
+            icon: Icon(Icons.delete, color: Colors.white),
+            highlightColor: Colors.white,
+          ),
+          SizedBox(width: size.width * 0.01),
+        ],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -105,5 +137,55 @@ class DetalleProductoScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> showConfirmForDelete({
+    required BuildContext context,
+    required Future<void> Function() onConfirm,
+    required VoidCallback onDoneRedirect,
+    String titulo = '¿Estás seguro?',
+    String mensaje = '¿Deseas eliminar el producto?',
+  }) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(titulo),
+          content: Text(mensaje),
+          actions: [
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            ElevatedButton(
+              child: const Text('Aceptar'),
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true) return;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      await onConfirm();
+    } catch (e) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      return;
+    }
+
+    Navigator.of(context).pop();
+    onDoneRedirect();
   }
 }
