@@ -5,6 +5,7 @@ import 'package:inventario_app/src/utils/params_model_util.dart';
 
 class ProductsService {
   final AppKliiker _appKliiker = AppKliiker();
+  final String tableNameProduct = 'productos';
 
   Future<bool> saveProduct(ProductModel product) async {
     List<String> imagenes = await _appKliiker.getImagesFromWebsite(
@@ -14,10 +15,10 @@ class ProductsService {
     product.foto1 = imagenes.first;
     product.foto2 = imagenes.last;
     product.calculateCommision();
-    product.calculateCommision();
+    product.calculateRealCost();
 
     final isResponseNotEmpty = await AppSupabase().insert(
-      'productos',
+      tableNameProduct,
       product.toMap(),
     );
 
@@ -26,7 +27,7 @@ class ProductsService {
 
   Future<List<ProductModel>> getProducts(ParamsModelUtil params) async {
     final List<ProductModel> products = await AppSupabase()
-        .getAll<ProductModel>('productos', params, ProductModel.fromMap);
+        .getAll<ProductModel>(tableNameProduct, params, ProductModel.fromMap);
     return products;
   }
 }

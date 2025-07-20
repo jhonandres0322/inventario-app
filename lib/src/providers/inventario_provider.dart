@@ -10,7 +10,7 @@ class InventarioProvider extends ListProductProvider {
   final int _limit = 10;
   bool _isLoading = false;
   String _search = '';
-  final String _orderProperty = 'nombre';
+  final String _orderProperty = 'fecha_creacion';
   final ProductsService _productsService = ProductsService();
   Timer? _debounce;
 
@@ -54,7 +54,7 @@ class InventarioProvider extends ListProductProvider {
       from: from,
       to: to,
       orderProperty: _orderProperty,
-      isOrderAscending: true,
+      isOrderAscending: false,
     );
 
     final response = await _productsService.getProducts(params);

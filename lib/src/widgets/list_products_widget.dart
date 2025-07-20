@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/providers/list_product_provider.dart';
@@ -28,14 +26,9 @@ class _ListProductsWidgetState extends State<ListProductsWidget> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      log(
-        '_scrollController.position.pixels ${_scrollController.position.pixels}',
-      );
-      log(
-        '_scrollController.position.maxScrollExtent ${_scrollController.position.maxScrollExtent}',
-      );
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
+      double posPixeles = _scrollController.position.pixels;
+      double posMaxScrollExtent = _scrollController.position.maxScrollExtent;
+      if (posPixeles >= posMaxScrollExtent) {
         widget.onNextPage();
       }
     });
