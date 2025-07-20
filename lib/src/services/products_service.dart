@@ -30,4 +30,8 @@ class ProductsService {
         .getAll<ProductModel>(tableNameProduct, params, ProductModel.fromMap);
     return products;
   }
+
+  Future<void> deleteProduct(ProductModel productToDelete) async {
+    await AppSupabase().deleteOne(tableNameProduct, productToDelete.id);
+  }
 }

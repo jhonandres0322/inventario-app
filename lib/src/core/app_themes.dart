@@ -12,11 +12,6 @@ class AppThemes {
           fontWeight: FontWeight.bold,
           fontSize: 24,
         ),
-        actionsIconTheme: IconThemeData(
-          color: Colors.white,
-          size: 35,
-          applyTextScaling: true,
-        ),
       ),
       scaffoldBackgroundColor: Color(0xFFF5F5F5),
       listTileTheme: ListTileThemeData(
