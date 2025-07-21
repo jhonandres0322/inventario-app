@@ -97,4 +97,9 @@ class InventarioProvider extends ListProductProvider {
       notifyListeners();
     });
   }
+
+  void clearValueSearch() {
+    _search = '';
+    notifyListeners();
+  }
 }

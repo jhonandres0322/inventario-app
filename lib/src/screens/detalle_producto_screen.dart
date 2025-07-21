@@ -65,7 +65,7 @@ class DetalleProductoScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                     child: Image.network(
                       imagenes[index],
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fitHeight,
                       width: double.infinity,
                       loadingBuilder: (context, child, progress) {
                         if (progress == null) return child;

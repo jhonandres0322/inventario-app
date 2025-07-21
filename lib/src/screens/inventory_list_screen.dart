@@ -9,17 +9,28 @@ class InventarioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        bottom: SearchProductsWidget(),
-        title: Text('Inventario MAD Store'),
-        toolbarHeight: size.height * 0.08,
-        automaticallyImplyLeading: false,
-      ),
-      body: Builder(
-        builder: (context) {
-          return SizedBox.expand(child: _ListProducts());
-        },
+    final InventarioProvider _provider = Provider.of<InventarioProvider>(
+      context,
+    );
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          _provider.clearValueSearch();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: SearchProductsWidget(),
+          title: Text('Inventario MAD Store'),
+          toolbarHeight: size.height * 0.08,
+          automaticallyImplyLeading: false,
+        ),
+        body: Builder(
+          builder: (context) {
+            return SizedBox.expand(child: _ListProducts());
+          },
+        ),
       ),
     );
   }
