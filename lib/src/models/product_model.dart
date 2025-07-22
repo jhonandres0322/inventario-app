@@ -74,6 +74,23 @@ class ProductModel {
     return map;
   }
 
+  ProductModel copyWith({String? precioCompra, String? cantidad}) {
+    return ProductModel(
+      id: id,
+      nombre: nombre,
+      talla: talla,
+      marca: marca,
+      precioCompra: precioCompra ?? this.precioCompra,
+      cantidad: cantidad ?? this.cantidad,
+      foto1: foto1,
+      foto2: foto2,
+      codigoKliker: codigoKliker,
+      comision: comision,
+      costoReal: costoReal,
+      fechaCreacion: fechaCreacion,
+    );
+  }
+
   void calculateCommision() {
     final double priceDouble = double.parse(precioCompra);
     final double comissionDouble = priceDouble * 0.25;

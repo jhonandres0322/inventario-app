@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/domain/app_sizes_clothes.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/services/products_service.dart';
+import 'package:inventario_app/src/utils/validators_form_util.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class LoadProductProvider with ChangeNotifier {
+class LoadProductProvider with ChangeNotifier, ValidatorsFormUtil {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ProductsService _productsService = ProductsService();
   Barcode? _barcode;
@@ -78,11 +79,6 @@ class LoadProductProvider with ChangeNotifier {
     if (value!.isEmpty) return 'La referencia es obligatoria';
     if (value.length < 3) return 'Valor invalido';
 
-    return null;
-  }
-
-  String? validateNumberForm(String? value) {
-    if (value!.isEmpty) return 'El precio es obligatorio';
     return null;
   }
 
