@@ -31,6 +31,14 @@ class ProductsService {
     return products;
   }
 
+  Future<void> updateProduct(ProductModel productToModel) async {
+    await AppSupabase().updateOne(
+      tableNameProduct,
+      productToModel.id,
+      productToModel.toMap,
+    );
+  }
+
   Future<void> deleteProduct(ProductModel productToDelete) async {
     await AppSupabase().deleteOne(tableNameProduct, productToDelete.id);
   }

@@ -8,7 +8,7 @@ class TextFormFieldWidget extends StatelessWidget {
     required this.labelText,
     this.readOnly = false,
     required this.validator,
-    required this.onChanged,
+    this.onChanged,
     this.value,
     this.controller,
   });

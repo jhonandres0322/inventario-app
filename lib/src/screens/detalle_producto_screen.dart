@@ -1,9 +1,11 @@
-import 'dart:developer';
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/providers/detail_product_provider.dart';
+import 'package:inventario_app/src/widgets/snackbar_custom_widget.dart';
+import 'package:inventario_app/src/widgets/text_form_field_widget.dart';
 import 'package:provider/provider.dart';
 
 class DetalleProductoScreen extends StatelessWidget {
@@ -30,14 +32,7 @@ class DetalleProductoScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              log('Para editar');
-            },
-            icon: Icon(Icons.edit, color: Colors.white),
-            highlightColor: Colors.white,
-          ),
-          IconButton(
-            onPressed: () {
-              showConfirmForDelete(
+              _showConfirmForDelete(
                 context: context,
                 onConfirm: () => provider.deleteProduct(producto),
                 onDoneRedirect: () => Navigator.pop(context),
@@ -116,6 +111,16 @@ class DetalleProductoScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _showEditProductModal(context, producto),
+        label: Row(
+          children: [
+            Icon(Icons.edit),
+            SizedBox(width: size.width * 0.01),
+            Text('Editar'),
+          ],
+        ),
+      ),
     );
   }
 
@@ -139,7 +144,82 @@ class DetalleProductoScreen extends StatelessWidget {
     );
   }
 
-  Future<void> showConfirmForDelete({
+  void _showEditProductModal(
+    BuildContext context,
+    ProductModel productToUpdate,
+  ) {
+    final provider = context.read<DetailProductProvider>();
+    provider.changeValuePriceForm(productToUpdate.precioCompra);
+    provider.changeValueQuantityForm(productToUpdate.cantidad);
+    final Size size = MediaQuery.of(context).size;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            top: 20,
+            left: 20,
+            right: 20,
+          ),
+          child: Form(
+            key: provider.formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Editar Producto'),
+                SizedBox(height: size.height * 0.03),
+                TextFormFieldWidget(
+                  hintText: 'Ej: 30000',
+                  labelText: 'Precio de Compra',
+                  validator: (value) => provider.validateNumberForm(value),
+                  keyboardType: TextInputType.number,
+                  controller: provider.priceController,
+                ),
+                SizedBox(height: size.height * 0.03),
+                TextFormFieldWidget(
+                  hintText: 'Ej: 10',
+                  labelText: 'Cantidad',
+                  validator: (value) => provider.validateNumberForm(value),
+                  keyboardType: TextInputType.number,
+                  controller: provider.quantityController,
+                ),
+                SizedBox(height: size.height * 0.03),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    final bool response = await provider.updateProduct(
+                      productToUpdate,
+                    );
+                    String message = response
+                        ? 'Producto creado!'
+                        : 'Error al guardar el producto';
+                    Navigator.pop(context);
+                    SnackbarCustomWidget.show(
+                      context,
+                      message: message,
+                      type: response
+                          ? SnackbarType.success
+                          : SnackbarType.error,
+                    );
+                  },
+                  icon: Icon(Icons.save),
+                  label: Text('Guardar cambios'),
+                ),
+                SizedBox(height: size.height * 0.03),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showConfirmForDelete({
     required BuildContext context,
     required Future<void> Function() onConfirm,
     required VoidCallback onDoneRedirect,
