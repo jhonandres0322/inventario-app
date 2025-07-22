@@ -23,6 +23,12 @@ class DetalleProductoScreen extends StatelessWidget {
     final DetailProductProvider provider = Provider.of<DetailProductProvider>(
       context,
     );
+    final formatter = NumberFormat.currency(
+      locale: 'es_CO',
+      symbol: '\$',
+      decimalDigits: 0,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Tooltip(
@@ -92,17 +98,25 @@ class DetalleProductoScreen extends StatelessWidget {
                     _buildInfoRow(
                       Icons.price_check,
                       'Precio',
-                      NumberFormat.currency(
-                        locale: 'es_CO',
-                        symbol: '\$',
-                        decimalDigits: 0,
-                      ).format(double.parse(producto.precioCompra)),
+                      formatter.format(double.parse(producto.precioCompra)),
                     ),
                     const Divider(),
                     _buildInfoRow(
                       Icons.inventory_2,
                       'Cantidad disponible',
                       producto.cantidad,
+                    ),
+                    const Divider(),
+                    _buildInfoRow(
+                      Icons.price_check,
+                      'Costo Real',
+                      formatter.format(double.parse(producto.costoReal)),
+                    ),
+                    const Divider(),
+                    _buildInfoRow(
+                      Icons.price_check,
+                      'Comisión',
+                      formatter.format(double.parse(producto.comision)),
                     ),
                   ],
                 ),
