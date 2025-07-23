@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/providers/list_product_provider.dart';
-import 'package:inventario_app/src/widgets/tile_product_widget.dart';
+import 'package:inventario_app/src/screens/detalle_producto_screen.dart';
+import 'package:inventario_app/src/widgets/tile_info_card_widget.dart';
 
 class ListProductsWidget extends StatefulWidget {
   const ListProductsWidget({
@@ -58,7 +60,42 @@ class _ListProductsWidgetState extends State<ListProductsWidget> {
             controller: _scrollController,
             itemCount: widget.products.length,
             itemBuilder: (context, index) {
-              return TileProductWidget(product: widget.products[index]);
+              return TileInfoCardWidget(
+                title: widget.products[index].nombre,
+                infoItems: [
+                  InfoItem(Icons.store, widget.products[index].marca),
+                  InfoItem(
+                    Icons.straighten,
+                    'Talla: ${widget.products[index].talla}',
+                  ),
+                ],
+                trailingItems: [
+                  InfoItem(
+                    Icons.attach_money,
+                    NumberFormat.currency(
+                      locale: 'es_CO',
+                      symbol: '\$',
+                      decimalDigits: 0,
+                    ).format(double.parse(widget.products[index].precioCompra)),
+                    color: Colors.green,
+                  ),
+                  InfoItem(
+                    Icons.inventory_2,
+                    'x${widget.products[index].cantidad}',
+                    color: Colors.indigo,
+                  ),
+                ],
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => DetalleProductoScreen(
+                        producto: widget.products[index],
+                      ),
+                    ),
+                  );
+                },
+              );
             },
           ),
           if (widget.provider.isLoading)
