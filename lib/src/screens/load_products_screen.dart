@@ -82,12 +82,18 @@ class _MainFormLoadProduct extends StatelessWidget {
                 onChanged: (value) => provider.setPriceProduct(value),
               ),
               SizedBox(height: size.height * 0.03),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _ButtonCategory(category: 'camisas'),
-                  _ButtonCategory(category: 'pantalones'),
-                ],
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'Tipo de Ropa',
+                  hintText: 'Escoja el tipo de ropa',
+                ),
+                items: provider.getTypeClothes().map((typeClothes) {
+                  return DropdownMenuItem(
+                    value: typeClothes.key,
+                    child: Text(typeClothes.name),
+                  );
+                }).toList(),
+                onChanged: provider.setTypeClothes,
               ),
               SizedBox(height: size.height * 0.03),
               DropdownButtonFormField<String>(
@@ -95,7 +101,9 @@ class _MainFormLoadProduct extends StatelessWidget {
                   labelText: 'Talla',
                   hintText: 'Escoja la talla',
                 ),
-                value: provider.sizeSelected,
+                value: provider.getSizes().contains(provider.sizeSelected)
+                    ? provider.sizeSelected
+                    : null, // 👈 evita el crash
                 onChanged: provider.setSizeSelected,
                 items: provider.getSizes().map((size) {
                   return DropdownMenuItem<String>(
@@ -108,7 +116,7 @@ class _MainFormLoadProduct extends StatelessWidget {
               DropdownButtonFormField(
                 decoration: const InputDecoration(
                   labelText: 'Marca',
-                  hintText: 'Escoja la talla',
+                  hintText: 'Escoja la marca',
                 ),
                 value: provider.brand,
                 items: AppBrand().brands.map((brand) {
@@ -178,32 +186,6 @@ class _MainFormLoadProduct extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ButtonCategory extends StatelessWidget {
-  const _ButtonCategory({required this.category});
-
-  final String category;
-
-  @override
-  Widget build(BuildContext context) {
-    final LoadProductProvider provider = Provider.of<LoadProductProvider>(
-      context,
-    );
-
-    final bool isActive = provider.typeClothes == category;
-    return ElevatedButton(
-      onPressed: () {
-        provider.setTypeClothes(category);
-        provider.clearSizeSelected();
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isActive ? Colors.indigo : Colors.grey[300],
-        foregroundColor: isActive ? Colors.white : Colors.black,
-      ),
-      child: Text(category[0].toUpperCase() + category.substring(1)),
     );
   }
 }

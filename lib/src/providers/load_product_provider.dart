@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/core/domain/app_sizes_clothes.dart';
+import 'package:inventario_app/src/core/domain/app_type_clothes.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/services/products_service.dart';
 import 'package:inventario_app/src/utils/validators_form_util.dart';
@@ -14,7 +14,7 @@ class LoadProductProvider with ChangeNotifier, ValidatorsFormUtil {
   String? _quantity;
   String? _sizeSelected;
   String? _brand;
-  String? _typeClothes = 'camisas';
+  String? _typeClothes = 'camisetas';
   bool? _isLoading = false;
   final TextEditingController barcodeController = TextEditingController();
 
@@ -59,9 +59,17 @@ class LoadProductProvider with ChangeNotifier, ValidatorsFormUtil {
     notifyListeners();
   }
 
-  void setTypeClothes(String value) {
+  void setTypeClothes(String? value) {
     _typeClothes = value;
+    final currentSizes = getSizes();
+    if (!_isSizeValid(currentSizes)) {
+      _sizeSelected = null;
+    }
     notifyListeners();
+  }
+
+  bool _isSizeValid(List<String> validSizes) {
+    return _sizeSelected != null && validSizes.contains(_sizeSelected);
   }
 
   void setLoading(bool value) {
@@ -69,10 +77,15 @@ class LoadProductProvider with ChangeNotifier, ValidatorsFormUtil {
     notifyListeners();
   }
 
+  List<TypeClothes> getTypeClothes() {
+    return AppTypeClothes().typeClothes;
+  }
+
   List<String> getSizes() {
-    return typeClothes == 'camisas'
-        ? AppSizesClothes().sizesText
-        : AppSizesClothes().sizesNumber;
+    return AppTypeClothes().typeClothes
+        .where((typeClothes) => typeClothes.key == _typeClothes)
+        .first
+        .sizes;
   }
 
   String? validateReferenceForm(String? value) {
