@@ -1,5 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:inventario_app/src/utils/params_model_util.dart';
+import 'package:inventario_app/src/utils/models/params_model_util.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppSupabase {

@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final customerModel = customerModelFromMap(jsonString);
-
 import 'dart:convert';
 
 CustomerModel customerModelFromMap(String str) =>
@@ -29,7 +25,7 @@ class CustomerModel {
     nombre: json["nombre"],
     telefono: json["telefono"],
     direccion: json["direccion"],
-    fechaRegistro: json["fechaRegistro"],
+    fechaRegistro: json["fecha_registro"],
   );
 
   Map<String, dynamic> toMap() => {
@@ -37,6 +33,6 @@ class CustomerModel {
     "nombre": nombre,
     "telefono": telefono,
     "direccion": direccion,
-    "fechaRegistro": fechaRegistro,
+    "fecha_registro": fechaRegistro,
   };
 }

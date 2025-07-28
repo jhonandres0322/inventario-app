@@ -1,7 +1,7 @@
 import 'package:inventario_app/src/core/infrastructure/app_kliiker.dart';
 import 'package:inventario_app/src/core/infrastructure/app_supabase.dart';
 import 'package:inventario_app/src/models/product_model.dart';
-import 'package:inventario_app/src/utils/params_model_util.dart';
+import 'package:inventario_app/src/utils/models/params_model_util.dart';
 
 class ProductsService {
   final AppKliiker _appKliiker = AppKliiker();
