@@ -1,22 +1,23 @@
-import 'dart:developer';
 import 'dart:async';
-import 'package:inventario_app/src/models/product_model.dart';
-import 'package:inventario_app/src/providers/list_product_provider.dart';
-import 'package:inventario_app/src/services/products_service.dart';
+import 'dart:developer';
+
+import 'package:inventario_app/src/models/customer_model.dart';
+import 'package:inventario_app/src/providers/list_customers_provider.dart';
+import 'package:inventario_app/src/services/customers_service.dart';
 import 'package:inventario_app/src/utils/models/params_model_util.dart';
 
-class InventarioProvider extends ListProductProvider {
+class CustomersProvider extends ListCustomersProvider {
   int _currentPage = 0;
-  final int _limit = 10;
   bool _isLoading = false;
+  final int _limit = 10;
+  final String _orderProperty = 'fecha_registro';
+  final CustomersService _customersService = CustomersService();
   String _search = '';
-  final String _orderProperty = 'fecha_creacion';
-  final ProductsService _productsService = ProductsService();
   Timer? _debounce;
 
-  InventarioProvider() {
-    log('[InventarioProvider.init] - Inicializando provider');
-    loadProductos();
+  CustomersProvider() {
+    log('[CustomersProvider.init] - Inicializando provider');
+    loadCustomers();
   }
 
   int get currentPage => _currentPage;
@@ -33,7 +34,7 @@ class InventarioProvider extends ListProductProvider {
     _isLoading = value;
   }
 
-  Future<void> _loadProducts({required bool reset}) async {
+  Future<void> _loadCustomers({required bool reset}) async {
     if (isLoading) return;
 
     isLoading = true;
@@ -41,7 +42,7 @@ class InventarioProvider extends ListProductProvider {
 
     if (reset) {
       currentPage = 0;
-      products = [];
+      customers = [];
       isRefresh = false;
     } else {
       currentPage++;
@@ -57,35 +58,33 @@ class InventarioProvider extends ListProductProvider {
       isOrderAscending: false,
     );
 
-    final response = await _productsService.getProducts(params);
-
+    final response = await _customersService.getCustomers(params);
+    log('****** response $response');
     if (response.isEmpty && !reset) {
       _currentPage--;
     } else {
-      products = [...products, ...response];
+      customers = [...customers, ...response];
     }
 
     isLoading = false;
     notifyListeners();
   }
 
-  void loadProductos() {
-    _loadProducts(reset: true);
+  void loadCustomers() {
+    _loadCustomers(reset: true);
   }
 
-  void loadProductsNews() {
-    _loadProducts(reset: isRefresh);
+  void loadCustomersNews() {
+    _loadCustomers(reset: isRefresh);
   }
 
   @override
-  List<ProductModel> get productosFiltrados {
-    if (_search.isEmpty) return products;
+  List<CustomerModel> get filteredCustomers {
+    if (_search.isEmpty) return customers;
 
-    return products.where((producto) {
+    return customers.where((producto) {
       final nombre = producto.nombre.toLowerCase();
-      final marca = producto.marca.toLowerCase();
-      return nombre.contains(_search.toLowerCase()) ||
-          marca.contains(_search.toLowerCase());
+      return nombre.contains(_search.toLowerCase());
     }).toList();
   }
 

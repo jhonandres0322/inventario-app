@@ -1,17 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/widgets/tile_info_card_widget.dart';
+import 'package:inventario_app/src/core/app_routes.dart';
+import 'package:inventario_app/src/providers/customers_provider.dart';
+import 'package:inventario_app/src/widgets/list_customer_widget.dart';
+import 'package:provider/provider.dart';
 
 class CustomersScreen extends StatelessWidget {
   const CustomersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Clientes'), bottom: _SearchCustomersWidget()),
-      body: Builder(
-        builder: (context) {
-          return SizedBox.expand(child: _ListCustomers());
-        },
+    final Size size = MediaQuery.of(context).size;
+    final CustomersProvider provider = Provider.of<CustomersProvider>(context);
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          provider.clearValueSearch();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Clientes'),
+          bottom: _SearchCustomersWidget(),
+          toolbarHeight: size.height * 0.08,
+          automaticallyImplyLeading: false,
+        ),
+        body: Builder(
+          builder: (context) {
+            return SizedBox.expand(child: _ListCustomers());
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.person_add_rounded),
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.createCustomer);
+          },
+        ),
       ),
     );
   }
@@ -22,72 +46,11 @@ class _ListCustomers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        TileInfoCardWidget(
-          title: 'Pedro Perez',
-          infoItems: [
-            InfoItem(Icons.phone, '312 458 1245'),
-            InfoItem(Icons.location_on, 'Antonia Santos'),
-          ],
-          trailingItems: [InfoItem(Icons.visibility, 'Ver')],
-          onTap: () {},
-        ),
-        TileInfoCardWidget(
-          title: 'Pedro Perez',
-          infoItems: [
-            InfoItem(Icons.phone, '312 458 1245'),
-            InfoItem(Icons.location_on, 'Antonia Santos'),
-          ],
-          trailingItems: [InfoItem(Icons.visibility, 'Ver')],
-          onTap: () {},
-        ),
-        TileInfoCardWidget(
-          title: 'Pedro Perez',
-          infoItems: [
-            InfoItem(Icons.phone, '312 458 1245'),
-            InfoItem(Icons.location_on, 'Antonia Santos'),
-          ],
-          trailingItems: [InfoItem(Icons.visibility, 'Ver')],
-          onTap: () {},
-        ),
-        TileInfoCardWidget(
-          title: 'Pedro Perez',
-          infoItems: [
-            InfoItem(Icons.phone, '312 458 1245'),
-            InfoItem(Icons.location_on, 'Antonia Santos'),
-          ],
-          trailingItems: [InfoItem(Icons.visibility, 'Ver')],
-          onTap: () {},
-        ),
-        TileInfoCardWidget(
-          title: 'Pedro Perez',
-          infoItems: [
-            InfoItem(Icons.phone, '312 458 1245'),
-            InfoItem(Icons.location_on, 'Antonia Santos'),
-          ],
-          trailingItems: [InfoItem(Icons.visibility, 'Ver')],
-          onTap: () {},
-        ),
-        TileInfoCardWidget(
-          title: 'Pedro Perez',
-          infoItems: [
-            InfoItem(Icons.phone, '312 458 1245'),
-            InfoItem(Icons.location_on, 'Antonia Santos'),
-          ],
-          trailingItems: [InfoItem(Icons.visibility, 'Ver')],
-          onTap: () {},
-        ),
-        TileInfoCardWidget(
-          title: 'Pedro Perez',
-          infoItems: [
-            InfoItem(Icons.phone, '312 458 1245'),
-            InfoItem(Icons.location_on, 'Antonia Santos'),
-          ],
-          trailingItems: [InfoItem(Icons.visibility, 'Ver')],
-          onTap: () {},
-        ),
-      ],
+    final CustomersProvider provider = Provider.of<CustomersProvider>(context);
+    return ListCustomerWidget(
+      onNextPage: () => provider.loadCustomersNews(),
+      customers: provider.filteredCustomers,
+      provider: provider,
     );
   }
 }
@@ -101,6 +64,10 @@ class _SearchCustomersWidget extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final CustomersProvider provider = Provider.of<CustomersProvider>(
+      context,
+      listen: false,
+    );
     return PreferredSize(
       preferredSize: const Size.fromHeight(48.0),
       child: Padding(
@@ -109,6 +76,7 @@ class _SearchCustomersWidget extends StatelessWidget
           vertical: 8,
         ),
         child: TextField(
+          onChanged: (value) => provider.actualizarBusqueda(value),
           decoration: InputDecoration(
             hintText: 'Buscar por nombre',
             prefixIcon: const Icon(Icons.search),

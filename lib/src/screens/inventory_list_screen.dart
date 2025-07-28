@@ -9,14 +9,14 @@ class InventarioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final InventarioProvider _provider = Provider.of<InventarioProvider>(
+    final InventarioProvider provider = Provider.of<InventarioProvider>(
       context,
     );
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
-          _provider.clearValueSearch();
+          provider.clearValueSearch();
         }
       },
       child: Scaffold(

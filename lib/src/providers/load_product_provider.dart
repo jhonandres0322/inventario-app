@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/domain/app_type_clothes.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/services/products_service.dart';
-import 'package:inventario_app/src/utils/validators_form_util.dart';
+import 'package:inventario_app/src/utils/validators/validators_form_util.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class LoadProductProvider with ChangeNotifier, ValidatorsFormUtil {

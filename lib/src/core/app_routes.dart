@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/screens/add_sale_screen.dart';
 import 'package:inventario_app/src/screens/admin_screen.dart';
+import 'package:inventario_app/src/screens/create_customer_screen.dart';
 import 'package:inventario_app/src/screens/customers_screen.dart';
 import 'package:inventario_app/src/screens/initial_screen.dart';
 import 'package:inventario_app/src/screens/inventory_list_screen.dart';
@@ -15,6 +16,7 @@ class AppRoutes {
   static const String addSale = '/add-sale';
   static const String customers = '/customers';
   static const String scanBarcodeScreen = '/scan-barcode';
+  static const String createCustomer = '/create-customer';
 
   Map<String, WidgetBuilder> get routes {
     return {
@@ -25,6 +27,7 @@ class AppRoutes {
       addSale: (context) => AddSaleScreen(),
       customers: (context) => CustomersScreen(),
       scanBarcodeScreen: (context) => ScanBarcodeScreen(),
+      createCustomer: (context) => CreateCustomerScreen(),
     };
   }
 }
