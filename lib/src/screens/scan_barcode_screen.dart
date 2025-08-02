@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/core/ui/app_colors.dart';
 import 'package:inventario_app/src/providers/load_product_provider.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class ScanBarcodeScreen extends StatelessWidget {
                           return Text(
                             value ?? 'Código',
                             overflow: TextOverflow.fade,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(color: AppColors().textAppBar),
                           );
                         },
                       ),
@@ -62,7 +63,9 @@ class ScanBarcodeScreen extends StatelessWidget {
                 : null,
             label: const Text('Capturar'),
             icon: const Icon(Icons.check),
-            backgroundColor: value != null ? Colors.deepPurple : Colors.grey,
+            backgroundColor: value != null
+                ? AppColors().secondary
+                : Colors.grey,
           );
         },
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/core/app_routes.dart';
+import 'package:inventario_app/src/core/domain/app_routes.dart';
+import 'package:inventario_app/src/core/ui/app_colors.dart';
 import 'package:inventario_app/src/providers/customers_provider.dart';
 import 'package:inventario_app/src/widgets/list_customer_widget.dart';
 import 'package:provider/provider.dart';
@@ -77,11 +78,12 @@ class _SearchCustomersWidget extends StatelessWidget
         ),
         child: TextField(
           onChanged: (value) => provider.actualizarBusqueda(value),
+          cursorColor: AppColors().secondary,
           decoration: InputDecoration(
             hintText: 'Buscar por nombre',
             prefixIcon: const Icon(Icons.search),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: AppColors().textAppBar,
             contentPadding: const EdgeInsets.symmetric(vertical: 0),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/core/ui/app_colors.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   const TextFormFieldWidget({
@@ -30,7 +31,7 @@ class TextFormFieldWidget extends StatelessWidget {
       decoration: InputDecoration(hintText: hintText, labelText: labelText),
       readOnly: readOnly,
       validator: validator,
-      cursorColor: Colors.indigo,
+      cursorColor: AppColors().secondary,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       enabled: !readOnly,
       onChanged: onChanged,

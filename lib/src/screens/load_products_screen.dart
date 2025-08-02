@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/core/app_routes.dart';
+import 'package:inventario_app/src/core/domain/app_routes.dart';
 import 'package:inventario_app/src/core/domain/app_brand.dart';
 import 'package:inventario_app/src/providers/load_product_provider.dart';
 import 'package:inventario_app/src/widgets/snackbar_custom_widget.dart';

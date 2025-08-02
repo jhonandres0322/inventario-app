@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/core/ui/app_colors.dart';
 
 enum SnackbarType { success, error, info }
 
@@ -13,13 +14,13 @@ class SnackbarCustomWidget {
 
     switch (type) {
       case SnackbarType.success:
-        backgroundColor = Colors.green;
+        backgroundColor = AppColors().success;
         break;
       case SnackbarType.error:
-        backgroundColor = Colors.red;
+        backgroundColor = AppColors().error;
         break;
       case SnackbarType.info:
-        backgroundColor = Colors.blueGrey;
+        backgroundColor = AppColors().secondary;
         break;
     }
 
