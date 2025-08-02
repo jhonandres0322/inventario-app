@@ -12,6 +12,7 @@ class TextFormFieldWidget extends StatelessWidget {
     this.onChanged,
     this.value,
     this.controller,
+    this.maxLength,
   });
 
   final TextInputType keyboardType;
@@ -22,6 +23,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final String? value;
   final TextEditingController? controller;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class TextFormFieldWidget extends StatelessWidget {
       onChanged: onChanged,
       initialValue: controller == null ? value : null,
       textCapitalization: TextCapitalization.words,
+      maxLength: maxLength,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/core/ui/app_colors.dart';
 import 'package:inventario_app/src/models/customer_model.dart';
 import 'package:inventario_app/src/providers/list_customers_provider.dart';
 import 'package:inventario_app/src/screens/customer_detail_screen.dart';
@@ -46,7 +47,7 @@ class _ListCustomerWidgetState extends State<ListCustomerWidget> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return RefreshIndicator(
-      color: Colors.indigoAccent,
+      color: AppColors().secondary,
       backgroundColor: Color(0xFFFFFFFF),
       onRefresh: () async {
         widget.provider.isRefresh = true;
@@ -55,7 +56,7 @@ class _ListCustomerWidgetState extends State<ListCustomerWidget> {
       child: Stack(
         children: [
           ListView.builder(
-            physics: BouncingScrollPhysics(),
+            physics: AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             itemCount: widget.customers.length,
             itemBuilder: (context, index) {
@@ -104,7 +105,7 @@ class _LoadingIcon extends StatelessWidget {
       height: 50,
       width: 50,
       decoration: const BoxDecoration(shape: BoxShape.circle),
-      child: const CircularProgressIndicator(color: Colors.indigoAccent),
+      child: CircularProgressIndicator(color: AppColors().secondary),
     );
   }
 }

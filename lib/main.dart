@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/app.dart';
 import 'package:inventario_app/src/core/infrastructure/app_supabase.dart';
+import 'package:inventario_app/src/providers/create_customer_provider.dart';
 import 'package:inventario_app/src/providers/customers_provider.dart';
 import 'package:inventario_app/src/providers/detail_product_provider.dart';
 import 'package:inventario_app/src/providers/inventario_provider.dart';
@@ -27,6 +28,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => DetailProductProvider()),
         ChangeNotifierProvider(create: (_) => CustomersProvider()),
         ChangeNotifierProvider(create: (_) => ListCustomersProvider()),
+        ChangeNotifierProvider(create: (_) => CreateCustomerProvider()),
       ],
       child: App(),
     ),
