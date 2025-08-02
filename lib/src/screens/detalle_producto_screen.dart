@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:inventario_app/src/core/ui/app_colors.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/providers/detail_product_provider.dart';
 import 'package:inventario_app/src/widgets/snackbar_custom_widget.dart';
@@ -44,8 +45,8 @@ class DetalleProductoScreen extends StatelessWidget {
                 onDoneRedirect: () => Navigator.pop(context),
               );
             },
-            icon: Icon(Icons.delete, color: Colors.white),
-            highlightColor: Colors.white,
+            icon: Icon(Icons.delete, color: AppColors().textAppBar),
+            highlightColor: AppColors().textAppBar,
           ),
           SizedBox(width: size.width * 0.01),
         ],
@@ -63,7 +64,6 @@ class DetalleProductoScreen extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
                     child: Image.network(
                       imagenes[index],
                       fit: BoxFit.fitHeight,
@@ -87,6 +87,7 @@ class DetalleProductoScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
             child: Card(
+              color: AppColors().secondary,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -141,17 +142,21 @@ class DetalleProductoScreen extends StatelessWidget {
   Widget _buildInfoRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, color: Colors.indigo),
+        Icon(icon, color: AppColors().primary),
         const SizedBox(width: 12),
         Text(
           '$label:',
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: AppColors().primary,
+          ),
         ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             value,
-            style: const TextStyle(fontSize: 18, color: Colors.black87),
+            style: TextStyle(fontSize: 18, color: AppColors().primary),
           ),
         ),
       ],
@@ -210,8 +215,8 @@ class DetalleProductoScreen extends StatelessWidget {
                       productToUpdate,
                     );
                     String message = response
-                        ? 'Producto creado!'
-                        : 'Error al guardar el producto';
+                        ? 'Producto actualizado!'
+                        : 'Error al editar el producto';
                     Navigator.pop(context);
                     SnackbarCustomWidget.show(
                       context,

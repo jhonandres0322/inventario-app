@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:inventario_app/src/core/ui/app_colors.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/providers/list_product_provider.dart';
 import 'package:inventario_app/src/screens/detalle_producto_screen.dart';
@@ -47,7 +48,7 @@ class _ListProductsWidgetState extends State<ListProductsWidget> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return RefreshIndicator(
-      color: Colors.indigoAccent,
+      color: AppColors().secondary,
       backgroundColor: Color(0xFFFFFFFF),
       onRefresh: () async {
         widget.provider.isRefresh = true;
@@ -77,12 +78,12 @@ class _ListProductsWidgetState extends State<ListProductsWidget> {
                       symbol: '\$',
                       decimalDigits: 0,
                     ).format(double.parse(widget.products[index].precioCompra)),
-                    color: Colors.green,
+                    color: AppColors().success,
                   ),
                   InfoItem(
                     Icons.inventory_2,
                     'x${widget.products[index].cantidad}',
-                    color: Colors.indigo,
+                    color: AppColors().secondary,
                   ),
                 ],
                 onTap: () {
@@ -120,7 +121,7 @@ class _LoadingIcon extends StatelessWidget {
       height: 50,
       width: 50,
       decoration: const BoxDecoration(shape: BoxShape.circle),
-      child: const CircularProgressIndicator(color: Colors.indigoAccent),
+      child: CircularProgressIndicator(color: AppColors().secondary),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/core/app_routes.dart';
+import 'package:inventario_app/src/core/domain/app_routes.dart';
 import 'package:inventario_app/src/widgets/item_page_button_widget.dart'
     show ItemPageButton;
 

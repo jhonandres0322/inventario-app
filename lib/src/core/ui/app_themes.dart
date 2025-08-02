@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/core/ui/app_colors.dart';
 import 'package:inventario_app/src/utils/ui/border_text_form_field_util.dart';
 
 class AppThemes {
@@ -6,55 +7,58 @@ class AppThemes {
     return ThemeData(
       appBarTheme: AppBarTheme(
         centerTitle: true,
-        color: Colors.indigo,
+        color: AppColors().secondary,
         titleTextStyle: TextStyle(
-          color: Colors.white,
+          color: AppColors().textAppBar,
           fontWeight: FontWeight.bold,
           fontSize: 24,
         ),
       ),
-      scaffoldBackgroundColor: Color(0xFFF5F5F5),
+      textTheme: TextTheme(bodyMedium: TextStyle(color: AppColors().secondary)),
+      scaffoldBackgroundColor: Color(0xFFEEE1CE),
       listTileTheme: ListTileThemeData(
         dense: true,
-        titleTextStyle: TextStyle(
-          fontSize: 25.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
+        titleTextStyle: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
       ),
       useMaterial3: true,
       iconButtonTheme: IconButtonThemeData(
-        style: ButtonStyle(iconColor: WidgetStateProperty.all(Colors.indigo)),
+        style: ButtonStyle(
+          iconColor: WidgetStateProperty.all(Color(0xFF443629)),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         hintStyle: TextStyle(
           fontSize: 13.0,
           fontWeight: FontWeight.w100,
           fontStyle: FontStyle.italic,
+          color: AppColors().secondary,
         ),
-        border: BorderTextFormFieldUtil.inputBorder(color: Colors.indigo),
+        labelStyle: TextStyle(color: AppColors().secondary),
+        border: BorderTextFormFieldUtil.inputBorder(color: AppColors().primary),
         enabledBorder: BorderTextFormFieldUtil.inputBorder(
-          color: Colors.indigo,
+          color: AppColors().secondary,
         ),
         focusedBorder: BorderTextFormFieldUtil.inputBorder(
-          color: Colors.indigo,
+          color: AppColors().secondary,
         ),
         focusedErrorBorder: BorderTextFormFieldUtil.inputBorder(
-          color: Colors.indigo,
+          color: AppColors().error,
         ),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: BorderTextFormFieldUtil.inputBorder(
-            color: Colors.indigo,
+            color: AppColors().secondary,
           ),
-          border: BorderTextFormFieldUtil.inputBorder(color: Colors.indigo),
+          border: BorderTextFormFieldUtil.inputBorder(
+            color: AppColors().secondary,
+          ),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.indigo,
-          foregroundColor: Colors.white,
+          backgroundColor: AppColors().secondary,
+          foregroundColor: AppColors().textAppBar,
           textStyle: TextStyle(fontWeight: FontWeight.bold),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadiusGeometry.circular(10.0),
@@ -62,8 +66,8 @@ class AppThemes {
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors().secondary,
+        foregroundColor: AppColors().textAppBar,
       ),
       cardTheme: CardThemeData(
         elevation: 6,
