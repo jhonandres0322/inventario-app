@@ -13,4 +13,13 @@ class CustomersService {
     );
     return customers;
   }
+
+  Future<bool> saveCustomer(CustomerModel customer) async {
+    final isResponseNotEmpty = await AppSupabase().insert(
+      _tableNameCustomer,
+      customer.toMap(),
+    );
+
+    return isResponseNotEmpty;
+  }
 }

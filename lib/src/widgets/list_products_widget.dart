@@ -57,7 +57,7 @@ class _ListProductsWidgetState extends State<ListProductsWidget> {
       child: Stack(
         children: [
           ListView.builder(
-            physics: BouncingScrollPhysics(),
+            physics: AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             itemCount: widget.products.length,
             itemBuilder: (context, index) {

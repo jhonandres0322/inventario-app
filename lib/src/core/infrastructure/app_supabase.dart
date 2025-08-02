@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:inventario_app/src/utils/models/params_model_util.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -21,6 +23,7 @@ class AppSupabase {
   SupabaseClient get client => Supabase.instance.client;
 
   Future<bool> insert(String tableName, Map<String, dynamic> data) async {
+    log('data $data');
     final response = await client.from(tableName).insert(data).select();
     return response.first.isNotEmpty;
   }
