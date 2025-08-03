@@ -33,11 +33,17 @@ class AppSupabase {
     ParamsModelUtil params,
     T Function(Map<String, dynamic>) fromMap,
   ) async {
-    final response = await client
+    var query = client
         .from(tableName)
         .select()
-        .range(params.from, params.to)
         .order(params.orderProperty, ascending: params.isOrderAscending);
+
+    if (!params.isFetchAll) {
+      query = query.range(params.from ?? 0, params.to ?? 0);
+    }
+
+    final response = await query;
+
     return (response as List)
         .map((item) => fromMap(item as Map<String, dynamic>))
         .toList();

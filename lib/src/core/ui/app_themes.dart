@@ -14,6 +14,9 @@ class AppThemes {
           fontSize: 24,
         ),
       ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: AppColors().secondary,
+      ),
       textTheme: TextTheme(bodyMedium: TextStyle(color: AppColors().secondary)),
       scaffoldBackgroundColor: Color(0xFFEEE1CE),
       listTileTheme: ListTileThemeData(

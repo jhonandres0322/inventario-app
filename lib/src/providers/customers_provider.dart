@@ -59,7 +59,6 @@ class CustomersProvider extends ListCustomersProvider {
     );
 
     final response = await _customersService.getCustomers(params);
-    log('****** response $response');
     if (response.isEmpty && !reset) {
       _currentPage--;
     } else {

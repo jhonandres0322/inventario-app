@@ -7,16 +7,18 @@ String paramsModelUtilToJson(ParamsModelUtil data) =>
     json.encode(data.toJson());
 
 class ParamsModelUtil {
-  final int from;
-  final int to;
+  final int? from;
+  final int? to;
   final String orderProperty;
   final bool isOrderAscending;
+  final bool isFetchAll;
 
   ParamsModelUtil({
-    required this.from,
-    required this.to,
+    this.from,
+    this.to,
     required this.orderProperty,
     required this.isOrderAscending,
+    this.isFetchAll = false,
   });
 
   factory ParamsModelUtil.fromJson(Map<String, dynamic> json) =>
@@ -25,6 +27,7 @@ class ParamsModelUtil {
         to: json["to"],
         orderProperty: json["orderProperty"],
         isOrderAscending: json["isOrderAscending"],
+        isFetchAll: json["isFetchAll"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,5 +35,6 @@ class ParamsModelUtil {
     "to": to,
     "orderProperty": orderProperty,
     "isOrderAscending": isOrderAscending,
+    "isFetchAll": isFetchAll,
   };
 }
