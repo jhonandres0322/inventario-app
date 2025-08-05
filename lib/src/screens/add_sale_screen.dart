@@ -27,6 +27,7 @@ class _MainFormAddSale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddSaleProvider provider = Provider.of<AddSaleProvider>(context);
+    final Size size = MediaQuery.of(context).size;
     return provider.isLoading &&
             provider.customers.isEmpty &&
             provider.products.isEmpty
@@ -38,31 +39,33 @@ class _MainFormAddSale extends StatelessWidget {
               child: Form(
                 child: Column(
                   children: [
-                    Autocomplete(
-                      optionsBuilder: (TextEditingValue textEditingValue) {
-                        if (textEditingValue.text.isEmpty) {
-                          return const Iterable<String>.empty();
-                        }
-                        return opciones.where((String option) {
-                          return option.toLowerCase().contains(
-                            textEditingValue.text.toLowerCase(),
-                          );
-                        });
-                      },
-                      onSelected: (String selection) {
-                        debugPrint('Seleccionado: $selection');
-                      },
-                      fieldViewBuilder:
-                          (context, controller, focusNode, onFieldSubmitted) {
-                            return TextFormField(
-                              controller: controller,
-                              focusNode: focusNode,
-                              decoration: InputDecoration(
-                                labelText: 'Fruta',
-                                border: OutlineInputBorder(),
-                              ),
-                            );
-                          },
+                    SizedBox(height: size.height * 0.03),
+                    DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'Producto',
+                        hintText: 'Selecciona el producto',
+                      ),
+                      items: provider.products.map((product) {
+                        return DropdownMenuItem(
+                          value: product.id,
+                          child: Text(product.nombre),
+                        );
+                      }).toList(),
+                      onChanged: (value) {},
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                    DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'Clientes',
+                        hintText: 'Selecciona el cliente',
+                      ),
+                      items: provider.customers.map((customer) {
+                        return DropdownMenuItem(
+                          value: customer.id,
+                          child: Text(customer.nombre),
+                        );
+                      }).toList(),
+                      onChanged: (value) {},
                     ),
                   ],
                 ),

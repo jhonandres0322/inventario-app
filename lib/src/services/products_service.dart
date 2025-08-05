@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:inventario_app/src/core/infrastructure/app_kliiker.dart';
 import 'package:inventario_app/src/core/infrastructure/app_supabase.dart';
 import 'package:inventario_app/src/models/product_model.dart';

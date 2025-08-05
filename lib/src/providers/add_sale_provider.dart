@@ -5,13 +5,16 @@ import 'package:inventario_app/src/models/customer_model.dart';
 import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/services/customers_service.dart';
 import 'package:inventario_app/src/services/products_service.dart';
+import 'package:inventario_app/src/utils/mocks/mock_supabase_util.dart';
 import 'package:inventario_app/src/utils/models/params_model_util.dart';
 
 class AddSaleProvider with ChangeNotifier {
+  bool isTest = true;
   String _customerSelected = '';
   final String _orderProperty = 'nombre';
   final CustomersService _customersService = CustomersService();
   final ProductsService _productsService = ProductsService();
+  final MockSupabaseUtil _mockSupabaseUtil = MockSupabaseUtil();
   List<CustomerModel> _customers = [];
   List<ProductModel> _products = [];
   bool _isLoading = false;
@@ -46,8 +49,6 @@ class AddSaleProvider with ChangeNotifier {
     notifyListeners();
     await _loadCustomers();
     await _loadProducts();
-    log('customer -> $customers');
-    log('products -> $products');
     isLoading = false;
     notifyListeners();
   }
@@ -58,7 +59,9 @@ class AddSaleProvider with ChangeNotifier {
       isOrderAscending: true,
       isFetchAll: true,
     );
-    final response = await _customersService.getCustomers(params);
+    final response = isTest
+        ? await _mockSupabaseUtil.generateMockCustomers()
+        : await _customersService.getCustomers(params);
 
     _customers = [...customers, ...response];
   }
@@ -69,7 +72,9 @@ class AddSaleProvider with ChangeNotifier {
       isOrderAscending: true,
       isFetchAll: true,
     );
-    final response = await _productsService.getProducts(params);
+    final response = isTest
+        ? await _mockSupabaseUtil.generateMockProducts()
+        : await _productsService.getProducts(params);
 
     _products = [...products, ...response];
   }
