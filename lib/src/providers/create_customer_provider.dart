@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/models/customer_model.dart';
 import 'package:inventario_app/src/services/customers_service.dart';
