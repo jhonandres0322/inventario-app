@@ -18,4 +18,11 @@ mixin ValidatorsFormUtil {
 
     return null;
   }
+
+  String? validateEmpty(String? value) {
+    if (value == null) return 'Valo invalido';
+    if (value.isEmpty) return 'Campo obligatorio';
+    if (value == ' ') return 'Campo obligatorio';
+    return null;
+  }
 }
