@@ -18,6 +18,7 @@ class AddSaleProvider with ChangeNotifier {
   List<CustomerModel> _customers = [];
   List<ProductModel> _products = [];
   bool _isLoading = false;
+  final List<String> paymentTypes = ["Contado", "Credito"];
 
   String get customerSelected => _customerSelected;
   bool get isLoading => _isLoading;
