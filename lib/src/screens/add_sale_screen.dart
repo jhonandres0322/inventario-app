@@ -32,6 +32,7 @@ class _MainFormAddSale extends StatelessWidget {
               physics: AlwaysScrollableScrollPhysics(),
               child: Center(
                 child: Form(
+                  key: provider.formKey,
                   child: SizedBox(
                     width: size.width * 0.9,
                     child: Column(
@@ -114,9 +115,11 @@ class _MainFormAddSale extends StatelessWidget {
                         SizedBox(
                           width: size.width * 0.9,
                           child: ElevatedButton(
-                            onPressed: () {
-                              provider.onSubmitForm();
-                            },
+                            onPressed: !provider.disabledButtonSaveForm()
+                                ? () async {
+                                    provider.onSubmitForm();
+                                  }
+                                : null,
                             child: Text('Guardar Venta'),
                           ),
                         ),

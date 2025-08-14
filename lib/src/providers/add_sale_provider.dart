@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/models/customer_model.dart';
 import 'package:inventario_app/src/models/product_model.dart';
+import 'package:inventario_app/src/models/sale_model.dart';
 import 'package:inventario_app/src/services/customers_service.dart';
 import 'package:inventario_app/src/services/products_service.dart';
 import 'package:inventario_app/src/utils/mocks/mock_supabase_util.dart';
@@ -10,6 +11,7 @@ import 'package:inventario_app/src/utils/models/params_model_util.dart';
 import 'package:inventario_app/src/utils/validators/validators_form_util.dart';
 
 class AddSaleProvider with ChangeNotifier, ValidatorsFormUtil {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isTest = true;
   String _customerSelected = '';
   String _productSelected = '';
@@ -25,8 +27,11 @@ class AddSaleProvider with ChangeNotifier, ValidatorsFormUtil {
   List<CustomerModel> _customers = [];
   List<ProductModel> _products = [];
   bool _isLoading = false;
-  final List<String> paymentTypes = ["Contado", "Credito"];
+  final List<String> paymentTypes = SalePaymentMethod.values
+      .map((paymentMethod) => paymentMethod.value)
+      .toList();
 
+  GlobalKey<FormState> get formKey => _formKey;
   String get customerSelected => _customerSelected;
   String get productSelected => _productSelected;
   String get quantity => _quantity;
@@ -124,13 +129,36 @@ class AddSaleProvider with ChangeNotifier, ValidatorsFormUtil {
     _products = response;
   }
 
+  bool disabledButtonSaveForm() {
+    final value =
+        !((_productSelected.isNotEmpty) &&
+            (_customerSelected.isNotEmpty) &&
+            (quantity.isNotEmpty) &&
+            (_priceUnit.isNotEmpty) &&
+            (priceTotalController.text.isNotEmpty) &&
+            (paymentTypeSelected.isNotEmpty));
+
+    return value;
+  }
+
   Future<bool> onSubmitForm() async {
-    log('productSelected -> $_productSelected');
-    log('customerSelected -> $_customerSelected');
-    log('quantity -> $_quantity');
-    log('priceUnit -> $_priceUnit');
-    log('priceTotal -> ${priceTotalController.text}');
-    log('paymentTypeSelected --> $paymentTypeSelected');
+    final form = _formKey.currentState!;
+    if (form.validate()) {
+      form.save();
+      _isLoading = true;
+      final sale = SaleModel.fromMap({
+        "id_cliente": _customerSelected,
+        "id_producto": _productSelected,
+        "cantidad": _quantity,
+        "precio_unitario": _priceUnit,
+        "total": priceTotalController.text,
+        "estado": SaleState.pending.value,
+        "forma_pago": _paymentTypeSelected,
+        "esta_pagado": false,
+      });
+      log('sale  ${sale.toMap()}');
+      _isLoading = false;
+    }
     return false;
   }
 }

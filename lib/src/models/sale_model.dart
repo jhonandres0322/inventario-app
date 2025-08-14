@@ -1,12 +1,24 @@
-// To parse this JSON data, do
-//
-//     final saleModel = saleModelFromMap(jsonString);
-
 import 'dart:convert';
 
 SaleModel saleModelFromMap(String str) => SaleModel.fromMap(json.decode(str));
 
 String saleModelToMap(SaleModel data) => json.encode(data.toMap());
+
+enum SaleState {
+  paid("Pagado"),
+  pending("Pendiente");
+
+  const SaleState(this.value);
+  final String value;
+}
+
+enum SalePaymentMethod {
+  cash("Contado"),
+  credit("Credito");
+
+  const SalePaymentMethod(this.value);
+  final String value;
+}
 
 class SaleModel {
   final String id;
