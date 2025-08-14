@@ -32,6 +32,7 @@ class _MainFormAddSale extends StatelessWidget {
               physics: AlwaysScrollableScrollPhysics(),
               child: Center(
                 child: Form(
+                  key: provider.formKey,
                   child: SizedBox(
                     width: size.width * 0.9,
                     child: Column(
@@ -48,7 +49,9 @@ class _MainFormAddSale extends StatelessWidget {
                               child: Text(product.nombre),
                             );
                           }).toList(),
-                          onChanged: (value) {},
+                          onChanged: (value) =>
+                              provider.productSelected = value ?? '',
+                          validator: (value) => provider.validateEmpty(value),
                         ),
                         SizedBox(height: size.height * 0.03),
                         DropdownButtonFormField<String>(
@@ -62,21 +65,27 @@ class _MainFormAddSale extends StatelessWidget {
                               child: Text(customer.nombre),
                             );
                           }).toList(),
-                          onChanged: (value) {},
+                          validator: (value) => provider.validateEmpty(value),
+                          onChanged: (value) =>
+                              provider.customerSelected = value ?? '',
                         ),
                         SizedBox(height: size.height * 0.03),
                         TextFormFieldWidget(
                           hintText: 'Ingrese la cantidad vendida',
                           labelText: 'Cantidad Vendida',
-                          validator: (value) => null,
+                          validator: (value) =>
+                              provider.validateNumberForm(value),
                           keyboardType: TextInputType.number,
+                          onChanged: (value) => provider.quantity = value,
                         ),
                         SizedBox(height: size.height * 0.03),
                         TextFormFieldWidget(
                           hintText: 'Ingrese el precio unitario',
                           labelText: 'Precio Unitario',
-                          validator: (value) => null,
+                          validator: (value) =>
+                              provider.validateNumberForm(value),
                           keyboardType: TextInputType.number,
+                          onChanged: (value) => provider.priceUnit = value,
                         ),
                         SizedBox(height: size.height * 0.03),
                         TextFormFieldWidget(
@@ -84,26 +93,33 @@ class _MainFormAddSale extends StatelessWidget {
                           labelText: 'Precio Total',
                           validator: (value) => null,
                           readOnly: true,
+                          controller: provider.priceTotalController,
                         ),
                         SizedBox(height: size.height * 0.03),
                         DropdownButtonFormField<String>(
                           decoration: InputDecoration(
-                            labelText: 'Clientes',
+                            labelText: 'Forma de pago',
                             hintText: 'Selecciona la forma de pago',
                           ),
+                          validator: (value) => provider.validateEmpty(value),
                           items: provider.paymentTypes.map((payment) {
                             return DropdownMenuItem(
                               value: payment,
                               child: Text(payment),
                             );
                           }).toList(),
-                          onChanged: (value) {},
+                          onChanged: (value) =>
+                              provider.paymentTypeSelected = value ?? '',
                         ),
                         SizedBox(height: size.height * 0.05),
                         SizedBox(
                           width: size.width * 0.9,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: !provider.disabledButtonSaveForm()
+                                ? () async {
+                                    provider.onSubmitForm();
+                                  }
+                                : null,
                             child: Text('Guardar Venta'),
                           ),
                         ),

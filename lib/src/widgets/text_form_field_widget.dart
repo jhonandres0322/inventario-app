@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:inventario_app/src/core/ui/app_colors.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
@@ -40,6 +41,7 @@ class TextFormFieldWidget extends StatelessWidget {
       initialValue: controller == null ? value : null,
       textCapitalization: TextCapitalization.words,
       maxLength: maxLength,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
     );
   }
 }
