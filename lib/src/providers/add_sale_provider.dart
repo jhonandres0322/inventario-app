@@ -6,6 +6,7 @@ import 'package:inventario_app/src/models/product_model.dart';
 import 'package:inventario_app/src/models/sale_model.dart';
 import 'package:inventario_app/src/services/customers_service.dart';
 import 'package:inventario_app/src/services/products_service.dart';
+import 'package:inventario_app/src/services/sales_service.dart';
 import 'package:inventario_app/src/utils/mocks/mock_supabase_util.dart';
 import 'package:inventario_app/src/utils/models/params_model_util.dart';
 import 'package:inventario_app/src/utils/validators/validators_form_util.dart';
@@ -19,6 +20,7 @@ class AddSaleProvider with ChangeNotifier, ValidatorsFormUtil {
   String _priceUnit = '0';
   final TextEditingController priceTotalController = TextEditingController();
   String _paymentTypeSelected = '';
+  final SalesService _salesService = SalesService();
 
   final String _orderProperty = 'nombre';
   final CustomersService _customersService = CustomersService();
@@ -157,7 +159,10 @@ class AddSaleProvider with ChangeNotifier, ValidatorsFormUtil {
         "esta_pagado": false,
       });
       log('sale  ${sale.toMap()}');
+      final isSuccess = await _salesService.saveSale(sale);
       _isLoading = false;
+
+      return isSuccess;
     }
     return false;
   }

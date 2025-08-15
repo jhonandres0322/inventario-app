@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/providers/add_sale_provider.dart';
+import 'package:inventario_app/src/widgets/snackbar_custom_widget.dart';
 import 'package:inventario_app/src/widgets/text_form_field_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -117,7 +118,20 @@ class _MainFormAddSale extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: !provider.disabledButtonSaveForm()
                                 ? () async {
-                                    provider.onSubmitForm();
+                                    bool response = await provider
+                                        .onSubmitForm();
+                                    String message = response
+                                        ? 'Venta creada!'
+                                        : 'Error al guardar la venta';
+                                    SnackbarCustomWidget.show(
+                                      // ignore: use_build_context_synchronously
+                                      context,
+                                      message: message,
+                                      type: response
+                                          ? SnackbarType.success
+                                          : SnackbarType.error,
+                                    );
+                                    Navigator.pop(context);
                                   }
                                 : null,
                             child: Text('Guardar Venta'),
