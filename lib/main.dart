@@ -1,38 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/app.dart';
-import 'package:inventario_app/src/core/infrastructure/app_supabase.dart';
-import 'package:inventario_app/src/providers/add_sale_provider.dart';
-import 'package:inventario_app/src/providers/create_customer_provider.dart';
-import 'package:inventario_app/src/providers/customers_provider.dart';
-import 'package:inventario_app/src/providers/detail_product_provider.dart';
-import 'package:inventario_app/src/providers/inventario_provider.dart';
-import 'package:inventario_app/src/providers/list_customers_provider.dart';
-import 'package:inventario_app/src/providers/list_product_provider.dart';
-import 'package:inventario_app/src/providers/load_product_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'src/di/injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  try {
-    await dotenv.load(fileName: '.env');
-  } catch (e) {
-    throw Exception('Error loading .env file: $e');
-  }
-  await AppSupabase.init();
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => InventarioProvider()),
-        ChangeNotifierProvider(create: (_) => LoadProductProvider()),
-        ChangeNotifierProvider(create: (_) => ListProductProvider()),
-        ChangeNotifierProvider(create: (_) => DetailProductProvider()),
-        ChangeNotifierProvider(create: (_) => CustomersProvider()),
-        ChangeNotifierProvider(create: (_) => ListCustomersProvider()),
-        ChangeNotifierProvider(create: (_) => CreateCustomerProvider()),
-        ChangeNotifierProvider(create: (_) => AddSaleProvider()),
-      ],
-      child: App(),
-    ),
-  );
+  await di.init();
+  runApp(App());
 }
