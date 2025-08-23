@@ -5,6 +5,5 @@ import 'package:inventario_app/src/features/products/domain/entities/product.dar
 abstract class ProductRepository {
   Future<Result<List<Product>>> getAll();
   Future<Result<Product>> save(Product product);
-
   Future<Result<Page<Product>>> getPage(PageParams params);
 }

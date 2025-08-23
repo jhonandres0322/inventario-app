@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:inventario_app/src/core/paging.dart';
 import 'package:inventario_app/src/features/products/data/datasources/product_remote_source.dart';
 import 'package:inventario_app/src/features/products/data/models/product_model.dart';
@@ -25,7 +23,7 @@ final class ProductSupabaseDatasource implements ProductRemoteSource {
         .select()
         .order('fecha_creacion', ascending: false)
         .range(from, toInclusive);
-    log('**** Productos con pages $rows');
+
     final list = List<Map<String, dynamic>>.from(rows);
     final hasMore = list.length > params.limit;
     final sliced = hasMore ? list.sublist(0, params.limit) : list;

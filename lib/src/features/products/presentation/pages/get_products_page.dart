@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:inventario_app/src/features/products/domain/entities/product.dart';
 import 'package:inventario_app/src/features/products/domain/vo/brand/brand.dart';
 import 'package:inventario_app/src/features/products/presentation/providers/get_products_provider.dart';
+import 'package:inventario_app/src/shared/presentation/widgets/generic_search_bar.dart';
 import 'package:inventario_app/src/shared/presentation/widgets/tile_info_card.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +13,17 @@ class GetProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Inventario')),
-      body: _Body(),
+      appBar: AppBar(
+        title: const Text('Inventario'),
+        bottom: GenericSearchBar<Product>(
+          hintText: 'Buscar productos...',
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05,
+            vertical: MediaQuery.of(context).size.height * 0.01,
+          ),
+        ),
+      ),
+      body: const _Body(),
     );
   }
 }
@@ -31,20 +41,17 @@ class _Body extends StatelessWidget {
         if (vm.error != null) {
           return Center(child: Text('Error: ${vm.error}'));
         }
-        if (vm.items.isEmpty) {
+        if (vm.filteredItems.isEmpty) {
           return const Center(child: Text('Sin productos.'));
         }
-
-        final itemCount = vm.items.length + (vm.loadingMore ? 1 : 0);
-
+        final itemCount = vm.filteredItems.length + (vm.loadingMore ? 1 : 0);
         return ListView.builder(
           controller: vm.scrollController,
           itemCount: itemCount,
           itemBuilder: (_, i) {
-            if (i < vm.items.length) {
-              return _ProductTile(product: vm.items[i]);
+            if (i < vm.filteredItems.length) {
+              return _ProductTile(product: vm.filteredItems[i]);
             }
-            // loader al final
             return const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Center(child: CircularProgressIndicator()),

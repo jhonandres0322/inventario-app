@@ -1,23 +1,26 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/core/paging.dart';
 import 'package:inventario_app/src/features/products/domain/entities/product.dart';
 import 'package:inventario_app/src/features/products/domain/usecases/get_products_page.dart';
+import 'package:inventario_app/src/features/products/domain/vo/brand/brand.dart';
+import 'package:inventario_app/src/shared/presentation/providers/mixins/search_mixin.dart';
 import '../../../../di/injection.dart';
 
-class GetProductsProvider extends ChangeNotifier {
+class GetProductsProvider extends ChangeNotifier with SearchMixin<Product> {
+  Timer? _debounce;
   final _getPage = sl<GetProductsPageUseCase>();
 
   final int _pageSize = 8;
   final ScrollController scrollController = ScrollController();
 
-  List<Product> _items = [];
   bool _loading = false;
   bool _loadingMore = false;
   String? _error;
   bool _hasMore = true;
   int _offset = 0;
 
-  List<Product> get items => _items;
   bool get loading => _loading;
   bool get loadingMore => _loadingMore;
   String? get error => _error;
@@ -31,6 +34,8 @@ class GetProductsProvider extends ChangeNotifier {
         loadMore();
       }
     });
+    items = [];
+    filteredItems = [];
   }
 
   Future<void> load() async {
@@ -39,12 +44,14 @@ class GetProductsProvider extends ChangeNotifier {
     notifyListeners();
     _offset = 0;
     _hasMore = true;
-    _items = [];
+    items = [];
+    filteredItems = [];
 
     final res = await _getPage(PageParams(limit: _pageSize, offset: _offset));
     res.when(
       ok: (page) {
-        _items = page.items;
+        items = page.items;
+        filteredItems = List.from(items);
         _hasMore = page.hasMore;
         _offset = page.nextOffset;
       },
@@ -64,7 +71,11 @@ class GetProductsProvider extends ChangeNotifier {
     final res = await _getPage(PageParams(limit: _pageSize, offset: _offset));
     res.when(
       ok: (page) {
-        _items = [..._items, ...page.items];
+        items = [...items, ...page.items];
+        filteredItems = List.from(items);
+        if (searchQuery.isNotEmpty) {
+          performSearch(searchQuery);
+        }
         _hasMore = page.hasMore;
         _offset = page.nextOffset;
       },
@@ -78,7 +89,23 @@ class GetProductsProvider extends ChangeNotifier {
   }
 
   @override
+  bool filterItem(Product item, String query) {
+    return item.name.toLowerCase().contains(query.toLowerCase()) ||
+        item.brand.label.toLowerCase().contains(query.toLowerCase()) ||
+        item.size.label.toLowerCase().contains(query.toLowerCase());
+  }
+
+  @override
+  void performSearch(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      super.performSearch(query);
+    });
+  }
+
+  @override
   void dispose() {
+    _debounce?.cancel();
     scrollController.dispose();
     super.dispose();
   }
