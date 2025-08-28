@@ -1,6 +1,7 @@
 import 'package:inventario_app/src/core/paging.dart';
 import 'package:inventario_app/src/core/result.dart';
 import 'package:inventario_app/src/features/products/data/datasources/product_remote_source.dart';
+import 'package:inventario_app/src/features/products/data/models/product_model.dart';
 import 'package:inventario_app/src/features/products/domain/entities/product.dart';
 import 'package:inventario_app/src/features/products/domain/repositories/product_repository.dart';
 
@@ -20,9 +21,14 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<Result<Product>> save(Product product) {
-    // TODO: implement save
-    throw UnimplementedError();
+  Future<Result<Product>> save(Product product) async {
+    try {
+      final model = ProductModel.fromEntity(product);
+      final savedModel = await datasource.save(model);
+      return Ok(savedModel.toEntity());
+    } catch (e) {
+      return Error(e.toString());
+    }
   }
 
   @override

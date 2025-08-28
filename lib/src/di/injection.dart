@@ -3,6 +3,7 @@ import 'package:inventario_app/src/features/products/data/datasources/product_re
 import 'package:inventario_app/src/features/products/data/repositories/product_repository_impl.dart';
 import 'package:inventario_app/src/features/products/domain/repositories/product_repository.dart';
 import 'package:inventario_app/src/features/products/domain/usecases/get_products_page.dart';
+import 'package:inventario_app/src/features/products/domain/usecases/save_product.dart';
 import 'package:inventario_app/src/features/products/infrastructure/datasources/product_supabase_datasource.dart';
 import 'package:inventario_app/src/features/products/presentation/providers/get_products_provider.dart';
 import 'package:inventario_app/src/shared/infrastructure/config/env_loader.dart';
@@ -36,5 +37,6 @@ Future<void> init() async {
   sl.registerLazySingleton(
     () => GetProductsPageUseCase(sl<ProductRepository>()),
   );
+  sl.registerLazySingleton(() => SaveProductUseCase(sl<ProductRepository>()));
   sl.registerLazySingleton(() => GetProductsProvider());
 }

@@ -1,5 +1,6 @@
 import 'package:inventario_app/src/features/products/domain/vo/apparel_size/apparel_size.dart';
 import 'package:inventario_app/src/features/products/domain/vo/brand/brand.dart';
+import 'package:inventario_app/src/features/products/domain/vo/product_category/product_category.dart';
 
 double _round2(num v) => (v * 100).roundToDouble() / 100.0;
 
@@ -14,6 +15,7 @@ class Product {
   final int quantity;
   final String barcode;
   final List<String> images;
+  final ProductCategory category;
 
   const Product._({
     required this.id,
@@ -26,6 +28,7 @@ class Product {
     required this.quantity,
     required this.barcode,
     required this.images,
+    required this.category,
   });
 
   factory Product({
@@ -37,6 +40,7 @@ class Product {
     required int quantity,
     required String barcode,
     required List<String> images,
+    required ProductCategory category,
   }) {
     final commission = _round2(purchasePrice * 0.25);
     final actual = _round2(purchasePrice - commission);
@@ -51,6 +55,7 @@ class Product {
       quantity: quantity,
       barcode: barcode,
       images: images,
+      category: category,
     );
   }
 
@@ -62,6 +67,7 @@ class Product {
     int? quantity,
     String? barcode,
     List<String>? images,
+    ProductCategory? category,
   }) {
     final commission = _round2(purchasePrice! * 0.25);
     final actual = _round2(purchasePrice - commission);
@@ -77,6 +83,7 @@ class Product {
       quantity: quantity ?? this.quantity,
       barcode: barcode ?? this.barcode,
       images: images ?? this.images,
+      category: category ?? this.category,
     );
   }
 }

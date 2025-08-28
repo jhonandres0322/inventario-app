@@ -1,5 +1,6 @@
 // domain/apparel_size_catalog.dart
 import 'package:inventario_app/src/features/products/domain/vo/apparel_size/apparel_size.dart';
+import 'package:inventario_app/src/features/products/domain/vo/product_category/product_category.dart';
 
 class ApparelSizeCatalog {
   static const List<TopAlphaSize> topAlpha = [
@@ -22,4 +23,15 @@ class ApparelSizeCatalog {
   ];
 
   static const OneSize oneSize = OneSize();
+
+  static List<ApparelSize> getSizesByCategory(ProductCategory category) {
+    return switch (category) {
+      ProductCategory.shirts ||
+      ProductCategory.polos ||
+      ProductCategory.tShirts => List<ApparelSize>.from(topAlpha),
+      ProductCategory.jeans ||
+      ProductCategory.shorts => List<ApparelSize>.from(bottomNumeric),
+      ProductCategory.caps => [oneSize],
+    };
+  }
 }

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:inventario_app/src/features/products/domain/entities/product.dart';
 import 'package:inventario_app/src/features/products/domain/vo/brand/brand.dart';
 import 'package:inventario_app/src/features/products/presentation/providers/get_products_provider.dart';
+import 'package:inventario_app/src/routes.dart';
 import 'package:inventario_app/src/shared/presentation/widgets/generic_search_bar.dart';
 import 'package:inventario_app/src/shared/presentation/widgets/tile_info_card.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,20 @@ class GetProductsPage extends StatelessWidget {
         ),
       ),
       body: const _Body(),
+      floatingActionButton: _FloatingActionButton(),
+    );
+  }
+}
+
+class _FloatingActionButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.pushNamed(context, Routes.saveProduct);
+      },
+      shape: CircleBorder(),
+      child: Icon(Icons.add),
     );
   }
 }

@@ -36,4 +36,15 @@ final class ProductSupabaseDatasource implements ProductRemoteSource {
       nextOffset: params.offset + models.length,
     );
   }
+
+  @override
+  Future<ProductModel> save(ProductModel productModel) async {
+    final data = productModel.toMap();
+    final response = await supa.client
+        .from("productos")
+        .insert(data)
+        .select()
+        .single();
+    return ProductModel.fromMap(response);
+  }
 }

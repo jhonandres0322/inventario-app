@@ -9,4 +9,15 @@ class ProductLocalDatasource implements ProductDatasource {
     Future.delayed(Duration(seconds: 2));
     return List.unmodifiable(_db);
   }
+
+  @override
+  Future<ProductModel> save(ProductModel productModel) async {
+    final id = productModel.id.isEmpty ? "1" : productModel.id;
+    final savedModel = productModel.copyWith(
+      id: id,
+      fechaCreacion: DateTime.now(),
+    );
+    _db.add(savedModel);
+    return savedModel;
+  }
 }
