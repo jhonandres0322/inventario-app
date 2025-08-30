@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/core/app_theme.dart';
-import 'package:inventario_app/src/features/products/presentation/providers/get_products_provider.dart';
-import 'package:inventario_app/src/routes.dart';
 import 'package:provider/provider.dart';
+
+import 'package:inventario_app/src/ui/core/themes/app_theme.dart';
+import 'package:inventario_app/src/ui/products/get_products/viewmodels/get_products_provider.dart';
+import 'package:inventario_app/src/routes.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

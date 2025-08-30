@@ -1,14 +1,10 @@
 import 'package:get_it/get_it.dart';
-import 'package:inventario_app/src/features/products/data/datasources/product_remote_source.dart';
-import 'package:inventario_app/src/features/products/data/repositories/product_repository_impl.dart';
-import 'package:inventario_app/src/features/products/domain/repositories/product_repository.dart';
-import 'package:inventario_app/src/features/products/domain/usecases/get_products_page.dart';
-import 'package:inventario_app/src/features/products/domain/usecases/save_product.dart';
-import 'package:inventario_app/src/features/products/infrastructure/datasources/product_supabase_datasource.dart';
-import 'package:inventario_app/src/features/products/presentation/providers/get_products_provider.dart';
-import 'package:inventario_app/src/shared/infrastructure/config/env_loader.dart';
-import 'package:inventario_app/src/shared/infrastructure/ports/supabase_port.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:inventario_app/src/config/env_loader.dart';
+import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
+import 'package:inventario_app/src/data/products/services/products_remote_service.dart';
+import 'package:inventario_app/src/data/services/supabase_service.dart';
 
 final sl = GetIt.instance;
 
@@ -20,23 +16,12 @@ Future<void> init() async {
     url: config.supabaseUrl,
     anonKey: config.supabaseAnonKey,
   );
-  sl.registerSingleton(SupabaseClientPort(Supabase.instance.client));
+  sl.registerSingleton(SupabaseService(Supabase.instance.client));
 
-  // Datasource (infra)
-
-  sl.registerLazySingleton<ProductRemoteSource>(
-    () => ProductSupabaseDatasource(sl<SupabaseClientPort>()),
-  );
+  sl.registerLazySingleton(() => ProductsRemoteService(sl<SupabaseService>()));
 
   // Repositorio
-  sl.registerLazySingleton<ProductRepository>(
-    () => ProductRepositoryImpl(sl<ProductRemoteSource>()),
+  sl.registerLazySingleton<ProductsRepository>(
+    () => ProductsRepository(sl<ProductsRemoteService>()),
   );
-
-  // Caso de Uso
-  sl.registerLazySingleton(
-    () => GetProductsPageUseCase(sl<ProductRepository>()),
-  );
-  sl.registerLazySingleton(() => SaveProductUseCase(sl<ProductRepository>()));
-  sl.registerLazySingleton(() => GetProductsProvider());
 }
