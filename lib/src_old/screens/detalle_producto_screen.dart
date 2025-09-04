@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:inventario_app/src_old/core/ui/app_colors.dart';
+import 'package:inventario_app/src/ui/core/themes/app_colors.dart';
 import 'package:inventario_app/src_old/models/product_model.dart';
 import 'package:inventario_app/src_old/providers/detail_product_provider.dart';
 import 'package:inventario_app/src_old/widgets/snackbar_custom_widget.dart';

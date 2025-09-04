@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:inventario_app/src/routes.dart';
-import 'package:inventario_app/src/ui/core/ui/icon_label_nav_button.dart';
+import 'package:inventario_app/src/config/routes/routes.dart';
+import 'package:inventario_app/src/ui/core/widgets/icon_label_nav_button.dart';
 
 class AdminBody extends StatelessWidget {
   const AdminBody({super.key});

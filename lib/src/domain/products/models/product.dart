@@ -9,31 +9,35 @@ Product productFromJson(String str) => Product.fromJson(json.decode(str));
 String productToJson(Product data) => json.encode(data.toJson());
 
 class Product {
-  final String id;
+  final String? id;
   final String name;
   final String size;
   final String brand;
   final int purchasePrice;
-  final int commission;
-  final int actualCost;
+  final int? commission;
+  final int? actualCost;
   final int quantity;
   final String barcode;
   final String images;
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   Product({
-    required this.id,
+    this.id,
     required this.name,
     required this.size,
     required this.brand,
     required this.purchasePrice,
-    required this.commission,
-    required this.actualCost,
+    this.commission,
+    this.actualCost,
     required this.quantity,
     required this.barcode,
     required this.images,
-    required this.createdAt,
+    this.createdAt,
   });
+
+  int get calculatedCommission => (purchasePrice * 0.25).toInt();
+
+  int get calculatedActualCost => purchasePrice - calculatedCommission;
 
   Product copyWith({
     String? id,
@@ -76,16 +80,14 @@ class Product {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "name": name,
     "size": size,
     "brand": brand,
     "purchasePrice": purchasePrice,
-    "commission": commission,
-    "actualCost": actualCost,
+    "commission": commission ?? calculatedCommission,
+    "actualCost": actualCost ?? calculatedActualCost,
     "quantity": quantity,
     "barcode": barcode,
     "images": images,
-    "createdAt": createdAt.toIso8601String(),
   };
 }

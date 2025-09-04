@@ -1,4 +1,4 @@
-import 'package:inventario_app/src/config/paging.dart';
+import 'package:inventario_app/src/config/pagination/paging.dart';
 import 'package:inventario_app/features/products/data/datasources/product_datasource.dart';
 import 'package:inventario_app/features/products/data/models/product_model.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:inventario_app/shared/presentation/widgets/tile_info_card.dart';
+import 'package:inventario_app/src/ui/core/widgets/tile_info_card.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 
 class GetProductsProductTile extends StatelessWidget {

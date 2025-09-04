@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src_old/core/ui/app_colors.dart';
+import 'package:inventario_app/src/ui/core/themes/app_colors.dart';
 import 'package:inventario_app/src_old/providers/load_product_provider.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';

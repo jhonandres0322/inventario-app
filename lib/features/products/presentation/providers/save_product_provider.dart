@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src/di/injection.dart';
+import 'package:inventario_app/src/config/di/injection.dart';
 import 'package:inventario_app/features/products/domain/entities/product.dart';
 import 'package:inventario_app/features/products/domain/usecases/save_product.dart';
 import 'package:inventario_app/features/products/domain/vo/apparel_size/apparel_size.dart';

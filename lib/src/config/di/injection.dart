@@ -1,7 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:inventario_app/src/domain/products/usecases/save_product_use_case.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:inventario_app/src/config/env_loader.dart';
+import 'package:inventario_app/src/config/env/env_loader.dart';
 import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
 import 'package:inventario_app/src/data/products/services/products_remote_service.dart';
 import 'package:inventario_app/src/data/services/supabase_service.dart';
@@ -24,4 +25,7 @@ Future<void> init() async {
   sl.registerLazySingleton<ProductsRepository>(
     () => ProductsRepository(sl<ProductsRemoteService>()),
   );
+
+  // Use Case
+  sl.registerLazySingleton(() => SaveProductUseCase(sl<ProductsRepository>()));
 }

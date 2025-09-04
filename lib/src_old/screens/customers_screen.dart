@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/ui/core/themes/app_colors.dart';
 import 'package:inventario_app/src_old/core/domain/app_routes.dart';
-import 'package:inventario_app/src_old/core/ui/app_colors.dart';
 import 'package:inventario_app/src_old/providers/customers_provider.dart';
 import 'package:inventario_app/src_old/widgets/list_customer_widget.dart';
 import 'package:provider/provider.dart';

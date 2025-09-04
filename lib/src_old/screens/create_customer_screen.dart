@@ -81,12 +81,14 @@ class _MainFormCreateCustomer extends StatelessWidget {
                                 ? 'Cliente creado!'
                                 : 'Error al crear el cliente';
                             SnackbarCustomWidget.show(
+                              // ignore: use_build_context_synchronously
                               context,
                               message: message,
                               type: response
                                   ? SnackbarType.success
                                   : SnackbarType.error,
                             );
+                            // ignore: use_build_context_synchronously
                             Navigator.pop(context);
                           }
                         : null,

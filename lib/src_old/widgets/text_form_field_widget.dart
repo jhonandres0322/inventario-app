@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:inventario_app/src_old/core/ui/app_colors.dart';
+import 'package:inventario_app/src/ui/core/themes/app_colors.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   const TextFormFieldWidget({

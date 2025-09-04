@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:inventario_app/src/config/paging.dart';
+import 'package:inventario_app/src/config/pagination/paging.dart';
 import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 import 'package:inventario_app/src/ui/core/viewmodels/search_mixin.dart';
 
-import '../../../../di/injection.dart';
+import '../../../../config/di/injection.dart';
 
 class GetProductsProvider extends ChangeNotifier with SearchMixin<Product> {
   Timer? _debounce;

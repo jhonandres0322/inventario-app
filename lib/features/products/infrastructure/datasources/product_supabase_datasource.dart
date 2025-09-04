@@ -1,4 +1,4 @@
-import 'package:inventario_app/src/config/paging.dart';
+import 'package:inventario_app/src/config/pagination/paging.dart';
 import 'package:inventario_app/features/products/data/datasources/product_remote_source.dart';
 import 'package:inventario_app/features/products/data/models/product_model.dart';
 import 'package:inventario_app/src/data/services/supabase_service.dart';

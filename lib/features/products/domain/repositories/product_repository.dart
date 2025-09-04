@@ -1,5 +1,5 @@
-import 'package:inventario_app/src/config/paging.dart';
-import 'package:inventario_app/src/config/result.dart';
+import 'package:inventario_app/src/config/pagination/paging.dart';
+import 'package:inventario_app/src/config/response/result.dart';
 import 'package:inventario_app/features/products/domain/entities/product.dart';
 
 abstract class ProductRepository {

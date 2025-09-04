@@ -176,6 +176,7 @@ class _MainFormLoadProduct extends StatelessWidget {
                                 ? SnackbarType.success
                                 : SnackbarType.error,
                           );
+                          // ignore: use_build_context_synchronously
                           Navigator.pop(context);
                         }
                       : null,

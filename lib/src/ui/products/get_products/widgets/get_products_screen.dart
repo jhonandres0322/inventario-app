@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:inventario_app/src/ui/core/ui/generic_search_bar.dart';
+import 'package:inventario_app/src/ui/core/widgets/generic_search_bar.dart';
 import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_body.dart';
 import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_floating_action_button.dart';
 

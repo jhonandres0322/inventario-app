@@ -1,5 +1,5 @@
-import 'package:inventario_app/src/config/paging.dart';
-import 'package:inventario_app/src/config/result.dart';
+import 'package:inventario_app/src/config/pagination/paging.dart';
+import 'package:inventario_app/src/config/response/result.dart';
 import 'package:inventario_app/features/products/data/datasources/product_remote_source.dart';
 import 'package:inventario_app/features/products/data/models/product_model.dart';
 import 'package:inventario_app/features/products/domain/entities/product.dart';

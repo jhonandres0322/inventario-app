@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_app/src_old/core/ui/app_colors.dart';
-import 'package:inventario_app/src_old/utils/ui/border_text_form_field_util.dart';
+import 'package:inventario_app/src/ui/core/themes/app_colors.dart';
+import 'package:inventario_app/src/ui/core/themes/border_text_form_field_util.dart';
 
 class AppThemes {
   ThemeData get light {

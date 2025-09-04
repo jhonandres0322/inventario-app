@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:inventario_app/src/routes.dart';
+import 'package:inventario_app/src/config/routes/routes.dart';
 
 class GetProductsFloatingActionButton extends StatelessWidget {
   const GetProductsFloatingActionButton({super.key});

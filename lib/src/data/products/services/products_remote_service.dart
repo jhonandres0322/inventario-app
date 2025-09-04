@@ -1,4 +1,4 @@
-import 'package:inventario_app/src/config/paging.dart';
+import 'package:inventario_app/src/config/pagination/paging.dart';
 import 'package:inventario_app/src/data/services/supabase_service.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 
@@ -31,5 +31,14 @@ final class ProductsRemoteService {
       hasMore: hasMore,
       nextOffset: params.offset + models.length,
     );
+  }
+
+  Future<Product> saveProduct(Product product) async {
+    final productSaved = await _supabaseService.client
+        .from("productos")
+        .insert(product.toJson())
+        .select()
+        .single();
+    return Product.fromJson(productSaved);
   }
 }
