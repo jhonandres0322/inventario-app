@@ -86,7 +86,7 @@ class SaveProductProvider extends ChangeNotifier {
       brand: brand,
       purchasePrice: int.parse(purchasePrice),
       quantity: int.parse(quantity),
-      barcode: 'valor',
+      barcode: barcode,
       images: 'valor',
     );
 
@@ -101,6 +101,7 @@ class SaveProductProvider extends ChangeNotifier {
       },
     );
     _loading = false;
+    _savedProduct = null;
     notifyListeners();
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/ui/barcode/scan/widgets/barcode_scan_screen.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_dropdown_button_form_field.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_text_form_field.dart';
 import 'package:inventario_app/src/ui/products/save_product/viewmodels/save_product_provider.dart';
+import 'package:inventario_app/src_old/screens/scan_barcode_screen.dart';
 import 'package:provider/provider.dart';
 
 class SaveProductForm extends StatelessWidget {
@@ -86,12 +88,28 @@ class SaveProductForm extends StatelessWidget {
                         child: GenericTextFormField(
                           controller: barcodeController,
                           label: 'Código de barras',
-                          validator: (value) => null,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'El código de barras es requerido';
+                            }
+                            return null;
+                          },
                           readOnly: true,
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BarcodeScanScreen(
+                                onBarcodeScanned: (barcode) {
+                                  barcodeController.text = barcode;
+                                },
+                              ),
+                            ),
+                          );
+                        },
                         icon: Icon(Icons.barcode_reader),
                         iconSize: size.height * 0.05,
                       ),
@@ -121,6 +139,12 @@ class SaveProductForm extends StatelessWidget {
                   GenericDropdownButtonFormField(
                     label: 'Tipo de Ropa',
                     items: provider.categories,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'El tipo de ropa es requerido';
+                      }
+                      return null;
+                    },
                     onChanged: (value) => provider.categorySelected = value,
                   ),
                   SizedBox(height: spaceBetween),
@@ -128,6 +152,12 @@ class SaveProductForm extends StatelessWidget {
                     label: 'Talla',
                     items: provider.getSizes(),
                     onChanged: (value) => provider.sizeSelected = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'La talla es requerida';
+                      }
+                      return null;
+                    },
                     value: provider.getSizes().contains(provider.sizeSelected)
                         ? provider.sizeSelected
                         : null,
@@ -136,6 +166,12 @@ class SaveProductForm extends StatelessWidget {
                   GenericDropdownButtonFormField(
                     label: 'Marca',
                     items: provider.brands,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'La marca es requerida';
+                      }
+                      return null;
+                    },
                     onChanged: (value) => provider.brandSelected = value,
                   ),
                   SizedBox(height: spaceBetween),
