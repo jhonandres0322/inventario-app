@@ -3,7 +3,6 @@ import 'package:inventario_app/src/ui/barcode/scan/widgets/barcode_scan_screen.d
 import 'package:inventario_app/src/ui/core/widgets/generic_dropdown_button_form_field.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_text_form_field.dart';
 import 'package:inventario_app/src/ui/products/save_product/viewmodels/save_product_provider.dart';
-import 'package:inventario_app/src_old/screens/scan_barcode_screen.dart';
 import 'package:provider/provider.dart';
 
 class SaveProductForm extends StatelessWidget {
@@ -24,18 +23,20 @@ class SaveProductForm extends StatelessWidget {
         if (provider.loading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (provider.error != null) {
+        if (provider.showError) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text('Error: ${provider.error}')));
+            provider.resetState();
           });
         }
-        if (provider.savedProduct != null) {
+        if (provider.showSuccess) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Producto guardado con éxito')),
             );
+            provider.resetState();
           });
         }
         final double spaceBetween = size.height * 0.02;

@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:inventario_app/src/config/response/result.dart';
+import 'package:inventario_app/src/data/products/services/images/load_images_service_factory.dart';
 import 'package:inventario_app/src/data/products/services/products_remote_service.dart';
+import 'package:inventario_app/src/domain/services/load_images_service.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 import 'package:inventario_app/src/config/pagination/paging.dart';
 
 final class ProductsRepository {
   final ProductsRemoteService productsRemoteService;
+  final LoadImagesServiceFactory loadImagesServiceFactory;
 
-  ProductsRepository(this.productsRemoteService);
+  ProductsRepository(this.productsRemoteService, this.loadImagesServiceFactory);
 
   Future<Result<List<Product>>> getProducts() async {
     try {
@@ -29,6 +34,13 @@ final class ProductsRepository {
 
   Future<Result<Product>> saveProduct(Product savedProduct) async {
     try {
+      final loadImagesService = loadImagesServiceFactory.getService(
+        savedProduct.brand,
+      );
+      log("**** loadImagesService --> $loadImagesService");
+      final images = await loadImagesService.load(savedProduct);
+      log("**** images --> $images");
+      savedProduct.images = images;
       final product = await productsRemoteService.saveProduct(savedProduct);
 
       return Ok(product);

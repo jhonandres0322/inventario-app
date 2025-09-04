@@ -14,6 +14,9 @@ class SaveProductProvider extends ChangeNotifier {
   bool _loading = false;
   String? _error;
   Product? _savedProduct;
+  bool _showSuccess = false;
+  bool _showError = false;
+
   final List<String> _categories = CategoryProduct.all
       .map((c) => c.label)
       .toList();
@@ -26,6 +29,8 @@ class SaveProductProvider extends ChangeNotifier {
   bool get loading => _loading;
   String? get error => _error;
   Product? get savedProduct => _savedProduct;
+  bool get showSuccess => _showSuccess;
+  bool get showError => _showError;
   List<String> get categories => _categories;
   String? get categorySelected => _categorySelected;
   List<String> get sizes => _sizes;
@@ -94,14 +99,23 @@ class SaveProductProvider extends ChangeNotifier {
     result.when(
       ok: (savedProduct) {
         _savedProduct = savedProduct;
+        _showSuccess = true;
         _getProductsProvider.load();
       },
       err: (error) {
         _error = error;
+        _showError = true;
       },
     );
     _loading = false;
+    notifyListeners();
+  }
+
+  void resetState() {
     _savedProduct = null;
+    _error = null;
+    _showSuccess = false;
+    _showError = false;
     notifyListeners();
   }
 }

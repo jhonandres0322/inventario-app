@@ -18,7 +18,7 @@ class Product {
   final int? actualCost;
   final int quantity;
   final String barcode;
-  final String images;
+  String images;
   final DateTime? createdAt;
 
   Product({
