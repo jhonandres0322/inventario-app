@@ -44,11 +44,21 @@ final class ProductsRepository {
     }
   }
 
-  getProductById(Product product) async {
+  Future<Result<Product>> getProductById(Product product) async {
     try {
       final productFound = await productsRemoteService.getProductById(product);
 
       return Ok(productFound);
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
+
+  Future<Result<void>> deleteProduct(Product productDelete) async {
+    try {
+      await productsRemoteService.deleteProduct(productDelete);
+
+      return Ok(null);
     } catch (e) {
       return Error(e.toString());
     }

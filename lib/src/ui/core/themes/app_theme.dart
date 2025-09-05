@@ -79,6 +79,12 @@ class AppThemes {
         elevation: 6,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(AppColors().secondary),
+        ),
+      ),
+      snackBarTheme: SnackBarThemeData(),
     );
   }
 }

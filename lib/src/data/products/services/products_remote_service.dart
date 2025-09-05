@@ -51,4 +51,11 @@ final class ProductsRemoteService {
 
     return Product.fromJson(productFound);
   }
+
+  Future<void> deleteProduct(Product productDelete) async {
+    await _supabaseService.client
+        .from('productos')
+        .delete()
+        .eq('id', productDelete.id!);
+  }
 }
