@@ -41,4 +41,14 @@ final class ProductsRemoteService {
         .single();
     return Product.fromJson(productSaved);
   }
+
+  Future<Product> getProductById(Product product) async {
+    final productFound = await _supabaseService.client
+        .from("productos")
+        .select()
+        .eq('id', product.id!)
+        .single();
+
+    return Product.fromJson(productFound);
+  }
 }

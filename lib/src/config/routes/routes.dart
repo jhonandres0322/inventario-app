@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:inventario_app/features/customers/presentation/pages/get_customers_page.dart';
+import 'package:inventario_app/features/sales/presentation/pages/save_sale_page.dart';
 import 'package:inventario_app/src/ui/home/widgets/home_screen.dart';
 import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_screen.dart';
-import 'package:inventario_app/features/sales/presentation/pages/save_sale_page.dart';
 import 'package:inventario_app/src/ui/admin/widgets/admin_screen.dart';
 import 'package:inventario_app/src/ui/products/save_product/widgets/save_product_screen.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:inventario_app/src/config/di/injection.dart';
-import 'package:inventario_app/src/domain/products/usecases/save_product_use_case.dart';
+import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
 import 'package:inventario_app/src/domain/products/valueobjects/brand.dart';
 import 'package:inventario_app/src/domain/products/valueobjects/category.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
@@ -9,7 +9,7 @@ import 'package:inventario_app/src/ui/products/get_products/viewmodels/get_produ
 
 class SaveProductProvider extends ChangeNotifier {
   final GetProductsProvider _getProductsProvider;
-  final SaveProductUseCase _save = sl<SaveProductUseCase>();
+  final ProductsRepository _repository = sl<ProductsRepository>();
 
   bool _loading = false;
   String? _error;
@@ -95,7 +95,7 @@ class SaveProductProvider extends ChangeNotifier {
       images: 'valor',
     );
 
-    final result = await _save.call(product);
+    final result = await _repository.saveProduct(product);
     result.when(
       ok: (savedProduct) {
         _savedProduct = savedProduct;

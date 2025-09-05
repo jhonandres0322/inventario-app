@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'package:inventario_app/src/ui/core/widgets/tile_info_card.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
+import 'package:inventario_app/src/ui/products/detail_product/widgets/detail_product_screen.dart';
 
 class GetProductsProductTile extends StatelessWidget {
   final Product product;
@@ -27,7 +28,14 @@ class GetProductsProductTile extends StatelessWidget {
         ),
         InfoItem(Icons.inventory_2, product.quantity.toString()),
       ],
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailProductScreen(product: product),
+          ),
+        );
+      },
     );
   }
 }
