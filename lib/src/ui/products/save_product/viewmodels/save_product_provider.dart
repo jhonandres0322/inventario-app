@@ -1,21 +1,14 @@
-import 'package:flutter/material.dart';
-
 import 'package:inventario_app/src/config/di/injection.dart';
 import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
 import 'package:inventario_app/src/domain/products/valueobjects/brand.dart';
 import 'package:inventario_app/src/domain/products/valueobjects/category.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
+import 'package:inventario_app/src/ui/core/viewmodels/generic_save_provider.dart';
 import 'package:inventario_app/src/ui/products/get_products/viewmodels/get_products_provider.dart';
 
-class SaveProductProvider extends ChangeNotifier {
+class SaveProductProvider extends GenericSaveProvider<Product> {
   final GetProductsProvider _getProductsProvider;
   final ProductsRepository _repository = sl<ProductsRepository>();
-
-  bool _loading = false;
-  String? _error;
-  Product? _savedProduct;
-  bool _showSuccess = false;
-  bool _showError = false;
 
   final List<String> _categories = CategoryProduct.all
       .map((c) => c.label)
@@ -26,26 +19,11 @@ class SaveProductProvider extends ChangeNotifier {
   final List<String> brands = Brand.all.map((c) => c.label).toList();
   String? _brandSelected;
 
-  bool get loading => _loading;
-  String? get error => _error;
-  Product? get savedProduct => _savedProduct;
-  bool get showSuccess => _showSuccess;
-  bool get showError => _showError;
   List<String> get categories => _categories;
   String? get categorySelected => _categorySelected;
   List<String> get sizes => _sizes;
   String? get sizeSelected => _sizeSelected;
   String? get brandSelected => _brandSelected;
-
-  set loading(bool value) {
-    _loading = value;
-    notifyListeners();
-  }
-
-  set error(String? value) {
-    _error = value;
-    notifyListeners();
-  }
 
   set categorySelected(String? value) {
     _categorySelected = value;
@@ -80,9 +58,9 @@ class SaveProductProvider extends ChangeNotifier {
     required String size,
     required String brand,
   }) async {
-    _loading = true;
-    _error = null;
-    _savedProduct = null;
+    loading = true;
+    error = null;
+    saved = null;
     notifyListeners();
 
     final product = Product(
@@ -92,30 +70,22 @@ class SaveProductProvider extends ChangeNotifier {
       purchasePrice: int.parse(purchasePrice),
       quantity: int.parse(quantity),
       barcode: barcode,
-      images: 'valor',
+      images: null,
     );
 
     final result = await _repository.saveProduct(product);
     result.when(
       ok: (savedProduct) {
-        _savedProduct = savedProduct;
-        _showSuccess = true;
+        saved = savedProduct;
+        showSuccess = true;
         _getProductsProvider.load();
       },
       err: (error) {
-        _error = error;
-        _showError = true;
+        error = error;
+        showError = true;
       },
     );
-    _loading = false;
-    notifyListeners();
-  }
-
-  void resetState() {
-    _savedProduct = null;
-    _error = null;
-    _showSuccess = false;
-    _showError = false;
+    loading = false;
     notifyListeners();
   }
 }

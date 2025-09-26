@@ -13,7 +13,7 @@ class DetailProductBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final List<String> images = product.images.split(",");
+    final List<String> images = product.images!.split(",");
 
     return Consumer<DetailProductProvider>(
       builder: (context, provider, child) {

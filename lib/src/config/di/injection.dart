@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:inventario_app/src/data/customers/repositories/customers_repository.dart';
+import 'package:inventario_app/src/data/customers/services/customers_remote_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:inventario_app/src/config/env/env_loader.dart';
@@ -30,5 +32,10 @@ Future<void> init() async {
       sl<ProductsRemoteService>(),
       sl<LoadImagesServiceFactory>(),
     ),
+  );
+
+  sl.registerLazySingleton(() => CustomersRemoteService(sl<SupabaseService>()));
+  sl.registerLazySingleton<CustomersRepository>(
+    () => CustomersRepository(sl<CustomersRemoteService>()),
   );
 }

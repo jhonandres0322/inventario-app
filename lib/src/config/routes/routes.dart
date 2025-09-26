@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:inventario_app/features/customers/presentation/pages/get_customers_page.dart';
-import 'package:inventario_app/features/sales/presentation/pages/save_sale_page.dart';
+import 'package:inventario_app/src/ui/customers/get_customers/widgets/get_customers_screen.dart';
+import 'package:inventario_app/src/ui/customers/save_customer/widgets/save_customer_screen.dart';
 import 'package:inventario_app/src/ui/home/widgets/home_screen.dart';
 import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_screen.dart';
 import 'package:inventario_app/src/ui/admin/widgets/admin_screen.dart';
@@ -14,13 +14,14 @@ class Routes {
   static const saveProduct = '/save-product';
   static const saveSale = '/save-sale';
   static const getCustomers = '/get-customers';
+  static const saveCustomer = '/save-customer';
 
   static Map<String, WidgetBuilder> get map => {
     home: (_) => const HomeScreen(),
     admin: (_) => const AdminScreen(),
     getProducts: (_) => const GetProductsScreen(),
     saveProduct: (_) => const SaveProductScreen(),
-    saveSale: (_) => const SaveSalePage(),
-    getCustomers: (_) => const GetCustomersPage(),
+    getCustomers: (_) => const GetCustomersScreen(),
+    saveCustomer: (_) => const SaveCustomerScreen(),
   };
 }

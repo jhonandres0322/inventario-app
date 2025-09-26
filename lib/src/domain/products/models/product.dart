@@ -18,7 +18,7 @@ class Product {
   final int? actualCost;
   final int quantity;
   final String barcode;
-  String images;
+  String? images;
   final DateTime? createdAt;
 
   Product({
@@ -31,7 +31,7 @@ class Product {
     this.actualCost,
     required this.quantity,
     required this.barcode,
-    required this.images,
+    this.images,
     this.createdAt,
   });
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:inventario_app/features/products/domain/entities/product.dart';
+import 'package:inventario_app/src/domain/products/models/product.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_search_bar.dart';
 
 class GetProductsSearch extends StatelessWidget {
