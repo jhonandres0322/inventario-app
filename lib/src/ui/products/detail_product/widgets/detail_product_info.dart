@@ -46,14 +46,14 @@ class DetailProductInfo extends StatelessWidget {
               const Divider(),
               _buildInfoRow(
                 Icons.price_check,
-                'Costo Real',
-                formatter.format(product.actualCost),
+                'Porcentaje de Ganancia',
+                product.earningsPercentage.toString(),
               ),
               const Divider(),
               _buildInfoRow(
                 Icons.price_check,
-                'Comisión',
-                formatter.format(product.commission),
+                'Precio de Venta',
+                formatter.format(product.salesPrice),
               ),
             ],
           ),
