@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:inventario_app/src/ui/core/widgets/generic_search_bar.dart';
 import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_body.dart';
+import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_bottom_navigator_bar.dart';
 import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_floating_action_button.dart';
 
 class GetProductsScreen extends StatelessWidget {
@@ -15,6 +16,7 @@ class GetProductsScreen extends StatelessWidget {
       appBar: AppBar(title: Text(_textTitle), bottom: GenericSearchBar()),
       body: const GetProductsBody(),
       floatingActionButton: GetProductsFloatingActionButton(),
+      bottomNavigationBar: GetProductsBottomNavigatorBar(),
     );
   }
 }

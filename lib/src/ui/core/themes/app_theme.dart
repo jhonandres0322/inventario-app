@@ -85,6 +85,10 @@ class AppThemes {
         ),
       ),
       snackBarTheme: SnackBarThemeData(),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: AppColors().secondary,
+        selectedItemColor: AppColors().primary,
+      ),
     );
   }
 }
