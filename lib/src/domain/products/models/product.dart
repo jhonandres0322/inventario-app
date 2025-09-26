@@ -14,8 +14,8 @@ class Product {
   final String size;
   final String brand;
   final int purchasePrice;
-  final int? commission;
-  final int? actualCost;
+  final int? earningsPercentage;
+  final int? salesPrice;
   final int quantity;
   final String barcode;
   String? images;
@@ -27,17 +27,18 @@ class Product {
     required this.size,
     required this.brand,
     required this.purchasePrice,
-    this.commission,
-    this.actualCost,
+    this.earningsPercentage = 35,
+    this.salesPrice,
     required this.quantity,
     required this.barcode,
     this.images,
     this.createdAt,
   });
 
-  int get calculatedCommission => (purchasePrice * 0.25).toInt();
-
-  int get calculatedActualCost => purchasePrice - calculatedCommission;
+  int get calculatedSalesPrice {
+    if (earningsPercentage == null) return purchasePrice; // O lanza error/usa 0
+    return (purchasePrice * (1 + (earningsPercentage! / 100))).round();
+  }
 
   Product copyWith({
     String? id,
@@ -45,8 +46,8 @@ class Product {
     String? size,
     String? brand,
     int? purchasePrice,
-    int? commission,
-    int? actualCost,
+    int? earningsPercentage,
+    int? salesPrice,
     int? quantity,
     String? barcode,
     String? images,
@@ -57,8 +58,8 @@ class Product {
     size: size ?? this.size,
     brand: brand ?? this.brand,
     purchasePrice: purchasePrice ?? this.purchasePrice,
-    commission: commission ?? this.commission,
-    actualCost: actualCost ?? this.actualCost,
+    earningsPercentage: earningsPercentage ?? this.earningsPercentage,
+    salesPrice: salesPrice ?? this.salesPrice,
     quantity: quantity ?? this.quantity,
     barcode: barcode ?? this.barcode,
     images: images ?? this.images,
@@ -71,8 +72,8 @@ class Product {
     size: json["size"],
     brand: json["brand"],
     purchasePrice: json["purchasePrice"],
-    commission: json["commission"],
-    actualCost: json["actualCost"],
+    earningsPercentage: json["earningsPercentage"],
+    salesPrice: json["salesPrice"],
     quantity: json["quantity"],
     barcode: json["barcode"],
     images: json["images"],
@@ -84,8 +85,8 @@ class Product {
     "size": size,
     "brand": brand,
     "purchasePrice": purchasePrice,
-    "commission": commission ?? calculatedCommission,
-    "actualCost": actualCost ?? calculatedActualCost,
+    "earningsPercentage": earningsPercentage,
+    "salesPrice": salesPrice ?? calculatedSalesPrice,
     "quantity": quantity,
     "barcode": barcode,
     "images": images,
