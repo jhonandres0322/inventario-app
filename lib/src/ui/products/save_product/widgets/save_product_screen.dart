@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/ui/products/save_product/widgets/save_product_bottom_navigator_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'package:inventario_app/src/ui/products/get_products/viewmodels/get_products_provider.dart';
@@ -20,6 +21,7 @@ class SaveProductScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(title: Text(textTitle)),
         body: SaveProductForm(),
+        bottomNavigationBar: SaveProductBottomNavigatorBar(),
       ),
     );
   }
