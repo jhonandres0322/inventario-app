@@ -6,7 +6,7 @@ import 'package:inventario_app/src/ui/core/widgets/icon_label_nav_button.dart';
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
 
-  final String _textAdmin = 'Administrador';
+  final String _textAdmin = 'Cargar Productos';
   final String _textGetProducts = 'Inventario';
 
   @override
@@ -17,8 +17,8 @@ class HomeBody extends StatelessWidget {
         children: [
           IconLabelNavButton(
             text: _textAdmin,
-            icon: Icons.warehouse,
-            routeTo: Routes.admin,
+            icon: Icons.upload,
+            routeTo: Routes.saveProduct,
           ),
           IconLabelNavButton(
             text: _textGetProducts,
