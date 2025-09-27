@@ -29,16 +29,35 @@ final class ProductsRepository {
     }
   }
 
-  Future<Result<Product>> saveProduct(Product savedProduct) async {
+  Future<Result<Product>> saveProduct(Product productSave) async {
     try {
-      final loadImagesService = loadImagesServiceFactory.getService(
-        savedProduct.brand,
+      final filters = [
+        {'key': 'barcode', 'value': productSave.barcode},
+        {'key': 'size', 'value': productSave.size},
+      ];
+      final productsFound = await productsRemoteService.findProductByFilters(
+        filters,
       );
-      final images = await loadImagesService.load(savedProduct);
-      savedProduct.images = images;
-      final product = await productsRemoteService.saveProduct(savedProduct);
 
-      return Ok(product);
+      if (productsFound.isEmpty) {
+        final loadImagesService = loadImagesServiceFactory.getService(
+          productSave.brand,
+        );
+        final images = await loadImagesService.load(productSave);
+        productSave.images = images;
+        final product = await productsRemoteService.saveProduct(productSave);
+        return Ok(product);
+      } else {
+        final productFound = productsFound.first;
+        final productUpdate = productFound.copyWith(
+          quantity: productSave.quantity,
+        );
+        final productUpdated = await productsRemoteService.updateProduct(
+          productUpdate,
+        );
+
+        return Ok(productUpdated);
+      }
     } catch (e) {
       return Error(e.toString());
     }
