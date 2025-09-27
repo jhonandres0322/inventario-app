@@ -19,6 +19,9 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   String? _sizeSelected;
   final List<String> brands = Brand.all.map((c) => c.label).toList();
   String? _brandSelected;
+  bool _isTypedName = false;
+
+  final List<String> _brandsNeedNoName = ['americanino', 'chevignon', 'esprit'];
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController purchasePriceController = TextEditingController();
@@ -36,6 +39,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   List<String> get sizes => _sizes;
   String? get sizeSelected => _sizeSelected;
   String? get brandSelected => _brandSelected;
+  bool? get isTypedName => _isTypedName;
 
   set categorySelected(String? value) {
     _categorySelected = value;
@@ -50,6 +54,9 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
 
   set brandSelected(String? value) {
     _brandSelected = value;
+    final isNeedTypeName = !_brandsNeedNoName.contains(value!.toLowerCase());
+    _isTypedName = isNeedTypeName;
+
     notifyListeners();
   }
 
@@ -75,7 +82,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
       quantity: int.parse(quantityController.text),
       barcode: barcodeController.text.trim(),
       type: _categorySelected!.trim(),
-      earningsPercentage: int.parse(earningsPercentageController.text),
+      earningsPercentage: int.tryParse(earningsPercentageController.text),
       images: null,
     );
 
@@ -83,6 +90,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
     result.when(
       ok: (savedProduct) {
         saved = savedProduct;
+        success = 'Producto creado con exito';
         showSuccess = true;
         _getProductsProvider.load();
       },
@@ -100,7 +108,6 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   void clearForm() {
     nameController.text = '';
     purchasePriceController.text = '';
-    barcodeController.text = '';
     earningsPercentageController.text = '';
     quantityController.text = '';
     _categorySelected = 'Camisetas';

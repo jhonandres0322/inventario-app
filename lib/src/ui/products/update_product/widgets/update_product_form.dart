@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/ui/barcode/scan/widgets/barcode_scan_screen.dart';
-import 'package:inventario_app/src/ui/core/themes/app_colors.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_dropdown_button_form_field.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_text_form_field.dart';
+import 'package:inventario_app/src/ui/core/widgets/snackbar_service.dart';
 import 'package:inventario_app/src/ui/products/update_product/viewmodels/update_product_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,26 +18,18 @@ class UpdateProductForm extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (provider.showError) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error: ${provider.error}'),
-                backgroundColor: AppColors().error,
-              ),
-            );
-            provider.resetState();
-          });
+          SnackBarService.showErrorSnackBar(
+            context,
+            provider.error!,
+            provider.resetState,
+          );
         }
         if (provider.showSuccess) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(provider.success!),
-                backgroundColor: AppColors().success,
-              ),
-            );
-            provider.resetState();
-          });
+          SnackBarService.showSuccessSnackBar(
+            context,
+            provider.success!,
+            provider.resetState,
+          );
         }
         final double spaceBetween = size.height * 0.02;
         if (provider.productSelected != null) {

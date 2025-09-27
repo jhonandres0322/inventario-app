@@ -10,12 +10,14 @@ class DetailProductProvider with ChangeNotifier {
 
   bool _loading = false;
   String? _error;
+  String? _success;
   Product? _deletedProduct;
   bool _showSuccess = false;
   bool _showError = false;
 
   bool get loading => _loading;
   String? get error => _error;
+  String? get success => _success;
   Product? get deletedProduct => _deletedProduct;
   bool get showSuccess => _showSuccess;
   bool get showError => _showError;
@@ -33,6 +35,7 @@ class DetailProductProvider with ChangeNotifier {
     result.when(
       ok: (deletedProduct) {
         _deletedProduct = product;
+        _success = 'Producto eliminado con exito';
         _showSuccess = true;
         _getProductsProvider.load();
       },

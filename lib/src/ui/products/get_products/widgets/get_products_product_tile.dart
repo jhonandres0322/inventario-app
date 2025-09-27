@@ -15,13 +15,13 @@ class GetProductsProductTile extends StatelessWidget {
       title: product.name,
       infoItems: [
         InfoItem(Icons.store, product.brand),
-        InfoItem(Icons.straighten, product.size),
+        InfoItem(Icons.straighten, product.size.toUpperCase()),
       ],
       trailingItems: [
         InfoItem(
           Icons.attach_money,
           NumberFormat.currency(
-            locale: 'es_CO',
+            locale: 'en_US',
             symbol: '\$',
             decimalDigits: 0,
           ).format(product.purchasePrice),

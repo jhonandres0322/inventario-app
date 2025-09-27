@@ -1,14 +1,17 @@
 import 'package:inventario_app/src/config/response/result.dart';
 import 'package:inventario_app/src/config/pagination/paging.dart';
-import 'package:inventario_app/src/data/products/services/images/load_images_service_factory.dart';
+import 'package:inventario_app/src/data/products/services/load_info_website/load_info_from_website_service_factory.dart';
 import 'package:inventario_app/src/data/products/services/products_remote_service.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 
 final class ProductsRepository {
   final ProductsRemoteService productsRemoteService;
-  final LoadImagesServiceFactory loadImagesServiceFactory;
+  final LoadInfoFromWebsiteServiceFactory loadInfoFromWebsiteServiceFactory;
 
-  ProductsRepository(this.productsRemoteService, this.loadImagesServiceFactory);
+  ProductsRepository(
+    this.productsRemoteService,
+    this.loadInfoFromWebsiteServiceFactory,
+  );
 
   Future<Result<List<Product>>> getProducts() async {
     try {
@@ -40,11 +43,15 @@ final class ProductsRepository {
       );
 
       if (productsFound.isEmpty) {
-        final loadImagesService = loadImagesServiceFactory.getService(
-          productSave.brand,
+        final loadInfoFromWebSiteService = loadInfoFromWebsiteServiceFactory
+            .getService(productSave.brand);
+        final loadInfoFromWebSiteDto = await loadInfoFromWebSiteService.load(
+          productSave,
         );
-        final images = await loadImagesService.load(productSave);
-        productSave.images = images;
+        productSave = productSave.copyWith(
+          name: loadInfoFromWebSiteDto.name,
+          images: loadInfoFromWebSiteDto.images,
+        );
         final product = await productsRemoteService.saveProduct(productSave);
         return Ok(product);
       } else {
