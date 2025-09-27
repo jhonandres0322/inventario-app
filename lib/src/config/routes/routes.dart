@@ -7,6 +7,7 @@ import 'package:inventario_app/src/ui/products/download_product/widgets/download
 import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_screen.dart';
 import 'package:inventario_app/src/ui/admin/widgets/admin_screen.dart';
 import 'package:inventario_app/src/ui/products/save_product/widgets/save_product_screen.dart';
+import 'package:inventario_app/src/ui/products/update_product/widgets/update_product_screen.dart';
 
 class Routes {
   static const home = '/';
@@ -17,6 +18,7 @@ class Routes {
   static const getCustomers = '/get-customers';
   static const saveCustomer = '/save-customer';
   static const downloadProduct = '/download-product';
+  static const updateProduct = '/update-product';
 
   static Map<String, WidgetBuilder> get map => {
     home: (_) => const HomeScreen(),
@@ -26,5 +28,6 @@ class Routes {
     getCustomers: (_) => const GetCustomersScreen(),
     saveCustomer: (_) => const SaveCustomerScreen(),
     downloadProduct: (_) => const DownloadProductScreen(),
+    updateProduct: (_) => const UpdateProductScreen(),
   };
 }

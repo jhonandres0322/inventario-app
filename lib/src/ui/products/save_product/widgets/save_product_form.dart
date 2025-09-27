@@ -1,19 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/ui/barcode/scan/widgets/barcode_scan_screen.dart';
+import 'package:inventario_app/src/ui/core/themes/app_colors.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_dropdown_button_form_field.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_text_form_field.dart';
 import 'package:inventario_app/src/ui/products/save_product/viewmodels/save_product_provider.dart';
 import 'package:provider/provider.dart';
 
 class SaveProductForm extends StatelessWidget {
-  SaveProductForm({super.key});
-
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController purchasePriceController = TextEditingController();
-  final TextEditingController quantityController = TextEditingController();
-  final TextEditingController barcodeController = TextEditingController();
-
-  final formKey = GlobalKey<FormState>();
+  const SaveProductForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +20,22 @@ class SaveProductForm extends StatelessWidget {
         }
         if (provider.showError) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${provider.error}')));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${provider.error}'),
+                backgroundColor: AppColors().error,
+              ),
+            );
             provider.resetState();
           });
         }
         if (provider.showSuccess) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Producto guardado con éxito')),
+              SnackBar(
+                content: Text('Producto guardado con éxito'),
+                backgroundColor: AppColors().success,
+              ),
             );
             provider.resetState();
           });
@@ -44,12 +45,12 @@ class SaveProductForm extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(16.0),
             child: Form(
-              key: formKey,
+              key: provider.formKey,
               child: Column(
                 children: [
                   SizedBox(height: spaceBetween),
                   GenericTextFormField(
-                    controller: nameController,
+                    controller: provider.nameController,
                     label: 'Nombre o Referencia',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -63,7 +64,7 @@ class SaveProductForm extends StatelessWidget {
                   ),
                   SizedBox(height: spaceBetween),
                   GenericTextFormField(
-                    controller: purchasePriceController,
+                    controller: provider.purchasePriceController,
                     label: 'Precio de compra',
                     keyboardType: TextInputType.number,
                     validator: (value) {
@@ -87,7 +88,7 @@ class SaveProductForm extends StatelessWidget {
                     children: [
                       Expanded(
                         child: GenericTextFormField(
-                          controller: barcodeController,
+                          controller: provider.barcodeController,
                           label: 'Código de barras',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -105,7 +106,7 @@ class SaveProductForm extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => BarcodeScanScreen(
                                 onBarcodeScanned: (barcode) {
-                                  barcodeController.text = barcode;
+                                  provider.barcodeController.text = barcode;
                                 },
                               ),
                             ),
@@ -118,7 +119,29 @@ class SaveProductForm extends StatelessWidget {
                   ),
                   SizedBox(height: spaceBetween),
                   GenericTextFormField(
-                    controller: quantityController,
+                    controller: provider.earningsPercentageController,
+                    label: 'Porcentaje de Ganancia - Opcional',
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return null;
+                      }
+                      final earnings = double.tryParse(value);
+                      if (earnings == null) return 'Debe ser un número válido';
+                      if (earnings < 0) {
+                        return 'El porcentaje no puede ser negativa';
+                      }
+                      if (value.startsWith('0') &&
+                          !value.startsWith('0.') &&
+                          value != '0') {
+                        return 'No se permiten ceros a la izquierda';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: spaceBetween),
+                  GenericTextFormField(
+                    controller: provider.quantityController,
                     keyboardType: TextInputType.number,
                     label: 'Cantidad',
                     validator: (value) {
@@ -152,6 +175,7 @@ class SaveProductForm extends StatelessWidget {
                   GenericDropdownButtonFormField(
                     label: 'Talla',
                     items: provider.getSizes(),
+                    inUpperCaseText: true,
                     onChanged: (value) => provider.sizeSelected = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -178,16 +202,8 @@ class SaveProductForm extends StatelessWidget {
                   SizedBox(height: spaceBetween),
                   ElevatedButton(
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        provider.saveProduct(
-                          name: nameController.text,
-                          barcode: barcodeController.text,
-                          purchasePrice: purchasePriceController.text,
-                          quantity: quantityController.text,
-                          brand: provider.brandSelected!,
-                          size: provider.sizeSelected!,
-                          category: provider.categorySelected!,
-                        );
+                      if (provider.formKey.currentState!.validate()) {
+                        provider.saveProduct();
                       }
                     },
                     child: Text('Guardar'),

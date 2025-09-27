@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:inventario_app/src/config/di/injection.dart';
 import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
 import 'package:inventario_app/src/domain/products/valueobjects/brand.dart';
@@ -18,6 +19,17 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   String? _sizeSelected;
   final List<String> brands = Brand.all.map((c) => c.label).toList();
   String? _brandSelected;
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController purchasePriceController = TextEditingController();
+  final TextEditingController quantityController = TextEditingController();
+  final TextEditingController barcodeController = TextEditingController(
+    text: '7704803436662',
+  );
+  final TextEditingController earningsPercentageController =
+      TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
 
   List<String> get categories => _categories;
   String? get categorySelected => _categorySelected;
@@ -49,27 +61,21 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
     ).allowSizes.map((s) => s.label).toList();
   }
 
-  Future<void> saveProduct({
-    required String name,
-    required String purchasePrice,
-    required String barcode,
-    required String quantity,
-    required String category,
-    required String size,
-    required String brand,
-  }) async {
+  Future<void> saveProduct() async {
     loading = true;
     error = null;
     saved = null;
     notifyListeners();
 
     final product = Product(
-      name: name,
-      size: size,
-      brand: brand,
-      purchasePrice: int.parse(purchasePrice),
-      quantity: int.parse(quantity),
-      barcode: barcode,
+      name: nameController.text.trim(),
+      size: sizeSelected!.trim(),
+      brand: brandSelected!.trim(),
+      purchasePrice: int.parse(purchasePriceController.text),
+      quantity: int.parse(quantityController.text),
+      barcode: barcodeController.text.trim(),
+      type: _categorySelected!.trim(),
+      earningsPercentage: int.parse(earningsPercentageController.text),
       images: null,
     );
 
@@ -85,7 +91,22 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
         showError = true;
       },
     );
+
+    clearForm();
     loading = false;
+    notifyListeners();
+  }
+
+  void clearForm() {
+    nameController.text = '';
+    purchasePriceController.text = '';
+    barcodeController.text = '';
+    earningsPercentageController.text = '';
+    quantityController.text = '';
+    _categorySelected = 'Camisetas';
+    _sizeSelected = '';
+    _brandSelected = '';
+
     notifyListeners();
   }
 }

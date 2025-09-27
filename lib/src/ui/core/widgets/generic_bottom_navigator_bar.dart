@@ -21,6 +21,7 @@ class GenericBottomNavigatorBar extends StatelessWidget {
           label: 'Inventario',
         ),
         BottomNavigationBarItem(icon: Icon(Icons.download), label: 'Descargar'),
+        BottomNavigationBarItem(icon: Icon(Icons.update), label: 'Actualizar'),
       ],
       currentIndex: provider.currentPage,
       onTap: (int index) {
@@ -51,6 +52,15 @@ class GenericBottomNavigatorBar extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 Routes.downloadProduct,
+                (route) => false,
+              );
+            }
+            break;
+          case 3:
+            if (routeName != Routes.updateProduct) {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                Routes.updateProduct,
                 (route) => false,
               );
             }

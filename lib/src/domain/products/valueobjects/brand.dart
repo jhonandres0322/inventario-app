@@ -7,6 +7,8 @@ class Brand {
     Brand(label: 'Americanino'),
     Brand(label: 'Chevignon'),
     Brand(label: 'Polo Atlantic'),
+    Brand(label: 'Esprit'),
+    Brand(label: 'Quest'),
   ];
 
   factory Brand.fromLabel(String label) {
