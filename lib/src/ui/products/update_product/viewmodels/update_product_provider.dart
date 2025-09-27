@@ -56,10 +56,15 @@ class UpdateProductProvider extends GenericSaveProvider<Product> {
 
     result.when(
       ok: (products) {
-        _productsSelected = products;
-        _sizes = products.map((product) => product.size).toList();
-        success = 'Producto encontrado';
-        showSuccess = true;
+        if (products.isEmpty) {
+          error = 'No se encontraron productos';
+          showError = true;
+        } else {
+          _productsSelected = products;
+          _sizes = products.map((product) => product.size).toList();
+          success = 'Producto encontrado';
+          showSuccess = true;
+        }
       },
       err: (e) {
         error = e;

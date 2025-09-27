@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/ui/barcode/scan/widgets/barcode_scan_screen.dart';
+import 'package:inventario_app/src/ui/core/validations/form_validator.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_dropdown_button_form_field.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_text_form_field.dart';
 import 'package:inventario_app/src/ui/core/widgets/snackbar_service.dart';
@@ -119,22 +120,8 @@ class UpdateProductForm extends StatelessWidget {
                       controller: provider.quantityController,
                       keyboardType: TextInputType.number,
                       label: 'Cantidad',
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'La cantidad es requerida';
-                        }
-                        final price = double.tryParse(value);
-                        if (price == null) return 'Debe ser un número válido';
-                        if (price < 0) {
-                          return 'La cantidad no puede ser negativa';
-                        }
-                        if (value.startsWith('0') &&
-                            !value.startsWith('0.') &&
-                            value != '0') {
-                          return 'No se permiten ceros a la izquierda';
-                        }
-                        return null;
-                      },
+                      validator: (value) =>
+                          FormValidator.number(value, 'cantidad'),
                     ),
                     SizedBox(height: spaceBetween),
                     ElevatedButton(

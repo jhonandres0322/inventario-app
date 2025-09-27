@@ -20,6 +20,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   final List<String> brands = Brand.all.map((c) => c.label).toList();
   String? _brandSelected;
   bool _isTypedName = false;
+  int _salesPrice = 0;
 
   final List<String> _brandsNeedNoName = ['americanino', 'chevignon', 'esprit'];
 
@@ -40,6 +41,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   String? get sizeSelected => _sizeSelected;
   String? get brandSelected => _brandSelected;
   bool? get isTypedName => _isTypedName;
+  int? get salesPrice => _salesPrice;
 
   set categorySelected(String? value) {
     _categorySelected = value;
@@ -60,7 +62,10 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
     notifyListeners();
   }
 
-  SaveProductProvider(this._getProductsProvider);
+  SaveProductProvider(this._getProductsProvider) {
+    purchasePriceController.addListener(_calculateSalesPrice);
+    earningsPercentageController.addListener(_calculateSalesPrice);
+  }
 
   List<String> getSizes() {
     return CategoryProduct.fromLabel(
@@ -113,6 +118,25 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
     _categorySelected = 'Camisetas';
     _sizeSelected = '';
     _brandSelected = '';
+
+    notifyListeners();
+  }
+
+  void _calculateSalesPrice() {
+    final purchasePriceText = purchasePriceController.text;
+    final earningsPercentageText = earningsPercentageController.text;
+
+    // Validar que los campos no estén vacíos y sean números válidos
+    if (purchasePriceText.isNotEmpty) {
+      final purchasePrice = int.tryParse(purchasePriceText) ?? 0;
+      final earningsPercentage = int.tryParse(earningsPercentageText) ?? 35;
+
+      // Calcular el precio de venta
+      _salesPrice =
+          purchasePrice + (purchasePrice * earningsPercentage / 100).round();
+    } else {
+      _salesPrice = 0;
+    }
 
     notifyListeners();
   }

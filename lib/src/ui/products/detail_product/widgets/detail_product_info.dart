@@ -70,7 +70,7 @@ class DetailProductInfo extends StatelessWidget {
         Text(
           '$label:',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 12,
             fontWeight: FontWeight.w600,
             color: AppColors().primary,
           ),
@@ -79,7 +79,7 @@ class DetailProductInfo extends StatelessWidget {
         Expanded(
           child: Text(
             value,
-            style: TextStyle(fontSize: 18, color: AppColors().primary),
+            style: TextStyle(fontSize: 12, color: AppColors().primary),
           ),
         ),
       ],

@@ -57,17 +57,16 @@ class _BarcodeScanBodyState extends State<BarcodeScanBody> {
           alignment: Alignment.bottomRight,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: FloatingActionButton.extended(
+            child: FloatingActionButton(
               onPressed: _barcodeValue != null
                   ? () {
                       Navigator.pop(context);
                     }
                   : null,
-              label: const Text('Capturar'),
-              icon: const Icon(Icons.check),
               backgroundColor: _barcodeValue != null
                   ? AppColors().secondary
                   : Colors.grey,
+              child: Icon(Icons.check),
             ),
           ),
         ),
