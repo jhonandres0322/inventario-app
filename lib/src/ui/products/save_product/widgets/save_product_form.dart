@@ -84,7 +84,7 @@ class SaveProductForm extends StatelessWidget {
                   if (provider.isTypedName!) ...[
                     GenericTextFormField(
                       controller: provider.nameController,
-                      label: 'Nombre o Referencia',
+                      label: 'Nombre',
                       validator: (value) =>
                           FormValidator.minLengthText(value, 'nombre', 3),
                     ),
@@ -100,7 +100,7 @@ class SaveProductForm extends StatelessWidget {
                   SizedBox(height: spaceBetween),
                   GenericTextFormField(
                     controller: provider.earningsPercentageController,
-                    label: 'Porcentaje de Ganancia - Opcional',
+                    label: '% de Ganancia',
                     keyboardType: TextInputType.number,
                     validator: (value) => FormValidator.number(
                       value,
@@ -108,6 +108,7 @@ class SaveProductForm extends StatelessWidget {
                       allowEmpty: true,
                     ),
                   ),
+                  Text('Precio de Venta \$${provider.salesPrice.toString()}'),
                   SizedBox(height: spaceBetween),
                   GenericTextFormField(
                     controller: provider.quantityController,

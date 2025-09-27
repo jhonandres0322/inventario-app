@@ -36,13 +36,15 @@ class DetailProductBody extends StatelessWidget {
           );
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DetailProductImages(images: images),
-            SizedBox(height: size.height * 0.05),
-            DetailProductInfo(product: product),
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DetailProductImages(images: images),
+              SizedBox(height: size.height * 0.03),
+              DetailProductInfo(product: product),
+            ],
+          ),
         );
       },
     );
