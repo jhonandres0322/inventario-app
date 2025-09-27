@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:inventario_app/src/config/pagination/paging.dart';
 import 'package:inventario_app/src/data/services/supabase_service.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';

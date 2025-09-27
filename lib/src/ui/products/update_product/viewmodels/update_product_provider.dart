@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/config/di/injection.dart';
 import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
