@@ -63,4 +63,29 @@ final class ProductsRepository {
       return Error(e.toString());
     }
   }
+
+  Future<Result<List<Product>>> findProductsByBarcode(String barcode) async {
+    try {
+      final filters = [
+        {'key': 'barcode', 'value': barcode},
+      ];
+      final products = await productsRemoteService.findProductByFilters(
+        filters,
+      );
+
+      return Ok(products);
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
+
+  Future<Result<Product>> updateProduct(Product product) async {
+    try {
+      final productUpdated = await productsRemoteService.updateProduct(product);
+
+      return Ok(productUpdated);
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
 }

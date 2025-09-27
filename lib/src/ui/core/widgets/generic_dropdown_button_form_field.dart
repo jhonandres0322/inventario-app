@@ -8,6 +8,7 @@ class GenericDropdownButtonFormField extends StatelessWidget {
   final ValueChanged<String?>? onChanged;
   final FormFieldValidator<String?>? validator;
   final InputDecoration? decoration;
+  final bool inUpperCaseText;
 
   const GenericDropdownButtonFormField({
     super.key,
@@ -17,6 +18,7 @@ class GenericDropdownButtonFormField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.decoration,
+    this.inUpperCaseText = false,
   });
 
   @override
@@ -25,7 +27,10 @@ class GenericDropdownButtonFormField extends StatelessWidget {
       value: value,
       onChanged: onChanged,
       items: items.map((item) {
-        return DropdownMenuItem<String>(value: item, child: Text(item));
+        return DropdownMenuItem<String>(
+          value: item,
+          child: Text(inUpperCaseText ? item.toUpperCase() : item),
+        );
       }).toList(),
       decoration:
           decoration ??

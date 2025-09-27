@@ -15,9 +15,10 @@ class Product {
   final String brand;
   final int purchasePrice;
   final int? earningsPercentage;
-  final int? salesPrice;
+  int? salesPrice;
   final int quantity;
   final String barcode;
+  final String type;
   String? images;
   final DateTime? createdAt;
 
@@ -28,12 +29,14 @@ class Product {
     required this.brand,
     required this.purchasePrice,
     this.earningsPercentage = 35,
-    this.salesPrice,
     required this.quantity,
     required this.barcode,
+    required this.type,
     this.images,
     this.createdAt,
-  });
+  }) {
+    salesPrice = calculatedSalesPrice;
+  }
 
   int get calculatedSalesPrice {
     if (earningsPercentage == null) return purchasePrice; // O lanza error/usa 0
@@ -50,6 +53,7 @@ class Product {
     int? salesPrice,
     int? quantity,
     String? barcode,
+    String? type,
     String? images,
     DateTime? createdAt,
   }) => Product(
@@ -59,9 +63,9 @@ class Product {
     brand: brand ?? this.brand,
     purchasePrice: purchasePrice ?? this.purchasePrice,
     earningsPercentage: earningsPercentage ?? this.earningsPercentage,
-    salesPrice: salesPrice ?? this.salesPrice,
     quantity: quantity ?? this.quantity,
     barcode: barcode ?? this.barcode,
+    type: type ?? this.type,
     images: images ?? this.images,
     createdAt: createdAt ?? this.createdAt,
   );
@@ -73,22 +77,34 @@ class Product {
     brand: json["brand"],
     purchasePrice: json["purchasePrice"],
     earningsPercentage: json["earningsPercentage"],
-    salesPrice: json["salesPrice"],
     quantity: json["quantity"],
     barcode: json["barcode"],
+    type: json["type"],
     images: json["images"],
     createdAt: DateTime.parse(json["createdAt"]),
   );
 
-  Map<String, dynamic> toJson() => {
-    "name": name,
-    "size": size,
-    "brand": brand,
-    "purchasePrice": purchasePrice,
-    "earningsPercentage": earningsPercentage,
-    "salesPrice": salesPrice ?? calculatedSalesPrice,
-    "quantity": quantity,
-    "barcode": barcode,
-    "images": images,
-  };
+  Map<String, dynamic> toJson() {
+    final map = {
+      "name": name,
+      "size": size,
+      "brand": brand,
+      "purchasePrice": purchasePrice,
+      "earningsPercentage": earningsPercentage,
+      "salesPrice": salesPrice,
+      "quantity": quantity,
+      "barcode": barcode,
+      "type": type,
+      "images": images,
+    };
+    if (id != null) {
+      map["id"] = id;
+    }
+
+    if (createdAt != null) {
+      map["createdAt"] = createdAt!.toIso8601String();
+    }
+
+    return map;
+  }
 }
