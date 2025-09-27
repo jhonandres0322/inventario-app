@@ -11,7 +11,7 @@ class DetailProductInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formatter = NumberFormat.currency(
-      locale: 'es_CO',
+      locale: 'en_US',
       symbol: '\$',
       decimalDigits: 0,
     );
@@ -40,14 +40,14 @@ class DetailProductInfo extends StatelessWidget {
               const Divider(),
               _buildInfoRow(
                 Icons.inventory_2,
-                'Cantidad disponible',
+                'Cantidad',
                 product.quantity.toString(),
               ),
               const Divider(),
               _buildInfoRow(
                 Icons.price_check,
-                'Porcentaje de Ganancia',
-                product.earningsPercentage.toString(),
+                'Ganancia',
+                "${product.earningsPercentage.toString()}%",
               ),
               const Divider(),
               _buildInfoRow(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/ui/core/widgets/generic_text_form_field.dart';
+import 'package:inventario_app/src/ui/core/widgets/snackbar_service.dart';
 import 'package:inventario_app/src/ui/customers/save_customer/viewmodels/save_customer_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -22,20 +23,18 @@ class SaveCustomerForm extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (provider.showError) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Error: ${provider.error}')));
-            provider.resetState();
-          });
+          SnackBarService.showErrorSnackBar(
+            context,
+            provider.error!,
+            provider.resetState,
+          );
         }
         if (provider.showSuccess) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Cliente guardado con éxito')),
-            );
-            provider.resetState();
-          });
+          SnackBarService.showSuccessSnackBar(
+            context,
+            provider.success!,
+            provider.resetState,
+          );
         }
         return SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
