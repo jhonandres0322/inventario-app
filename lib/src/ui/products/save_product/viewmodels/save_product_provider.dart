@@ -4,6 +4,7 @@ import 'package:inventario_app/src/data/products/repositories/products_repositor
 import 'package:inventario_app/src/domain/products/valueobjects/brand.dart';
 import 'package:inventario_app/src/domain/products/valueobjects/category.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
+import 'package:inventario_app/src/domain/products/valueobjects/genre.dart';
 import 'package:inventario_app/src/ui/core/viewmodels/generic_save_provider.dart';
 import 'package:inventario_app/src/ui/products/get_products/viewmodels/get_products_provider.dart';
 
@@ -17,7 +18,9 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   String? _categorySelected = 'Camisetas';
   final List<String> _sizes = [];
   String? _sizeSelected;
+  String? _genreSelected;
   final List<String> brands = Brand.all.map((c) => c.label).toList();
+  final List<String> genres = GenreProduct.all.map((c) => c.label).toList();
   String? _brandSelected;
   bool _isTypedName = false;
   int _salesPrice = 0;
@@ -40,6 +43,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   List<String> get sizes => _sizes;
   String? get sizeSelected => _sizeSelected;
   String? get brandSelected => _brandSelected;
+  String? get genreSelected => _genreSelected;
   bool? get isTypedName => _isTypedName;
   int? get salesPrice => _salesPrice;
 
@@ -58,6 +62,12 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
     _brandSelected = value;
     final isNeedTypeName = !_brandsNeedNoName.contains(value!.toLowerCase());
     _isTypedName = isNeedTypeName;
+
+    notifyListeners();
+  }
+
+  set genreSelected(String? value) {
+    _genreSelected = value;
 
     notifyListeners();
   }
@@ -87,6 +97,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
       quantity: int.parse(quantityController.text),
       barcode: barcodeController.text.trim(),
       type: _categorySelected!.trim(),
+      genre: _genreSelected!.trim(),
       earningsPercentage: int.tryParse(earningsPercentageController.text),
       images: null,
     );
@@ -99,8 +110,8 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
         showSuccess = true;
         _getProductsProvider.load();
       },
-      err: (error) {
-        error = error;
+      err: (err) {
+        error = err;
         showError = true;
       },
     );

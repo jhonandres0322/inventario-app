@@ -138,6 +138,15 @@ class SaveProductForm extends StatelessWidget {
                         : null,
                   ),
                   SizedBox(height: spaceBetween),
+                  GenericDropdownButtonFormField(
+                    label: 'Género',
+                    items: provider.genres,
+                    inUpperCaseText: true,
+                    onChanged: (value) => provider.genreSelected = value,
+                    validator: (value) =>
+                        FormValidator.requiredDropdown(value, 'género'),
+                  ),
+                  SizedBox(height: spaceBetween),
                   ElevatedButton(
                     onPressed: () {
                       if (provider.formKey.currentState!.validate()) {
