@@ -19,6 +19,7 @@ class Product {
   final int quantity;
   final String barcode;
   final String type;
+  final String genre;
   String? images;
   final DateTime? createdAt;
 
@@ -32,6 +33,7 @@ class Product {
     required this.quantity,
     required this.barcode,
     required this.type,
+    required this.genre,
     this.images,
     this.createdAt,
   }) {
@@ -54,6 +56,7 @@ class Product {
     int? quantity,
     String? barcode,
     String? type,
+    String? genre,
     String? images,
     DateTime? createdAt,
   }) => Product(
@@ -66,6 +69,7 @@ class Product {
     quantity: quantity ?? this.quantity,
     barcode: barcode ?? this.barcode,
     type: type ?? this.type,
+    genre: genre ?? this.genre,
     images: images ?? this.images,
     createdAt: createdAt ?? this.createdAt,
   );
@@ -80,6 +84,7 @@ class Product {
     quantity: json["quantity"],
     barcode: json["barcode"],
     type: json["type"],
+    genre: json["genre"],
     images: json["images"],
     createdAt: DateTime.parse(json["createdAt"]),
   );
@@ -94,6 +99,7 @@ class Product {
       "salesPrice": salesPrice,
       "quantity": quantity,
       "barcode": barcode,
+      "genre": genre,
       "type": type,
       "images": images,
     };
