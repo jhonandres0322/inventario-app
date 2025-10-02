@@ -29,7 +29,7 @@ class Product {
     required this.size,
     required this.brand,
     required this.purchasePrice,
-    this.earningsPercentage = 35,
+    required this.earningsPercentage,
     required this.quantity,
     required this.barcode,
     required this.type,
