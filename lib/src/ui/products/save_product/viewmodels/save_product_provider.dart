@@ -98,7 +98,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
       barcode: barcodeController.text.trim(),
       type: _categorySelected!.trim(),
       genre: _genreSelected!.trim(),
-      earningsPercentage: int.tryParse(earningsPercentageController.text),
+      earningsPercentage: int.tryParse(earningsPercentageController.text) ?? 35,
       images: null,
     );
 
