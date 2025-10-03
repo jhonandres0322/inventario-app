@@ -13,7 +13,11 @@ class GetProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_textTitle), bottom: GenericSearchBar()),
+      appBar: AppBar(
+        title: Text(_textTitle),
+        bottom: GenericSearchBar(),
+        automaticallyImplyLeading: false,
+      ),
       body: const GetProductsBody(),
       floatingActionButton: GetProductsFloatingActionButton(),
       bottomNavigationBar: GetProductsBottomNavigatorBar(),

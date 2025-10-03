@@ -20,24 +20,28 @@ class GenericSearchBar<T> extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: TextField(
-        onChanged: (query) => Provider.of<SearchMixin<T>>(
-          context,
-          listen: false,
-        ).performSearch(query),
-        decoration:
-            decoration ??
-            InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              hintText: hintText,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
+    final Size size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height * 0.09,
+      child: Padding(
+        padding: padding,
+        child: TextFormField(
+          onChanged: (query) => Provider.of<SearchMixin<T>>(
+            context,
+            listen: false,
+          ).performSearch(query),
+          decoration:
+              decoration ??
+              InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: hintText,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
               ),
-            ),
+        ),
       ),
     );
   }

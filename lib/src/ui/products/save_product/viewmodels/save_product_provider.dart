@@ -25,7 +25,12 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   bool _isTypedName = false;
   int _salesPrice = 0;
 
-  final List<String> _brandsNeedNoName = ['americanino', 'chevignon', 'esprit'];
+  final List<String> _brandsNeedNoName = [
+    'americanino',
+    'chevignon',
+    'esprit',
+    'polo atlantic',
+  ];
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController purchasePriceController = TextEditingController();
