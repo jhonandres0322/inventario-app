@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/ui/core/themes/app_colors.dart';
 import 'package:inventario_app/src/ui/core/validations/form_validator.dart';
@@ -24,6 +26,7 @@ class CatalogProductsDrawer extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    log('entrando al onpressed');
                     provider.clearForm();
                   },
                   style: ElevatedButton.styleFrom(

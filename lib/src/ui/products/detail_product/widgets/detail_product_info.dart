@@ -21,7 +21,7 @@ class DetailProductInfo extends StatelessWidget {
       child: Card(
         color: AppColors().secondary,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               _buildInfoRow(

@@ -41,10 +41,7 @@ class CatalogProductsBody extends StatelessWidget {
             ),
             itemCount: vm.products.length,
             itemBuilder: (BuildContext context, int index) {
-              return CatalogProductsGridItem(
-                imageUrl: vm.products[index].images!.split(',').first,
-                productName: vm.products[index].name,
-              );
+              return CatalogProductsGridItem(product: vm.products[index]);
             },
           ),
         );

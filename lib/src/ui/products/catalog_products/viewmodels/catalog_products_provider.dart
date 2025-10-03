@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+
 import 'package:inventario_app/src/config/di/injection.dart';
 import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
@@ -76,6 +75,8 @@ class CatalogProductsProvider extends ChangeNotifier {
     _categorySelected = null;
     _genreSelected = null;
     _sizeSelected = null;
+
+    notifyListeners();
   }
 
   List<String> getSizes() {
@@ -125,7 +126,6 @@ class CatalogProductsProvider extends ChangeNotifier {
       },
     );
     _scaffoldKey.currentState!.closeDrawer();
-    clearForm();
     _loading = false;
     notifyListeners();
   }
