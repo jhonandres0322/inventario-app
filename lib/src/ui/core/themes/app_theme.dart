@@ -89,6 +89,7 @@ class AppThemes {
         backgroundColor: AppColors().secondary,
         selectedItemColor: AppColors().primary,
       ),
+      drawerTheme: DrawerThemeData(backgroundColor: AppColors().primary),
     );
   }
 }

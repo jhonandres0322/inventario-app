@@ -3,6 +3,7 @@ import 'package:inventario_app/src/config/pagination/paging.dart';
 import 'package:inventario_app/src/data/products/services/load_info_website/load_info_from_website_service_factory.dart';
 import 'package:inventario_app/src/data/products/services/products_remote_service.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
+import 'package:inventario_app/src/domain/products/services/dtos/filter_products_dto.dart';
 
 final class ProductsRepository {
   final ProductsRemoteService productsRemoteService;
@@ -110,6 +111,34 @@ final class ProductsRepository {
       final productUpdated = await productsRemoteService.updateProduct(product);
 
       return Ok(productUpdated);
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
+
+  Future<Result<List<Product>>> filterProducts(
+    FilterProductsDto filters,
+  ) async {
+    try {
+      final filterList = <Map<String, dynamic>>[];
+
+      if (filters.brand != null) {
+        filterList.add({'key': 'brand', 'value': filters.brand});
+      }
+      if (filters.type != null) {
+        filterList.add({'key': 'type', 'value': filters.type});
+      }
+      if (filters.size != null) {
+        filterList.add({'key': 'size', 'value': filters.size});
+      }
+      if (filters.genre != null) {
+        filterList.add({'key': 'genre', 'value': filters.genre});
+      }
+
+      final products = await productsRemoteService.findProductByFilters(
+        filterList,
+      );
+      return Ok(products);
     } catch (e) {
       return Error(e.toString());
     }

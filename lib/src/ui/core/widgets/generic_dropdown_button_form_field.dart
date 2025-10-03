@@ -23,26 +23,30 @@ class GenericDropdownButtonFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: value,
-      onChanged: onChanged,
-      items: items.map((item) {
-        return DropdownMenuItem<String>(
-          value: item,
-          child: Text(inUpperCaseText ? item.toUpperCase() : item),
-        );
-      }).toList(),
-      decoration:
-          decoration ??
-          InputDecoration(
-            hintText: label,
-            labelText: label,
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors().secondary),
+    final Size size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height * 0.09,
+      child: DropdownButtonFormField<String>(
+        value: value,
+        onChanged: onChanged,
+        items: items.map((item) {
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Text(inUpperCaseText ? item.toUpperCase() : item),
+          );
+        }).toList(),
+        decoration:
+            decoration ??
+            InputDecoration(
+              hintText: label,
+              labelText: label,
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors().secondary),
+              ),
             ),
-          ),
-      validator: validator,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: validator,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+      ),
     );
   }
 }
