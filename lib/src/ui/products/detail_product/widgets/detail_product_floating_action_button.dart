@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/config/services/image_share/image_share_service.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 
 class DetailProductFloatingActionButton extends StatelessWidget {
@@ -8,18 +9,14 @@ class DetailProductFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    return FloatingActionButton.extended(
-      onPressed: () => _showEditProductModal(context, product),
-      label: Row(
-        children: [
-          Icon(Icons.edit),
-          SizedBox(width: size.width * 0.01),
-          Text('Editar'),
-        ],
-      ),
+    return FloatingActionButton(
+      child: Icon(Icons.share),
+      onPressed: () {
+        ImageShareService.shareImageFromUrl(
+          product.images!.split(',').first,
+          context,
+        );
+      },
     );
   }
-
-  void _showEditProductModal(BuildContext context, Product productToUpdate) {}
 }
