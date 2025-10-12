@@ -46,12 +46,6 @@ class DetailProductInfo extends StatelessWidget {
               const Divider(),
               _buildInfoRow(
                 Icons.price_check,
-                'Ganancia',
-                "${product.earningsPercentage.toString()}%",
-              ),
-              const Divider(),
-              _buildInfoRow(
-                Icons.price_check,
                 'Precio de Venta',
                 formatter.format(product.salesPrice),
               ),

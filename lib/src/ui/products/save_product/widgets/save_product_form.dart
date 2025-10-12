@@ -99,16 +99,15 @@ class SaveProductForm extends StatelessWidget {
                   ),
                   SizedBox(height: spaceBetween),
                   GenericTextFormField(
-                    controller: provider.earningsPercentageController,
-                    label: '% de Ganancia',
+                    controller: provider.salesPriceController,
+                    label: 'Precio de venta',
                     keyboardType: TextInputType.number,
                     validator: (value) => FormValidator.number(
                       value,
-                      'porcentaje de ganancia',
+                      'precio de venta',
                       allowEmpty: true,
                     ),
                   ),
-                  Text('Precio de Venta \$${provider.salesPrice.toString()}'),
                   SizedBox(height: spaceBetween),
                   GenericTextFormField(
                     controller: provider.quantityController,
