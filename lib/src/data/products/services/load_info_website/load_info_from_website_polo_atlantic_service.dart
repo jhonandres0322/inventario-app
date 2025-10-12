@@ -37,7 +37,8 @@ class LoadInfoFromWebsitePoloAtlanticService
   }
 
   String _buildUrl(String barcode) {
-    return "https://poloatlantic.com.co/search?type=product&options[unavailable_products]=last&options[prefix]=last&q=$barcode";
+    String barcodeSplitted = barcode.split('T').first;
+    return "https://poloatlantic.com.co/search?type=product&options[unavailable_products]=last&options[prefix]=last&q=$barcodeSplitted";
   }
 
   String? changeWidth(String url, String dataWidths) {

@@ -14,8 +14,7 @@ class Product {
   final String size;
   final String brand;
   final int purchasePrice;
-  final int? earningsPercentage;
-  int? salesPrice;
+  final int salesPrice;
   final int quantity;
   final String barcode;
   final String type;
@@ -29,21 +28,14 @@ class Product {
     required this.size,
     required this.brand,
     required this.purchasePrice,
-    required this.earningsPercentage,
+    required this.salesPrice,
     required this.quantity,
     required this.barcode,
     required this.type,
     required this.genre,
     this.images,
     this.createdAt,
-  }) {
-    salesPrice = calculatedSalesPrice;
-  }
-
-  int get calculatedSalesPrice {
-    if (earningsPercentage == null) return purchasePrice; // O lanza error/usa 0
-    return (purchasePrice * (1 + (earningsPercentage! / 100))).round();
-  }
+  });
 
   Product copyWith({
     String? id,
@@ -51,7 +43,6 @@ class Product {
     String? size,
     String? brand,
     int? purchasePrice,
-    int? earningsPercentage,
     int? salesPrice,
     int? quantity,
     String? barcode,
@@ -65,7 +56,7 @@ class Product {
     size: size ?? this.size,
     brand: brand ?? this.brand,
     purchasePrice: purchasePrice ?? this.purchasePrice,
-    earningsPercentage: earningsPercentage ?? this.earningsPercentage,
+    salesPrice: salesPrice ?? this.salesPrice,
     quantity: quantity ?? this.quantity,
     barcode: barcode ?? this.barcode,
     type: type ?? this.type,
@@ -80,7 +71,7 @@ class Product {
     size: json["size"],
     brand: json["brand"],
     purchasePrice: json["purchasePrice"],
-    earningsPercentage: json["earningsPercentage"],
+    salesPrice: json["salesPrice"],
     quantity: json["quantity"],
     barcode: json["barcode"],
     type: json["type"],
@@ -95,7 +86,6 @@ class Product {
       "size": size,
       "brand": brand,
       "purchasePrice": purchasePrice,
-      "earningsPercentage": earningsPercentage,
       "salesPrice": salesPrice,
       "quantity": quantity,
       "barcode": barcode,

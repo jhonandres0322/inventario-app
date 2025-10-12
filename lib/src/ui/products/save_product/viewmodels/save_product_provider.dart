@@ -23,7 +23,6 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   final List<String> genres = GenreProduct.all.map((c) => c.label).toList();
   String? _brandSelected;
   bool _isTypedName = false;
-  int _salesPrice = 0;
 
   final List<String> _brandsNeedNoName = [
     'americanino',
@@ -38,8 +37,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   final TextEditingController barcodeController = TextEditingController(
     text: '7704803436662',
   );
-  final TextEditingController earningsPercentageController =
-      TextEditingController();
+  final TextEditingController salesPriceController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -50,7 +48,6 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   String? get brandSelected => _brandSelected;
   String? get genreSelected => _genreSelected;
   bool? get isTypedName => _isTypedName;
-  int? get salesPrice => _salesPrice;
 
   set categorySelected(String? value) {
     _categorySelected = value;
@@ -77,10 +74,7 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
     notifyListeners();
   }
 
-  SaveProductProvider(this._getProductsProvider) {
-    purchasePriceController.addListener(_calculateSalesPrice);
-    earningsPercentageController.addListener(_calculateSalesPrice);
-  }
+  SaveProductProvider(this._getProductsProvider);
 
   List<String> getSizes() {
     return CategoryProduct.fromLabel(
@@ -99,11 +93,11 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
       size: sizeSelected!.trim(),
       brand: brandSelected!.trim(),
       purchasePrice: int.parse(purchasePriceController.text),
+      salesPrice: int.parse(salesPriceController.text),
       quantity: int.parse(quantityController.text),
       barcode: barcodeController.text.trim(),
       type: _categorySelected!.trim(),
       genre: _genreSelected!.trim(),
-      earningsPercentage: int.tryParse(earningsPercentageController.text) ?? 35,
       images: null,
     );
 
@@ -129,30 +123,11 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   void clearForm() {
     nameController.text = '';
     purchasePriceController.text = '';
-    earningsPercentageController.text = '';
+    salesPriceController.text = '';
     quantityController.text = '';
     _categorySelected = 'Camisetas';
     _sizeSelected = '';
     _brandSelected = '';
-
-    notifyListeners();
-  }
-
-  void _calculateSalesPrice() {
-    final purchasePriceText = purchasePriceController.text;
-    final earningsPercentageText = earningsPercentageController.text;
-
-    // Validar que los campos no estén vacíos y sean números válidos
-    if (purchasePriceText.isNotEmpty) {
-      final purchasePrice = int.tryParse(purchasePriceText) ?? 0;
-      final earningsPercentage = int.tryParse(earningsPercentageText) ?? 35;
-
-      // Calcular el precio de venta
-      _salesPrice =
-          purchasePrice + (purchasePrice * earningsPercentage / 100).round();
-    } else {
-      _salesPrice = 0;
-    }
 
     notifyListeners();
   }
