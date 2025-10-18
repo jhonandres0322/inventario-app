@@ -1,4 +1,4 @@
-import 'package:inventario_app/src/data/services/supabase_service.dart';
+import 'package:inventario_app/src/data/services/supabase/supabase_service.dart';
 import 'package:inventario_app/src/domain/customers/models/customer.dart';
 
 final class CustomersRemoteService {

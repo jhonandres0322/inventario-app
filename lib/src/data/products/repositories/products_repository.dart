@@ -1,17 +1,17 @@
 import 'package:inventario_app/src/config/response/result.dart';
 import 'package:inventario_app/src/config/pagination/paging.dart';
-import 'package:inventario_app/src/data/products/services/load_info_website/load_info_from_website_service_factory.dart';
+import 'package:inventario_app/src/data/products/services/get_info_website/get_info_from_website_service_factory.dart';
 import 'package:inventario_app/src/data/products/services/products_remote_service.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 import 'package:inventario_app/src/domain/products/services/dtos/filter_products_dto.dart';
 
 final class ProductsRepository {
   final ProductsRemoteService productsRemoteService;
-  final LoadInfoFromWebsiteServiceFactory loadInfoFromWebsiteServiceFactory;
+  final GetInfoFromWebsiteServiceFactory getInfoFromWebsiteServiceFactory;
 
   ProductsRepository(
     this.productsRemoteService,
-    this.loadInfoFromWebsiteServiceFactory,
+    this.getInfoFromWebsiteServiceFactory,
   );
 
   Future<Result<List<Product>>> getProducts() async {
@@ -37,34 +37,58 @@ final class ProductsRepository {
     try {
       final filters = [
         {'key': 'barcode', 'value': productSave.barcode},
-        {'key': 'size', 'value': productSave.size},
       ];
       final productsFound = await productsRemoteService.findProductByFilters(
         filters,
       );
+      if (productsFound.isNotEmpty) {
+        final productFoundBySize = productsFound.firstWhere(
+          (product) => product.size == productSave.size,
+          orElse: () => Product.empty(),
+        );
 
-      if (productsFound.isEmpty) {
-        final loadInfoFromWebSiteService = loadInfoFromWebsiteServiceFactory
+        if (productFoundBySize.size.isNotEmpty) {
+          final productUpdate = productFoundBySize.copyWith(
+            quantity: productSave.quantity,
+          );
+          final productUpdated = await productsRemoteService.updateProduct(
+            productUpdate,
+          );
+
+          return Ok(productUpdated);
+        } else {
+          productSave = productSave.copyWith(
+            name: productsFound.first.name,
+            images: productsFound.first.images,
+          );
+
+          final productSaved = await productsRemoteService.saveProduct(
+            productSave,
+          );
+
+          return Ok(productSaved);
+        }
+      } else {
+        final getInfoFromWebsiteService = getInfoFromWebsiteServiceFactory
             .getService(productSave.brand);
-        final loadInfoFromWebSiteDto = await loadInfoFromWebSiteService.load(
+        final getInfoFromWebsiteDto = await getInfoFromWebsiteService.getInfo(
           productSave,
         );
-        productSave = productSave.copyWith(
-          name: loadInfoFromWebSiteDto.name,
-          images: loadInfoFromWebSiteDto.images,
-        );
-        final product = await productsRemoteService.saveProduct(productSave);
-        return Ok(product);
-      } else {
-        final productFound = productsFound.first;
-        final productUpdate = productFound.copyWith(
-          quantity: productSave.quantity,
-        );
-        final productUpdated = await productsRemoteService.updateProduct(
-          productUpdate,
+
+        final url = await productsRemoteService.uploadFileFromUrl(
+          getInfoFromWebsiteDto.images,
+          productSave.brand,
+          productSave.barcode,
         );
 
-        return Ok(productUpdated);
+        productSave = productSave.copyWith(
+          name: getInfoFromWebsiteDto.name,
+          images: url,
+        );
+
+        final product = await productsRemoteService.saveProduct(productSave);
+
+        return Ok(product);
       }
     } catch (e) {
       return Error(e.toString());

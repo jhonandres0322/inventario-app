@@ -4,10 +4,10 @@ import 'package:inventario_app/src/data/customers/services/customers_remote_serv
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:inventario_app/src/config/env/env_loader.dart';
-import 'package:inventario_app/src/data/products/services/load_info_website/load_info_from_website_service_factory.dart';
+import 'package:inventario_app/src/data/products/services/get_info_website/get_info_from_website_service_factory.dart';
 import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
 import 'package:inventario_app/src/data/products/services/products_remote_service.dart';
-import 'package:inventario_app/src/data/services/supabase_service.dart';
+import 'package:inventario_app/src/data/services/supabase/supabase_service.dart';
 
 final sl = GetIt.instance;
 
@@ -22,7 +22,7 @@ Future<void> init() async {
   sl.registerSingleton(SupabaseService(Supabase.instance.client));
 
   sl.registerLazySingleton(() => ProductsRemoteService(sl<SupabaseService>()));
-  sl.registerSingleton<LoadInfoFromWebsiteServiceFactory>(
+  sl.registerSingleton<GetInfoFromWebsiteServiceFactory>(
     DefaultLoadInfoFromWebsiteServiceFactory(),
   );
 
@@ -30,7 +30,7 @@ Future<void> init() async {
   sl.registerLazySingleton<ProductsRepository>(
     () => ProductsRepository(
       sl<ProductsRemoteService>(),
-      sl<LoadInfoFromWebsiteServiceFactory>(),
+      sl<GetInfoFromWebsiteServiceFactory>(),
     ),
   );
 
