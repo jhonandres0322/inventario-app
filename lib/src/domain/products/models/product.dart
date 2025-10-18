@@ -103,4 +103,16 @@ class Product {
 
     return map;
   }
+
+  factory Product.empty() => Product(
+    name: '',
+    size: '',
+    brand: '',
+    purchasePrice: 0,
+    salesPrice: 0,
+    quantity: 0,
+    barcode: '',
+    type: '',
+    genre: '',
+  );
 }

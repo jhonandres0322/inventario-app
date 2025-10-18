@@ -2,20 +2,20 @@ import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' show parse;
 
 import 'package:inventario_app/src/domain/products/models/product.dart';
-import 'package:inventario_app/src/domain/services/dtos/load_info_from_website_dto.dart';
-import 'package:inventario_app/src/domain/services/load_info_from_website_service.dart';
+import 'package:inventario_app/src/domain/services/dtos/get_info_from_website_dto.dart';
+import 'package:inventario_app/src/domain/services/get_info_from_website_service.dart';
 
-class LoadInfoFromWebsitePoloAtlanticService
-    implements LoadInfoFromWebsiteService {
+class GetInfoFromWebsitePoloAtlanticService
+    implements GetInfoFromWebsiteService {
   @override
-  Future<LoadInfoFromWebsiteDto> load(Product product) async {
+  Future<GetInfoFromWebsiteDto> getInfo(Product product) async {
     final urlSearch = _buildUrl(product.barcode);
     List<String?> images = [];
 
     final response = await http.get(Uri.parse(urlSearch));
 
     if (response.statusCode != 200) {
-      return LoadInfoFromWebsiteDto.fromJson({"name": '', "images": ''});
+      return GetInfoFromWebsiteDto.fromJson({"name": '', "images": ''});
     }
     final document = parse(response.body);
 
@@ -31,9 +31,12 @@ class LoadInfoFromWebsitePoloAtlanticService
 
     images.add(changeWidth(url, dataWidths));
 
-    final String name = attributes['alt'] ?? '';
+    final String name = attributes['alt'] ?? 'Sin nombre';
 
-    return LoadInfoFromWebsiteDto(name: name, images: images.join(','));
+    return GetInfoFromWebsiteDto(
+      name: name,
+      images: images.first! ?? 'Sin imagen',
+    );
   }
 
   String _buildUrl(String barcode) {
@@ -42,7 +45,7 @@ class LoadInfoFromWebsitePoloAtlanticService
   }
 
   String? changeWidth(String url, String dataWidths) {
-    final int widthNew = 200;
+    final int widthNew = 400;
     try {
       // Validar que la URL es un string no vacío
       if (url.isEmpty) {
