@@ -20,11 +20,19 @@ class GetProductsProvider extends ChangeNotifier with SearchMixin<Product> {
   String? _error;
   bool _hasMore = true;
   int _offset = 0;
+  Product? _deletedProduct;
+  String? _success;
+  bool _showError = false;
+  bool _showSuccess = false;
 
   bool get loading => _loading;
   bool get loadingMore => _loadingMore;
   String? get error => _error;
   bool get hasMore => _hasMore;
+  Product? get deletedProduct => _deletedProduct;
+  String? get success => _success;
+  bool get showError => _showError;
+  bool get showSuccess => _showSuccess;
 
   GetProductsProvider() {
     scrollController.addListener(() {
@@ -99,6 +107,31 @@ class GetProductsProvider extends ChangeNotifier with SearchMixin<Product> {
         item.size.toLowerCase().contains(query.toLowerCase());
   }
 
+  Future<void> deleteProduct(Product product) async {
+    _loading = true;
+    _error = null;
+    _deletedProduct = null;
+    notifyListeners();
+
+    final result = await _repository.deleteProduct(product);
+
+    result.when(
+      ok: (deletedProduct) {
+        _deletedProduct = product;
+        _success = 'Producto eliminado con exito';
+        _showSuccess = true;
+        load();
+      },
+      err: (error) {
+        _error = error;
+        _showError = true;
+      },
+    );
+    _loading = false;
+
+    notifyListeners();
+  }
+
   @override
   void performSearch(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
@@ -112,5 +145,13 @@ class GetProductsProvider extends ChangeNotifier with SearchMixin<Product> {
     _debounce?.cancel();
     scrollController.dispose();
     super.dispose();
+  }
+
+  void resetState() {
+    _deletedProduct = null;
+    _error = null;
+    _showSuccess = false;
+    _showError = false;
+    notifyListeners();
   }
 }

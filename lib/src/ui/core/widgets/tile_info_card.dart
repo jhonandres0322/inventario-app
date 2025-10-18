@@ -7,12 +7,14 @@ class TileInfoCard extends StatelessWidget {
     required this.infoItems,
     required this.trailingItems,
     required this.onTap,
+    required this.onLongPress,
   });
 
   final String title;
   final List<InfoItem> infoItems;
   final List<InfoItem> trailingItems;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class TileInfoCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
