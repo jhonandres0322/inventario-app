@@ -30,6 +30,7 @@ class ImageShareService {
 
       // Paso 4: Verificar resultado (opcional)
       if (result.status == ShareResultStatus.success) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Imagen compartida exitosamente')),
         );
@@ -39,6 +40,7 @@ class ImageShareService {
       await file.delete();
     } catch (e) {
       ScaffoldMessenger.of(
+        // ignore: use_build_context_synchronously
         context,
       ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
     }

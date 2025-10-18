@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DetailProductModalDelete extends StatelessWidget {
-  const DetailProductModalDelete({super.key});
+class GetProductsModalDelete extends StatelessWidget {
+  const GetProductsModalDelete({super.key});
 
   final String titulo = '¿Estás seguro?';
   final String mensaje = '¿Deseas eliminar el producto?';

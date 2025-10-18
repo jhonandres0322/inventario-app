@@ -35,10 +35,7 @@ class GetInfoFromWebsiteChevignonAmericaninoEspritService
         .first
         .text;
 
-    return GetInfoFromWebsiteDto(
-      name: name ?? 'Sin nombre',
-      images: image ?? 'Sin imagen',
-    );
+    return GetInfoFromWebsiteDto(name: name, images: image);
   }
 
   String _buildHostname(String brand) {

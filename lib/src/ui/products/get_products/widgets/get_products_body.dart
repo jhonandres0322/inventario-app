@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/ui/core/widgets/snackbar_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:inventario_app/src/ui/products/get_products/viewmodels/get_products_provider.dart';
@@ -20,19 +21,32 @@ class GetProductsBody extends StatelessWidget {
         if (vm.filteredItems.isEmpty) {
           return const Center(child: Text('Sin productos.'));
         }
+        if (vm.showError) {
+          SnackBarService.showErrorSnackBar(context, vm.error!, vm.resetState);
+        }
+        if (vm.showSuccess) {
+          SnackBarService.showSuccessSnackBar(
+            context,
+            vm.success!,
+            vm.resetState,
+          );
+        }
         final itemCount = vm.filteredItems.length + (vm.loadingMore ? 1 : 0);
-        return ListView.builder(
-          controller: vm.scrollController,
-          itemCount: itemCount,
-          itemBuilder: (_, i) {
-            if (i < vm.filteredItems.length) {
-              return GetProductsProductTile(product: vm.filteredItems[i]);
-            }
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          },
+        return RefreshIndicator(
+          onRefresh: vm.load,
+          child: ListView.builder(
+            controller: vm.scrollController,
+            itemCount: itemCount,
+            itemBuilder: (_, i) {
+              if (i < vm.filteredItems.length) {
+                return GetProductsProductTile(product: vm.filteredItems[i]);
+              }
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
         );
       },
     );

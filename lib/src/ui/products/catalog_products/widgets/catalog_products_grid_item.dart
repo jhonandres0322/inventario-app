@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 import 'package:inventario_app/src/ui/products/detail_product/widgets/detail_product_screen.dart';

@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:inventario_app/src/ui/core/widgets/tile_info_card.dart';
 import 'package:inventario_app/src/domain/products/models/product.dart';
 import 'package:inventario_app/src/ui/products/detail_product/widgets/detail_product_screen.dart';
+import 'package:inventario_app/src/ui/products/get_products/viewmodels/get_products_provider.dart';
+import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_modal_delete.dart';
+import 'package:provider/provider.dart';
 
 class GetProductsProductTile extends StatelessWidget {
   final Product product;
@@ -11,6 +14,7 @@ class GetProductsProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<GetProductsProvider>(context, listen: false);
     return TileInfoCard(
       title: product.name,
       infoItems: [
@@ -36,6 +40,41 @@ class GetProductsProductTile extends StatelessWidget {
           ),
         );
       },
+      onLongPress: () {
+        _showConfirmForDelete(
+          context: context,
+          onConfirm: () => provider.deleteProduct(product),
+        );
+      },
     );
+  }
+
+  Future<void> _showConfirmForDelete({
+    required BuildContext context,
+
+    required Future<void> Function() onConfirm,
+  }) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return GetProductsModalDelete();
+      },
+    );
+    if (confirmed != true) return;
+
+    try {
+      await onConfirm();
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+
+      ScaffoldMessenger.of(
+        // ignore: use_build_context_synchronously
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+
+      return;
+    }
   }
 }

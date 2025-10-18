@@ -33,10 +33,7 @@ class GetInfoFromWebsitePoloAtlanticService
 
     final String name = attributes['alt'] ?? 'Sin nombre';
 
-    return GetInfoFromWebsiteDto(
-      name: name,
-      images: images.first! ?? 'Sin imagen',
-    );
+    return GetInfoFromWebsiteDto(name: name, images: images.first!);
   }
 
   String _buildUrl(String barcode) {
