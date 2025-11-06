@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/domain/products/models/product.dart';
 
 import 'package:inventario_app/src/ui/core/widgets/generic_search_bar.dart';
 import 'package:inventario_app/src/ui/products/get_products/widgets/get_products_body.dart';
@@ -15,7 +16,7 @@ class GetProductsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(_textTitle),
-        bottom: GenericSearchBar(),
+        bottom: GenericSearchBar<Product>(),
         automaticallyImplyLeading: false,
       ),
       body: const GetProductsBody(),
