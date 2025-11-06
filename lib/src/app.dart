@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:inventario_app/src/domain/products/models/product.dart';
+import 'package:inventario_app/src/ui/core/viewmodels/search_mixin.dart';
 import 'package:provider/provider.dart';
 
 import 'package:inventario_app/src/config/routes/routes.dart';
@@ -19,6 +21,9 @@ class App extends StatelessWidget {
           create: (_) => GenericBottomNavigatorBarProvider(),
         ),
         ChangeNotifierProvider(create: (_) => CatalogProductsProvider()),
+        ListenableProxyProvider<GetProductsProvider, SearchMixin<Product>>(
+          update: (_, provider, __) => provider,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

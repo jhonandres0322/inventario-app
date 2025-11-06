@@ -26,10 +26,8 @@ class GenericSearchBar<T> extends StatelessWidget
       child: Padding(
         padding: padding,
         child: TextFormField(
-          onChanged: (query) => Provider.of<SearchMixin<T>>(
-            context,
-            listen: false,
-          ).performSearch(query),
+          onChanged: (query) =>
+              context.read<SearchMixin<T>>().performSearch(query),
           decoration:
               decoration ??
               InputDecoration(

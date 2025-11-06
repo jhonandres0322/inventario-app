@@ -23,14 +23,14 @@ class Routes {
   static const catalogProducts = '/catalog-products';
 
   static Map<String, WidgetBuilder> get map => {
-    home: (_) => const HomeScreen(),
-    admin: (_) => const AdminScreen(),
-    getProducts: (_) => const GetProductsScreen(),
-    saveProduct: (_) => const SaveProductScreen(),
-    getCustomers: (_) => const GetCustomersScreen(),
-    saveCustomer: (_) => const SaveCustomerScreen(),
-    downloadProduct: (_) => const DownloadProductScreen(),
-    updateProduct: (_) => const UpdateProductScreen(),
-    catalogProducts: (_) => const CatalogProductsScreen(),
+    home: (context) => const HomeScreen(),
+    admin: (context) => const AdminScreen(),
+    getProducts: (context) => const GetProductsScreen(),
+    saveProduct: (context) => const SaveProductScreen(),
+    getCustomers: (context) => const GetCustomersScreen(),
+    saveCustomer: (context) => const SaveCustomerScreen(),
+    downloadProduct: (context) => const DownloadProductScreen(),
+    updateProduct: (context) => const UpdateProductScreen(),
+    catalogProducts: (context) => const CatalogProductsScreen(),
   };
 }
