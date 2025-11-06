@@ -11,6 +11,7 @@ import 'package:inventario_app/src/domain/products/valueobjects/genre.dart';
 class CatalogProductsProvider extends ChangeNotifier {
   final ProductsRepository _repository = sl<ProductsRepository>();
   final List<Product> _products = [];
+  final List<Product> _selectedProducts = [];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> _brands = Brand.all.map((brand) => brand.label).toList();
@@ -34,6 +35,7 @@ class CatalogProductsProvider extends ChangeNotifier {
   bool _showError = false;
 
   List<Product> get products => _products;
+  List<Product> get selectedProducts => _selectedProducts;
   GlobalKey<ScaffoldState> get scaffoldKey => _scaffoldKey;
   List<String> get brands => _brands;
   List<String> get categories => _categories;
@@ -72,9 +74,9 @@ class CatalogProductsProvider extends ChangeNotifier {
 
   void clearForm() {
     _brandSelected = null;
-    _categorySelected = null;
-    _genreSelected = null;
-    _sizeSelected = null;
+    _categorySelected = '';
+    _genreSelected = '';
+    _sizeSelected = '';
 
     notifyListeners();
   }
@@ -127,6 +129,27 @@ class CatalogProductsProvider extends ChangeNotifier {
     );
     _scaffoldKey.currentState!.closeDrawer();
     _loading = false;
+    notifyListeners();
+  }
+
+  bool isSelected(Product product) {
+    return _selectedProducts.any((p) => p.id == product.id);
+  }
+
+  void toggleSelection(Product product) {
+    final isAlreadySelected = isSelected(product);
+
+    if (isAlreadySelected) {
+      _selectedProducts.removeWhere((p) => p.id == product.id);
+    } else {
+      _selectedProducts.add(product);
+    }
+
+    notifyListeners();
+  }
+
+  void clearSelection() {
+    _selectedProducts.clear();
     notifyListeners();
   }
 }

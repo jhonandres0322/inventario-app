@@ -34,7 +34,7 @@ class CatalogProductsBody extends StatelessWidget {
 
         final Size size = MediaQuery.of(context).size;
         return Container(
-          margin: EdgeInsets.all(size.height * 0.01),
+          margin: EdgeInsets.all(size.height * 0.03),
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

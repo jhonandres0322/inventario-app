@@ -13,6 +13,8 @@ class AppThemes {
           fontWeight: FontWeight.bold,
           fontSize: 24,
         ),
+        actionsIconTheme: IconThemeData(color: AppColors().primary),
+        iconTheme: IconThemeData(color: AppColors().primary),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: AppColors().secondary,

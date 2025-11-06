@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/ui/products/catalog_products/viewmodels/catalog_products_provider.dart';
+import 'package:inventario_app/src/ui/products/catalog_products/widgets/catalog_products_app_bar.dart';
 import 'package:inventario_app/src/ui/products/catalog_products/widgets/catalog_products_body.dart';
 import 'package:inventario_app/src/ui/products/catalog_products/widgets/catalog_products_bottom_navigator_bar.dart';
 import 'package:inventario_app/src/ui/products/catalog_products/widgets/catalog_products_drawer.dart';
@@ -15,6 +16,7 @@ class CatalogProductsScreen extends StatelessWidget {
 
     return Scaffold(
       key: provider.scaffoldKey,
+      appBar: CatalogProductsAppBar(),
       body: CatalogProductsBody(),
       bottomNavigationBar: CatalogProductsBottomNavigatorBar(),
       drawer: CatalogProductsDrawer(),
