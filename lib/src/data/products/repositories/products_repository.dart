@@ -49,7 +49,7 @@ final class ProductsRepository {
 
         if (productFoundBySize.size.isNotEmpty) {
           final productUpdate = productFoundBySize.copyWith(
-            quantity: productSave.quantity,
+            quantity: productFoundBySize.quantity + productSave.quantity,
           );
           final productUpdated = await productsRemoteService.updateProduct(
             productUpdate,
