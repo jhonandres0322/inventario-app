@@ -110,7 +110,10 @@ final class ProductsRemoteService {
           .uploadBinary(
             storagePath,
             response.bodyBytes,
-            fileOptions: const FileOptions(contentType: 'image/jpeg'),
+            fileOptions: const FileOptions(
+              contentType: 'image/jpeg',
+              upsert: true,
+            ),
           );
       if (uploadResponse.isEmpty) {
         throw Exception('Error al subir el archivo a Supabase');
