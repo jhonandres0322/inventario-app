@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -151,6 +152,39 @@ final class ProductsRemoteService {
       return publicUrl;
     } catch (e) {
       throw Exception('Error al subir archivo: $e');
+    }
+  }
+
+  Future<bool> deleteImage({
+    required String folder,
+    required String fileName,
+  }) async {
+    try {
+      final storagePath = "$folder/$fileName";
+
+      // 1. Verificar si el archivo existe antes de eliminarlo
+      final files = await _supabaseService.client.storage
+          .from('images-inventario')
+          .list(path: folder);
+
+      final exists = files.any((file) => file.name == fileName);
+
+      if (!exists) {
+        log("El archivo no existe: $storagePath");
+        return false;
+      }
+
+      // 2. Eliminar archivo
+      await _supabaseService.client.storage.from('images-inventario').remove([
+        storagePath,
+      ]);
+
+      log("Archivo eliminado: $storagePath");
+
+      return true;
+    } catch (e) {
+      log("Error al eliminar archivo: $e");
+      return false;
     }
   }
 }
