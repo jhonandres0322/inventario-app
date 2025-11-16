@@ -111,7 +111,20 @@ final class ProductsRepository {
 
   Future<Result<void>> deleteProduct(Product productDelete) async {
     try {
+      final filters = [
+        {'key': 'barcode', 'value': productDelete.barcode},
+      ];
+
       await productsRemoteService.deleteProduct(productDelete);
+      final productsFound = await productsRemoteService.findProductByFilters(
+        filters,
+      );
+      if (productsFound.isEmpty) {
+        await productsRemoteService.deleteImage(
+          folder: productDelete.brand,
+          fileName: productDelete.barcode,
+        );
+      }
 
       return Ok(null);
     } catch (e) {
