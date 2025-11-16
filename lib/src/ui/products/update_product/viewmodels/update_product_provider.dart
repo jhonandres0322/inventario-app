@@ -19,7 +19,7 @@ class UpdateProductProvider extends GenericSaveProvider<Product> {
   Product? get productSelected => _productSelected;
 
   final TextEditingController barcodeController = TextEditingController(
-    text: '7704803436662',
+    text: '2009291609TS',
   );
   final TextEditingController nameController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
@@ -39,14 +39,14 @@ class UpdateProductProvider extends GenericSaveProvider<Product> {
 
   Future<void> searchProductByBarcode() async {
     if (barcodeController.text.isEmpty) {
-      error = 'Ingrese el código de barras';
-      showError = true;
+      messageError = 'Ingrese el código de barras';
+      isError = true;
       notifyListeners();
 
       return;
     }
 
-    loading = true;
+    isLoading = true;
 
     notifyListeners();
 
@@ -57,29 +57,30 @@ class UpdateProductProvider extends GenericSaveProvider<Product> {
     result.when(
       ok: (products) {
         if (products.isEmpty) {
-          error = 'No se encontraron productos';
-          showError = true;
+          messageError = 'No se encontraron productos';
+          isError = true;
         } else {
           _productsSelected = products;
           _sizes = products.map((product) => product.size).toList();
-          success = 'Producto encontrado';
-          showSuccess = true;
+          messageSuccess = 'Producto encontrado';
+          isSuccess = true;
         }
       },
       err: (e) {
-        error = e;
-        showError = true;
+        messageError =
+            'No se pudo encontrar el producto, por favor intente más tarde';
+        isError = true;
       },
     );
 
-    loading = false;
+    isLoading = false;
     notifyListeners();
   }
 
   Future<void> updateProduct() async {
-    loading = true;
-    error = null;
-    success = null;
+    isLoading = true;
+    messageSuccess = null;
+    messageError = null;
     notifyListeners();
 
     final productUpdate = productSelected?.copyWith(
@@ -90,17 +91,17 @@ class UpdateProductProvider extends GenericSaveProvider<Product> {
     result.when(
       ok: (productUpdated) {
         _productSelected = productUpdated;
-        success = 'Producto actualizado';
-        showSuccess = true;
+        messageSuccess = 'Producto actualizado correctamente';
+        isSuccess = true;
         _getProductsProvider.load();
       },
       err: (e) {
-        error = e;
-        showError = true;
+        messageError = e;
+        isError = true;
       },
     );
 
-    loading = false;
+    isLoading = false;
     notifyListeners();
   }
 }

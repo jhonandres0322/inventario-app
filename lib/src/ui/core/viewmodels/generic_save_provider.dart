@@ -1,56 +1,55 @@
 import 'package:flutter/material.dart';
 
 class GenericSaveProvider<T> extends ChangeNotifier {
-  bool _loading = false;
-  String? _error;
-  String? _success;
-  T? _saved;
-  bool _showSuccess = false;
-  bool _showError = false;
+  bool _isLoading = false;
+  String? _messageError;
+  String? _messageSuccess;
+  T? _savedEntity;
+  bool _isSuccess = false;
+  bool _isError = false;
 
-  bool get loading => _loading;
-  String? get error => _error;
-  String? get success => _success;
-  T? get saved => _saved;
-  bool get showSuccess => _showSuccess;
-  bool get showError => _showError;
+  bool get isLoading => _isLoading;
+  String? get messageError => _messageError;
+  String? get messageSuccess => _messageSuccess;
+  T? get savedEntity => _savedEntity;
+  bool get isSuccess => _isSuccess;
+  bool get isError => _isError;
 
-  set loading(bool value) {
-    _loading = value;
+  set isLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 
-  set saved(T? value) {
-    _saved = value;
+  set savedEntity(T? value) {
+    _savedEntity = value;
     notifyListeners();
   }
 
-  set error(String? value) {
-    _error = value;
+  set messageError(String? value) {
+    _messageError = value;
     notifyListeners();
   }
 
-  set success(String? value) {
-    _success = value;
+  set messageSuccess(String? value) {
+    _messageSuccess = value;
     notifyListeners();
   }
 
-  set showSuccess(bool value) {
-    _showSuccess = value;
+  set isSuccess(bool value) {
+    _isSuccess = value;
     notifyListeners();
   }
 
-  set showError(bool value) {
-    _showError = value;
+  set isError(bool value) {
+    _isError = value;
     notifyListeners();
   }
 
   void resetState() {
-    _saved = null;
-    _error = null;
-    _success = null;
-    _showSuccess = false;
-    _showError = false;
+    _messageError = null;
+    _messageSuccess = null;
+    _isError = false;
+    _isSuccess = false;
     notifyListeners();
   }
 }

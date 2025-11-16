@@ -11,9 +11,10 @@ class SaveCustomerProvider extends GenericSaveProvider {
     required String phone,
     required String address,
   }) async {
-    loading = true;
-    error = null;
-    saved = null;
+    isLoading = true;
+    messageError = null;
+    messageSuccess = null;
+    savedEntity = null;
     notifyListeners();
 
     final customer = Customer(name: name, phone: phone, address: address);
@@ -22,16 +23,16 @@ class SaveCustomerProvider extends GenericSaveProvider {
 
     result.when(
       ok: (savedCustomer) {
-        saved = savedCustomer;
-        showSuccess = true;
+        savedEntity = savedCustomer;
+        isSuccess = true;
       },
       err: (error) {
         error = error;
-        showError = true;
+        isError = true;
       },
     );
 
-    loading = false;
+    isLoading = false;
     notifyListeners();
   }
 }

@@ -9,33 +9,37 @@ class GetInfoFromWebsiteChevignonAmericaninoEspritService
     implements GetInfoFromWebsiteService {
   @override
   Future<GetInfoFromWebsiteDto> getInfo(Product product) async {
-    final hostname = _buildHostname(product.brand);
-    final urlSearch =
-        '$hostname/${product.barcode}?_q=${product.barcode}&map=ft';
-    final response = await http.get(Uri.parse(urlSearch));
+    try {
+      final hostname = _buildHostname(product.brand);
+      final urlSearch =
+          '$hostname/${product.barcode}?_q=${product.barcode}&map=ft';
+      final response = await http.get(Uri.parse(urlSearch));
 
-    if (response.statusCode != 200) {
-      return GetInfoFromWebsiteDto.fromJson({"name": '', "images": ''});
+      if (response.statusCode != 200) {
+        return GetInfoFromWebsiteDto.fromJson({"name": '', "images": ''});
+      }
+
+      final document = parse(response.body);
+
+      final image = document
+          .getElementsByClassName('vtex-product-summary-2-x-image')
+          .take(1)
+          .map((element) => element.attributes['src'])
+          .where((src) => src != null)
+          .cast<String>()
+          .first;
+
+      final name = document
+          .getElementsByClassName(
+            'vtex-product-summary-2-x-productBrand vtex-product-summary-2-x-brandName t-body',
+          )
+          .first
+          .text;
+
+      return GetInfoFromWebsiteDto(name: name, images: image, isSuccess: true);
+    } catch (e) {
+      return GetInfoFromWebsiteDto(name: '', images: '', isSuccess: false);
     }
-
-    final document = parse(response.body);
-
-    final image = document
-        .getElementsByClassName('vtex-product-summary-2-x-image')
-        .take(1)
-        .map((element) => element.attributes['src'])
-        .where((src) => src != null)
-        .cast<String>()
-        .first;
-
-    final name = document
-        .getElementsByClassName(
-          'vtex-product-summary-2-x-productBrand vtex-product-summary-2-x-brandName t-body',
-        )
-        .first
-        .text;
-
-    return GetInfoFromWebsiteDto(name: name, images: image);
   }
 
   String _buildHostname(String brand) {
