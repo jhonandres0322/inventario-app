@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:inventario_app/src/config/response/result.dart';
 import 'package:inventario_app/src/config/pagination/paging.dart';
 import 'package:inventario_app/src/data/products/services/get_info_website/get_info_from_website_service_factory.dart';
@@ -75,16 +77,18 @@ final class ProductsRepository {
           productSave,
         );
 
-        final url = await productsRemoteService.uploadFileFromUrl(
-          getInfoFromWebsiteDto.images,
-          productSave.brand,
-          productSave.barcode,
-        );
+        if (getInfoFromWebsiteDto.isSuccess) {
+          final String url = await productsRemoteService.uploadFile(
+            url: getInfoFromWebsiteDto.images,
+            folder: productSave.brand,
+            fileName: productSave.barcode,
+          );
 
-        productSave = productSave.copyWith(
-          name: getInfoFromWebsiteDto.name,
-          images: url,
-        );
+          productSave = productSave.copyWith(
+            name: getInfoFromWebsiteDto.name,
+            images: url,
+          );
+        }
 
         final product = await productsRemoteService.saveProduct(productSave);
 
@@ -133,6 +137,28 @@ final class ProductsRepository {
   Future<Result<Product>> updateProduct(Product product) async {
     try {
       final productUpdated = await productsRemoteService.updateProduct(product);
+
+      return Ok(productUpdated);
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
+
+  Future<Result<Product>> updateProductIncomplete(
+    Product? product,
+    File? file,
+  ) async {
+    try {
+      final String image = await productsRemoteService.uploadFile(
+        folder: product!.brand,
+        fileName: product.barcode,
+        file: file,
+      );
+      final productUpdate = product.copyWith(images: image);
+
+      final productUpdated = await productsRemoteService.updateProduct(
+        productUpdate,
+      );
 
       return Ok(productUpdated);
     } catch (e) {

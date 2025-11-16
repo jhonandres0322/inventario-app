@@ -15,20 +15,20 @@ class UpdateProductForm extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return Consumer<UpdateProductProvider>(
       builder: (context, provider, child) {
-        if (provider.loading) {
+        if (provider.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (provider.showError) {
+        if (provider.isError) {
           SnackBarService.showErrorSnackBar(
             context,
-            provider.error!,
+            provider.messageError!,
             provider.resetState,
           );
         }
-        if (provider.showSuccess) {
+        if (provider.isSuccess) {
           SnackBarService.showSuccessSnackBar(
             context,
-            provider.success!,
+            provider.messageSuccess!,
             provider.resetState,
           );
         }

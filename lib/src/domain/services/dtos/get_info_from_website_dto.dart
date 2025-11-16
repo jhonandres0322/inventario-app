@@ -13,17 +13,34 @@ String getInfoFromWebsiteDtoToJson(GetInfoFromWebsiteDto data) =>
 class GetInfoFromWebsiteDto {
   final String name;
   final String images;
+  final bool isSuccess;
 
-  GetInfoFromWebsiteDto({required this.name, required this.images});
+  GetInfoFromWebsiteDto({
+    required this.name,
+    required this.images,
+    required this.isSuccess,
+  });
 
-  GetInfoFromWebsiteDto copyWith({String? name, String? images}) =>
-      GetInfoFromWebsiteDto(
-        name: name ?? this.name,
-        images: images ?? this.images,
-      );
+  GetInfoFromWebsiteDto copyWith({
+    String? name,
+    String? images,
+    bool? isSuccess,
+  }) => GetInfoFromWebsiteDto(
+    name: name ?? this.name,
+    images: images ?? this.images,
+    isSuccess: isSuccess ?? this.isSuccess,
+  );
 
   factory GetInfoFromWebsiteDto.fromJson(Map<String, dynamic> json) =>
-      GetInfoFromWebsiteDto(name: json["name"], images: json["images"]);
+      GetInfoFromWebsiteDto(
+        name: json["name"],
+        images: json["images"],
+        isSuccess: json["isSuccess"],
+      );
 
-  Map<String, dynamic> toJson() => {"name": name, "images": images};
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "images": images,
+    "isSuccess": isSuccess,
+  };
 }

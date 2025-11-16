@@ -9,31 +9,39 @@ class GetInfoFromWebsitePoloAtlanticService
     implements GetInfoFromWebsiteService {
   @override
   Future<GetInfoFromWebsiteDto> getInfo(Product product) async {
-    final urlSearch = _buildUrl(product.barcode);
-    List<String?> images = [];
+    try {
+      final urlSearch = _buildUrl(product.barcode);
+      List<String?> images = [];
 
-    final response = await http.get(Uri.parse(urlSearch));
+      final response = await http.get(Uri.parse(urlSearch));
 
-    if (response.statusCode != 200) {
-      return GetInfoFromWebsiteDto.fromJson({"name": '', "images": ''});
+      if (response.statusCode != 200) {
+        return GetInfoFromWebsiteDto.fromJson({"name": '', "images": ''});
+      }
+      final document = parse(response.body);
+
+      final info = document
+          .getElementsByTagName('img')
+          .firstWhere(
+            (element) => element.className.contains('t4s-product-main-img'),
+          );
+
+      final attributes = info.attributes;
+      final url = attributes['data-src'] ?? '';
+      final dataWidths = attributes['data-widths'] ?? '';
+
+      images.add(changeWidth(url, dataWidths));
+
+      final String name = attributes['alt'] ?? 'Sin nombre';
+
+      return GetInfoFromWebsiteDto(
+        name: name,
+        images: images.first!,
+        isSuccess: true,
+      );
+    } catch (e) {
+      return GetInfoFromWebsiteDto(name: '', images: '', isSuccess: false);
     }
-    final document = parse(response.body);
-
-    final info = document
-        .getElementsByTagName('img')
-        .firstWhere(
-          (element) => element.className.contains('t4s-product-main-img'),
-        );
-
-    final attributes = info.attributes;
-    final url = attributes['data-src'] ?? '';
-    final dataWidths = attributes['data-widths'] ?? '';
-
-    images.add(changeWidth(url, dataWidths));
-
-    final String name = attributes['alt'] ?? 'Sin nombre';
-
-    return GetInfoFromWebsiteDto(name: name, images: images.first!);
   }
 
   String _buildUrl(String barcode) {

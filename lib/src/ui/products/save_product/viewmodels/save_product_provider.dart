@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:inventario_app/src/config/di/injection.dart';
 import 'package:inventario_app/src/data/products/repositories/products_repository.dart';
@@ -8,9 +10,13 @@ import 'package:inventario_app/src/domain/products/valueobjects/genre.dart';
 import 'package:inventario_app/src/ui/core/viewmodels/generic_save_provider.dart';
 import 'package:inventario_app/src/ui/products/get_products/viewmodels/get_products_provider.dart';
 
+enum StatesSaveProductScreen { creating, createdIncomplete }
+
 class SaveProductProvider extends GenericSaveProvider<Product> {
   final GetProductsProvider _getProductsProvider;
   final ProductsRepository _repository = sl<ProductsRepository>();
+
+  StatesSaveProductScreen _stateCurrent = StatesSaveProductScreen.creating;
 
   final List<String> _categories = CategoryProduct.all
       .map((c) => c.label)
@@ -22,24 +28,17 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   final List<String> brands = Brand.all.map((c) => c.label).toList();
   final List<String> genres = GenreProduct.all.map((c) => c.label).toList();
   String? _brandSelected;
-  bool _isTypedName = false;
-
-  final List<String> _brandsNeedNoName = [
-    'americanino',
-    'chevignon',
-    'esprit',
-    'polo atlantic',
-  ];
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController purchasePriceController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
   final TextEditingController barcodeController = TextEditingController(
-    text: '7704803436662',
+    text: '7704803271010',
   );
   final TextEditingController salesPriceController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  File? _selectedImage;
 
   List<String> get categories => _categories;
   String? get categorySelected => _categorySelected;
@@ -47,7 +46,8 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   String? get sizeSelected => _sizeSelected;
   String? get brandSelected => _brandSelected;
   String? get genreSelected => _genreSelected;
-  bool? get isTypedName => _isTypedName;
+  StatesSaveProductScreen get stateCurrent => _stateCurrent;
+  File? get selectedImage => _selectedImage;
 
   set categorySelected(String? value) {
     _categorySelected = value;
@@ -62,8 +62,6 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
 
   set brandSelected(String? value) {
     _brandSelected = value;
-    final isNeedTypeName = !_brandsNeedNoName.contains(value!.toLowerCase());
-    _isTypedName = isNeedTypeName;
 
     notifyListeners();
   }
@@ -71,6 +69,11 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   set genreSelected(String? value) {
     _genreSelected = value;
 
+    notifyListeners();
+  }
+
+  set selectedImage(File? value) {
+    _selectedImage = value;
     notifyListeners();
   }
 
@@ -83,9 +86,9 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
   }
 
   Future<void> saveProduct() async {
-    loading = true;
-    error = null;
-    saved = null;
+    isLoading = true;
+    messageError = null;
+    savedEntity = null;
     notifyListeners();
 
     final product = Product(
@@ -104,19 +107,57 @@ class SaveProductProvider extends GenericSaveProvider<Product> {
     final result = await _repository.saveProduct(product);
     result.when(
       ok: (savedProduct) {
-        saved = savedProduct;
-        success = 'Producto creado con exito';
-        showSuccess = true;
-        _getProductsProvider.load();
+        savedEntity = savedProduct;
+        if (savedEntity!.name.isNotEmpty) {
+          messageSuccess = 'Producto creado con exito';
+          isSuccess = true;
+          _getProductsProvider.load();
+        } else {
+          _stateCurrent = StatesSaveProductScreen.createdIncomplete;
+          messageError = 'Producto creado sin nombre e imagen';
+          isError = true;
+        }
       },
       err: (err) {
-        error = err;
-        showError = true;
+        messageError =
+            'Error al crear el producto. Por favor intente más tarde';
+        isError = true;
       },
     );
 
     clearForm();
-    loading = false;
+    isLoading = false;
+    notifyListeners();
+  }
+
+  updateProductIncomplete() async {
+    isLoading = true;
+    notifyListeners();
+
+    final product = savedEntity?.copyWith(name: nameController.text);
+
+    final result = await _repository.updateProductIncomplete(
+      product!,
+      _selectedImage!,
+    );
+
+    result.when(
+      ok: (updatedProduct) {
+        savedEntity = updatedProduct;
+        isSuccess = true;
+        messageSuccess = 'Producto completado con exito';
+        _getProductsProvider.load();
+      },
+      err: (err) {
+        messageError =
+            'Error al completar la creacioón del producto. Por favor intente más tarde';
+        isError;
+      },
+    );
+
+    clearForm();
+    isLoading = false;
+    _stateCurrent = StatesSaveProductScreen.creating;
     notifyListeners();
   }
 

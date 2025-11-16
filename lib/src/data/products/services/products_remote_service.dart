@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:http/http.dart' as http;
 
 import 'package:inventario_app/src/config/pagination/paging.dart';
@@ -91,25 +94,45 @@ final class ProductsRemoteService {
     return Product.fromJson(productUpdated);
   }
 
-  Future<String> uploadFileFromUrl(
-    String url,
-    String folder,
-    String fileName,
-  ) async {
+  Future<String> uploadFile({
+    String? url,
+    File? file,
+    required String folder,
+    required String fileName,
+  }) async {
     try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode != 200) {
-        throw Exception(
-          'Error al descargar desde $url: ${response.statusCode}',
-        );
+      // 1. Validación
+      if (url == null && file == null) {
+        throw Exception("Debes proporcionar un enlace o un archivo.");
       }
+
+      late Uint8List bytes;
+
+      // 2. Desde una URL
+      if (url != null) {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode != 200) {
+          throw Exception(
+            'Error al descargar desde $url: ${response.statusCode}',
+          );
+        }
+
+        bytes = response.bodyBytes;
+      }
+
+      // 3. Desde un archivo
+      if (file != null) {
+        bytes = await file.readAsBytes();
+      }
+
+      // 4. Subir a Supabase
 
       final storagePath = "$folder/$fileName";
       final uploadResponse = await _supabaseService.client.storage
           .from('images-inventario')
           .uploadBinary(
             storagePath,
-            response.bodyBytes,
+            bytes,
             fileOptions: const FileOptions(
               contentType: 'image/jpeg',
               upsert: true,
@@ -118,6 +141,8 @@ final class ProductsRemoteService {
       if (uploadResponse.isEmpty) {
         throw Exception('Error al subir el archivo a Supabase');
       }
+
+      // 5. Obtener URL publica
 
       final publicUrl = _supabaseService.client.storage
           .from('images-inventario')
